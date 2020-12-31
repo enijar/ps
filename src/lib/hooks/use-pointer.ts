@@ -36,6 +36,7 @@ export default function usePointer(
         return { ...pointer };
       });
     }
+
     function onMouseMove(event: MouseEvent): void {
       if (wrapperElement === null) return;
       const { width, height } = wrapperElement.getBoundingClientRect();
@@ -47,6 +48,7 @@ export default function usePointer(
         return { ...pointer };
       });
     }
+
     function onMouseUp(event: MouseEvent): void {
       setPointer((pointer) => {
         if (event.target === imgElement) {
@@ -57,6 +59,7 @@ export default function usePointer(
         return { ...pointer };
       });
     }
+
     imgElement.addEventListener("mousedown", onMouseDown);
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("mouseup", onMouseUp);

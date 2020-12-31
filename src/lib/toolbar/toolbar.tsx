@@ -1,5 +1,5 @@
 import React from "react";
-import { Wrapper, Tool } from "./styles";
+import { Tool, Wrapper } from "./styles";
 import { ActionType } from "../../types";
 import { ACTION_MOVE } from "../../consts";
 import emitter from "../services/emitter";
