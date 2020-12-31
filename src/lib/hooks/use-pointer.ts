@@ -1,11 +1,14 @@
 import React from "react";
-import { Pointer } from "../canvas/types";
+import { ActionType, Pointer } from "../../types";
 import { clamp } from "../utils";
+import emitter from "../services/emitter";
+import { ACTION_MOVE } from "../../consts";
 
 export default function usePointer(
   wrapper: React.MutableRefObject<HTMLDivElement | null>,
   img: React.MutableRefObject<HTMLImageElement | null>
 ): Pointer {
+  const [action, setAction] = React.useState<ActionType>(null);
   const [pointer, setPointer] = React.useState<Pointer>({
     startX: 0,
     startY: 0,
@@ -23,6 +26,7 @@ export default function usePointer(
     if (imgElement === null) return;
 
     function onMouseDown(event: MouseEvent): void {
+      if (action !== ACTION_MOVE) return;
       if (wrapperElement === null) return;
       const { width, height } = wrapperElement.getBoundingClientRect();
       setPointer((pointer) => {
@@ -38,6 +42,7 @@ export default function usePointer(
     }
 
     function onMouseMove(event: MouseEvent): void {
+      if (action !== ACTION_MOVE) return;
       if (wrapperElement === null) return;
       const { width, height } = wrapperElement.getBoundingClientRect();
       setPointer((pointer) => {
@@ -50,6 +55,7 @@ export default function usePointer(
     }
 
     function onMouseUp(event: MouseEvent): void {
+      if (action !== ACTION_MOVE) return;
       setPointer((pointer) => {
         if (event.target === imgElement) {
           pointer.lastX = pointer.x;
@@ -68,7 +74,11 @@ export default function usePointer(
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseup", onMouseUp);
     };
-  }, [wrapper, img]);
+  }, [wrapper, img, action]);
+
+  React.useEffect(() => {
+    return emitter.subscribe("action", setAction);
+  }, []);
 
   return pointer;
 }

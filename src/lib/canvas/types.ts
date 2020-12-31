@@ -20,16 +20,6 @@ export type Position = {
   y: number;
 };
 
-export type Pointer = {
-  startX: number;
-  startY: number;
-  x: number;
-  y: number;
-  lastX: number;
-  lastY: number;
-  down: boolean;
-};
-
 export type WrapperProps = {
   width: number;
   height: number;

@@ -25,9 +25,7 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
   }, [pointer, action]);
 
   React.useEffect(() => {
-    return emitter.subscribe("action", (action: ActionType) => {
-      setAction(action);
-    });
+    return emitter.subscribe("action", setAction);
   }, []);
 
   return (
