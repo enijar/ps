@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Ps from "./lib/ps";
+import Ps from "./lib/ps/ps";
 
 ReactDOM.render(
   <React.StrictMode>
