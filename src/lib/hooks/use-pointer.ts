@@ -42,8 +42,10 @@ export default function usePointer(
     }
     function onMouseUp(event: MouseEvent): void {
       setPointer((pointer) => {
-        pointer.lastX = pointer.x;
-        pointer.lastY = pointer.y;
+        if (event.target === imgElement) {
+          pointer.lastX = pointer.x;
+          pointer.lastY = pointer.y;
+        }
         pointer.down = false;
         return { ...pointer };
       });
