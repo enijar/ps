@@ -8,3 +8,10 @@ Photoshop remake in the browser.
 npm install
 npm start # http://localhost:3000
 ```
+
+### Roadmap
+
+- [ ] Filters: grayscale, hue, saturation, etc.
+- [ ] Rotate
+- [ ] Crop
+- [ ] Scale
