@@ -12,5 +12,7 @@ export const Wrapper = styled.div`
 `;
 
 export const Inner = styled.div`
+  display: inline-flex;
   padding: 1em;
+  background-color: #333;
 `;
