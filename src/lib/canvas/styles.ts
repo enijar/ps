@@ -9,6 +9,9 @@ export const Wrapper = styled.div<WrapperProps>`
 
   ${(props) => css`
     img {
+      position: absolute;
+      top: 0;
+      left: 0;
       max-width: ${props.width}px;
       max-height: ${props.height}px;
     }

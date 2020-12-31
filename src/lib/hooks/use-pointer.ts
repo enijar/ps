@@ -1,5 +1,6 @@
 import React from "react";
 import { Pointer } from "../canvas/types";
+import { clamp } from "../utils";
 
 export default function usePointer(
   wrapper: React.MutableRefObject<HTMLDivElement | null>,
@@ -23,20 +24,26 @@ export default function usePointer(
 
     function onMouseDown(event: MouseEvent): void {
       if (wrapperElement === null) return;
+      const { width, height } = wrapperElement.getBoundingClientRect();
       setPointer((pointer) => {
-        pointer.startX = event.pageX;
-        pointer.startY = event.pageY;
-        pointer.x = event.pageX - pointer.startX + pointer.lastX;
-        pointer.y = event.pageY - pointer.startY + pointer.lastY;
+        const x = clamp(event.pageX, 0, width) / width;
+        const y = clamp(event.pageY, 0, height) / height;
+        pointer.startX = x;
+        pointer.startY = y;
+        pointer.x = x - pointer.startX + pointer.lastX;
+        pointer.y = y - pointer.startY + pointer.lastY;
         pointer.down = true;
         return { ...pointer };
       });
     }
     function onMouseMove(event: MouseEvent): void {
       if (wrapperElement === null) return;
+      const { width, height } = wrapperElement.getBoundingClientRect();
       setPointer((pointer) => {
-        pointer.x = event.pageX - pointer.startX + pointer.lastX;
-        pointer.y = event.pageY - pointer.startY + pointer.lastY;
+        const x = clamp(event.pageX, 0, width) / width;
+        const y = clamp(event.pageY, 0, height) / height;
+        pointer.x = x - pointer.startX + pointer.lastX;
+        pointer.y = y - pointer.startY + pointer.lastY;
         return { ...pointer };
       });
     }

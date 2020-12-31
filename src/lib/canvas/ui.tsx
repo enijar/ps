@@ -34,7 +34,8 @@ export default function Ui({
         onDragStart={onDragStart}
         ref={img}
         style={{
-          transform: `translate(${position.x}px, ${position.y}px)`,
+          left: `${position.x * width}px`,
+          top: `${position.y * height}px`,
         }}
       />
     </Wrapper>
