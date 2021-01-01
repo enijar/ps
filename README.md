@@ -1,6 +1,6 @@
 # Ps
 
-Photoshop remake in the browser.
+Photoshop in the browser.
 
 ### Getting started
 
