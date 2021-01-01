@@ -1,8 +1,8 @@
 import React from "react";
 import { Pointer } from "../config/types";
 import { clamp } from "../utils";
-import { ACTION_MOVE } from "../config/consts";
 import { PsContext, PsContextType } from "../context/ps";
+import { ACTION_MOVE } from "../config/consts";
 
 export default function usePointer(
   wrapper: React.MutableRefObject<HTMLDivElement | null>,
@@ -26,38 +26,44 @@ export default function usePointer(
     if (imgElement === null) return;
 
     function onPointerDown(event: PointerEvent): void {
-      if (action !== ACTION_MOVE) return;
+      if (action === null) return;
       if (wrapperElement === null) return;
       const { width, height } = wrapperElement.getBoundingClientRect();
       setPointer((pointer) => {
-        const x = clamp(event.pageX, 0, width) / width;
-        const y = clamp(event.pageY, 0, height) / height;
-        pointer.startX = x;
-        pointer.startY = y;
-        pointer.x = x - pointer.startX + pointer.lastX;
-        pointer.y = y - pointer.startY + pointer.lastY;
-        pointer.down = true;
+        if (action === ACTION_MOVE) {
+          const x = clamp(event.pageX, 0, width) / width;
+          const y = clamp(event.pageY, 0, height) / height;
+          pointer.startX = x;
+          pointer.startY = y;
+          pointer.x = x - pointer.startX + pointer.lastX;
+          pointer.y = y - pointer.startY + pointer.lastY;
+        }
+        pointer.down = event.target === imgElement;
         return { ...pointer };
       });
     }
 
     function onPointerMove(event: PointerEvent): void {
-      if (action !== ACTION_MOVE) return;
+      if (action === null) return;
       if (wrapperElement === null) return;
+      if (!pointer.down) return;
       const { width, height } = wrapperElement.getBoundingClientRect();
       setPointer((pointer) => {
-        const x = clamp(event.pageX, 0, width) / width;
-        const y = clamp(event.pageY, 0, height) / height;
-        pointer.x = x - pointer.startX + pointer.lastX;
-        pointer.y = y - pointer.startY + pointer.lastY;
+        if (action === ACTION_MOVE) {
+          const x = clamp(event.pageX, 0, width) / width;
+          const y = clamp(event.pageY, 0, height) / height;
+          pointer.x = x - pointer.startX + pointer.lastX;
+          pointer.y = y - pointer.startY + pointer.lastY;
+        }
         return { ...pointer };
       });
     }
 
     function onPointerUp(event: PointerEvent): void {
-      if (action !== ACTION_MOVE) return;
+      if (action === null) return;
+      if (!pointer.down) return;
       setPointer((pointer) => {
-        if (event.target === imgElement) {
+        if (action === ACTION_MOVE) {
           pointer.lastX = pointer.x;
           pointer.lastY = pointer.y;
         }
