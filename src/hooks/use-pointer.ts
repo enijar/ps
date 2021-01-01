@@ -1,8 +1,8 @@
 import React from "react";
-import { ActionType, Pointer } from "../../types";
+import { ActionType, Pointer } from "../config/types";
 import { clamp } from "../utils";
 import emitter from "../services/emitter";
-import { ACTION_MOVE } from "../../consts";
+import { ACTION_MOVE } from "../config/consts";
 
 export default function usePointer(
   wrapper: React.MutableRefObject<HTMLDivElement | null>,
@@ -25,7 +25,7 @@ export default function usePointer(
 
     if (imgElement === null) return;
 
-    function onMouseDown(event: MouseEvent): void {
+    function onPointerDown(event: PointerEvent): void {
       if (action !== ACTION_MOVE) return;
       if (wrapperElement === null) return;
       const { width, height } = wrapperElement.getBoundingClientRect();
@@ -41,7 +41,7 @@ export default function usePointer(
       });
     }
 
-    function onMouseMove(event: MouseEvent): void {
+    function onPointerMove(event: PointerEvent): void {
       if (action !== ACTION_MOVE) return;
       if (wrapperElement === null) return;
       const { width, height } = wrapperElement.getBoundingClientRect();
@@ -54,7 +54,7 @@ export default function usePointer(
       });
     }
 
-    function onMouseUp(event: MouseEvent): void {
+    function onPointerUp(event: PointerEvent): void {
       if (action !== ACTION_MOVE) return;
       setPointer((pointer) => {
         if (event.target === imgElement) {
@@ -66,13 +66,13 @@ export default function usePointer(
       });
     }
 
-    imgElement.addEventListener("mousedown", onMouseDown);
-    window.addEventListener("mousemove", onMouseMove);
-    window.addEventListener("mouseup", onMouseUp);
+    imgElement.addEventListener("pointerdown", onPointerDown);
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerup", onPointerUp);
     return (): void => {
-      imgElement.removeEventListener("mousedown", onMouseDown);
-      window.removeEventListener("mousemove", onMouseMove);
-      window.removeEventListener("mouseup", onMouseUp);
+      imgElement.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerup", onPointerUp);
     };
   }, [wrapper, img, action]);
 

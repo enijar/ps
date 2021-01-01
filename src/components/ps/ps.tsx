@@ -1,5 +1,5 @@
 import { Inner, Wrapper } from "./styles";
-import { TEST } from "../config/images";
+import { TEST } from "../../config/images";
 import Toolbar from "../toolbar/toolbar";
 import Canvas from "../canvas/canvas";
 

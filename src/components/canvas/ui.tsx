@@ -1,9 +1,9 @@
 import { Wrapper } from "./styles";
-import { TRANSPARENT_BACKGROUND } from "../config/images";
+import { TRANSPARENT_BACKGROUND } from "../../config/images";
 import React from "react";
 import { UiProps } from "./types";
-import useOnContext from "../hooks/use-on-context";
-import useOnDrag from "../hooks/use-on-drag";
+import useOnContext from "../../hooks/use-on-context";
+import useOnDrag from "../../hooks/use-on-drag";
 
 export default function Ui({
   src,

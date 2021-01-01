@@ -1,8 +1,8 @@
 import React from "react";
 import { Tool, Wrapper } from "./styles";
-import { ActionType } from "../../types";
-import { ACTION_MOVE } from "../../consts";
-import emitter from "../services/emitter";
+import { ActionType } from "../../config/types";
+import { ACTION_MOVE } from "../../config/consts";
+import emitter from "../../services/emitter";
 
 export default function Toolbar() {
   const [action, setAction] = React.useState<ActionType>(null);

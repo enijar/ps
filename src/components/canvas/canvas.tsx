@@ -1,9 +1,9 @@
 import React from "react";
 import { Position, Props } from "./types";
-import { ActionType } from "../../types";
-import { ACTION_MOVE } from "../../consts";
-import usePointer from "../hooks/use-pointer";
-import emitter from "../services/emitter";
+import { ActionType } from "../../config/types";
+import { ACTION_MOVE } from "../../config/consts";
+import usePointer from "../../hooks/use-pointer";
+import emitter from "../../services/emitter";
 import Ui from "./ui";
 
 export default function Canvas({ src, width = 640, height = 480 }: Props) {
