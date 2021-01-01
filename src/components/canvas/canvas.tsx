@@ -25,6 +25,7 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
     setPosition,
     flipX,
     flipY,
+    grayscale,
   } = React.useContext(PsContext) as PsContextType;
   const wrapper = React.useRef<HTMLDivElement | null>(null);
   const img = React.useRef<HTMLImageElement | null>(null);
@@ -38,13 +39,14 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
     return getCursor(action);
   }, [action, keys]);
   const [zoom, setZoom] = React.useState<number>(1);
-  const { transform } = React.useMemo(() => {
+  const { transform, filter } = React.useMemo(() => {
     const translateX = position.x * width;
     const translateY = position.y * height;
     return {
+      filter: `grayscale(${grayscale * 100}%)`,
       transform: `translate(${translateX}px, ${translateY}px) scale(${zoom}) rotate(${rotation}deg) scaleX(${flipX}) scaleY(${flipY})`,
     };
-  }, [position, width, height, zoom, rotation, flipX, flipY]);
+  }, [position, width, height, zoom, rotation, flipX, flipY, grayscale]);
 
   React.useEffect(() => {
     if (!pointer.down || action !== ACTION_MOVE) return;
@@ -82,7 +84,7 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
         alt=""
         onDragStart={onDragStart}
         ref={img}
-        style={{ transform, opacity }}
+        style={{ transform, filter, opacity }}
       />
     </Wrapper>
   );

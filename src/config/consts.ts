@@ -23,3 +23,9 @@ export const ROTATION_MIN = 0;
 export const ROTATION_MAX = 360;
 
 export const ROTATION_AMOUNT = 1;
+
+export const GREYSCALE_MIN = 0;
+
+export const GREYSCALE_MAX = 1;
+
+export const GREYSCALE_AMOUNT = 0.01;

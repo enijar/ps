@@ -2,6 +2,9 @@ import React from "react";
 import { InputWrapper, Wrapper } from "./styles";
 import { PsContext, PsContextType } from "../../context/ps";
 import {
+  GREYSCALE_AMOUNT,
+  GREYSCALE_MAX,
+  GREYSCALE_MIN,
   OPACITY_AMOUNT,
   OPACITY_MAX,
   OPACITY_MIN,
@@ -18,6 +21,8 @@ export default function Sidebar() {
     setRotation,
     setFlipX,
     setFlipY,
+    grayscale,
+    setGrayscale,
   } = React.useContext(PsContext) as PsContextType;
 
   const onOpacityChange = React.useCallback<React.ChangeEventHandler>(
@@ -32,6 +37,13 @@ export default function Sidebar() {
       setRotation(parseFloat(event.target.value));
     },
     [setRotation]
+  );
+
+  const onGreyscaleChange = React.useCallback<React.ChangeEventHandler>(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setGrayscale(parseFloat(event.target.value));
+    },
+    [setGrayscale]
   );
 
   return (
@@ -63,6 +75,18 @@ export default function Sidebar() {
       <InputWrapper>
         <button onClick={() => setFlipX((flipX) => flipX * -1)}>FlipX</button>
         <button onClick={() => setFlipY((flipY) => flipY * -1)}>FlipY</button>
+      </InputWrapper>
+      <InputWrapper>
+        <label htmlFor="sidebar-rotation">Greyscale:</label>
+        <input
+          id="sidebar-opacity"
+          type="range"
+          min={GREYSCALE_MIN}
+          max={GREYSCALE_MAX}
+          step={GREYSCALE_AMOUNT}
+          onChange={onGreyscaleChange}
+          value={grayscale}
+        />
       </InputWrapper>
     </Wrapper>
   );
