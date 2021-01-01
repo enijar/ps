@@ -1,7 +1,7 @@
 import React from "react";
 import { Wrapper } from "./styles";
 import { Position, Props } from "./types";
-import { ACTION_MOVE, ACTION_ZOOM } from "../../config/consts";
+import { ACTION_MOVE, ACTION_ZOOM, ZOOM_AMOUNT } from "../../config/consts";
 import { TRANSPARENT_BACKGROUND } from "../../config/images";
 import { getCursor } from "../../utils";
 import { PsContext, PsContextType } from "../../context/ps";
@@ -13,10 +13,6 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
   const { action, keys } = React.useContext(PsContext) as PsContextType;
   const wrapper = React.useRef<HTMLDivElement | null>(null);
   const img = React.useRef<HTMLImageElement | null>(null);
-  const [position, setPosition] = React.useState<Position>({
-    x: 0,
-    y: 0,
-  });
   const pointer = usePointer(wrapper, img);
   const onContextMenu = useOnContext();
   const onDragStart = useOnDrag();
@@ -26,6 +22,13 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
     }
     return getCursor(action);
   }, [action, keys]);
+  // Effected state
+  // @todo merge these into one object
+  const [position, setPosition] = React.useState<Position>({
+    x: 0,
+    y: 0,
+  });
+  const [zoom, setZoom] = React.useState<number>(1);
 
   React.useEffect(() => {
     if (!pointer.down || action !== ACTION_MOVE) return;
@@ -35,9 +38,13 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
     });
   }, [pointer, action]);
 
+  // Zoom
   React.useEffect(() => {
-    console.log(pointer.down, action);
-  }, [pointer, action]);
+    if (pointer.down && action === ACTION_ZOOM) {
+      const dir = keys.includes("alt") ? -1 : 1;
+      setZoom((zoom) => zoom + ZOOM_AMOUNT * dir);
+    }
+  }, [pointer, action, keys]);
 
   return (
     <Wrapper
@@ -60,6 +67,7 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
         style={{
           left: `${position.x * width}px`,
           top: `${position.y * height}px`,
+          transform: `scale(${zoom})`,
         }}
       />
     </Wrapper>
