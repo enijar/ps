@@ -23,3 +23,17 @@ export const GREYSCALE_AMOUNT = 0.01;
 export const CONTRAST_MIN = 0;
 export const CONTRAST_MAX = 3;
 export const CONTRAST_AMOUNT = 0.01;
+
+export const DEFAULTS = {
+  position: {
+    x: 0,
+    y: 0,
+  },
+  opacity: 1,
+  rotation: 0,
+  zoom: 1,
+  flipX: 1,
+  flipY: 1,
+  grayscale: 0,
+  contrast: 1,
+};

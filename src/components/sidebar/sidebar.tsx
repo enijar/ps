@@ -28,6 +28,7 @@ export default function Sidebar() {
     setGrayscale,
     contrast,
     setContrast,
+    reset,
   } = React.useContext(PsContext) as PsContextType;
 
   const onOpacityChange = React.useCallback<React.ChangeEventHandler>(
@@ -60,6 +61,9 @@ export default function Sidebar() {
 
   return (
     <Wrapper>
+      <InputWrapper>
+        <button onClick={reset}>Reset</button>
+      </InputWrapper>
       <InputWrapper>
         <label htmlFor="sidebar-opacity">Opacity:</label>
         <input

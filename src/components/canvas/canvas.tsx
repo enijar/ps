@@ -27,6 +27,8 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
     flipY,
     grayscale,
     contrast,
+    zoom,
+    setZoom,
   } = React.useContext(PsContext) as PsContextType;
   const wrapper = React.useRef<HTMLDivElement | null>(null);
   const img = React.useRef<HTMLImageElement | null>(null);
@@ -36,7 +38,6 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
   const cursor = React.useMemo(() => {
     return getCursor(action, keys);
   }, [action, keys]);
-  const [zoom, setZoom] = React.useState<number>(1);
   const { transform, filter } = React.useMemo(() => {
     const translateX = position.x * width;
     const translateY = position.y * height;
@@ -72,7 +73,7 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
         return clamp(zoom + ZOOM_AMOUNT * dir, ZOOM_MIN, ZOOM_MAX);
       });
     }
-  }, [pointer, action, keys]);
+  }, [pointer, action, keys, setZoom]);
 
   return (
     <Wrapper
