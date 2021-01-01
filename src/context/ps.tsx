@@ -11,6 +11,8 @@ export type PsContextType = {
   keys: string[];
   opacity: number;
   setOpacity: (opacity: number) => void;
+  rotation: number;
+  setRotation: (rotation: number) => void;
 };
 
 export const PsContext = React.createContext({});
@@ -19,6 +21,7 @@ export default function PsContextProvider({ children }: Props) {
   const [action, setAction] = React.useState<ActionType>(null);
   const [keys, setKeys] = React.useState<string[]>([]);
   const [opacity, setOpacity] = React.useState<number>(1);
+  const [rotation, setRotation] = React.useState<number>(0);
 
   React.useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -46,7 +49,15 @@ export default function PsContextProvider({ children }: Props) {
 
   return (
     <PsContext.Provider
-      value={{ action, setAction, keys, opacity, setOpacity }}
+      value={{
+        action,
+        setAction,
+        keys,
+        opacity,
+        setOpacity,
+        rotation,
+        setRotation,
+      }}
     >
       {children}
     </PsContext.Provider>

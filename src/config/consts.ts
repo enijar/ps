@@ -17,3 +17,9 @@ export const OPACITY_AMOUNT = 0.01;
 export const OPACITY_MIN = 0;
 
 export const OPACITY_MAX = 1;
+
+export const ROTATION_MIN = 0;
+
+export const ROTATION_MAX = 360;
+
+export const ROTATION_AMOUNT = 1;

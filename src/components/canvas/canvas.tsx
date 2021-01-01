@@ -16,7 +16,7 @@ import useOnContext from "../../hooks/use-on-context";
 import useOnDrag from "../../hooks/use-on-drag";
 
 export default function Canvas({ src, width = 640, height = 480 }: Props) {
-  const { action, keys, opacity } = React.useContext(
+  const { action, keys, opacity, rotation } = React.useContext(
     PsContext
   ) as PsContextType;
   const wrapper = React.useRef<HTMLDivElement | null>(null);
@@ -41,9 +41,9 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
     const translateX = position.x * width;
     const translateY = position.y * height;
     return {
-      transform: `translate(${translateX}px, ${translateY}px) scale(${zoom})`,
+      transform: `translate(${translateX}px, ${translateY}px) scale(${zoom}) rotate(${rotation}deg)`,
     };
-  }, [position, width, height, zoom]);
+  }, [position, width, height, zoom, rotation]);
 
   React.useEffect(() => {
     if (!pointer.down || action !== ACTION_MOVE) return;
