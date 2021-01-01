@@ -2,6 +2,7 @@
   "name": "ps",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://enijar.github.io/ps/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.8",
     "@testing-library/react": "^11.2.2",
@@ -11,6 +12,7 @@
     "@types/react": "^16.14.2",
     "@types/react-dom": "^16.9.10",
     "@types/styled-components": "^5.1.7",
+    "gh-pages": "^3.1.0",
     "prettier": "^2.2.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -20,10 +22,12 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "predeploy": "npm run build",
+    "deploy": "npx gh-pages -d build",
+    "start": "npx react-scripts start",
+    "build": "npx react-scripts build",
+    "test": "npx react-scripts test",
+    "eject": "npx react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
