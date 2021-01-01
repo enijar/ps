@@ -16,9 +16,9 @@ export const ROTATION_MIN = 0;
 export const ROTATION_MAX = 360;
 export const ROTATION_AMOUNT = 1;
 
-export const GREYSCALE_MIN = 0;
-export const GREYSCALE_MAX = 1;
-export const GREYSCALE_AMOUNT = 0.01;
+export const SATURATION_MIN = 0;
+export const SATURATION_MAX = 3;
+export const SATURATION_AMOUNT = 0.01;
 
 export const CONTRAST_MIN = 0;
 export const CONTRAST_MAX = 3;
@@ -34,6 +34,6 @@ export const DEFAULTS = {
   zoom: 1,
   flipX: 1,
   flipY: 1,
-  grayscale: 0,
+  saturation: 1,
   contrast: 1,
 };

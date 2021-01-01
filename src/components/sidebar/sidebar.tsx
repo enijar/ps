@@ -5,9 +5,9 @@ import {
   CONTRAST_AMOUNT,
   CONTRAST_MAX,
   CONTRAST_MIN,
-  GREYSCALE_AMOUNT,
-  GREYSCALE_MAX,
-  GREYSCALE_MIN,
+  SATURATION_AMOUNT,
+  SATURATION_MAX,
+  SATURATION_MIN,
   OPACITY_AMOUNT,
   OPACITY_MAX,
   OPACITY_MIN,
@@ -24,8 +24,8 @@ export default function Sidebar() {
     setRotation,
     setFlipX,
     setFlipY,
-    grayscale,
-    setGrayscale,
+    saturation,
+    setSaturation,
     contrast,
     setContrast,
     reset,
@@ -45,11 +45,11 @@ export default function Sidebar() {
     [setRotation]
   );
 
-  const onGreyscaleChange = React.useCallback<React.ChangeEventHandler>(
+  const onSaturationChange = React.useCallback<React.ChangeEventHandler>(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      setGrayscale(parseFloat(event.target.value));
+      setSaturation(parseFloat(event.target.value));
     },
-    [setGrayscale]
+    [setSaturation]
   );
 
   const onContrastChange = React.useCallback<React.ChangeEventHandler>(
@@ -93,15 +93,15 @@ export default function Sidebar() {
         <button onClick={() => setFlipY((flipY) => flipY * -1)}>FlipY</button>
       </InputWrapper>
       <InputWrapper>
-        <label htmlFor="sidebar-grayscale">Grayscale:</label>
+        <label htmlFor="sidebar-saturation">Saturation:</label>
         <input
-          id="sidebar-grayscale"
+          id="sidebar-saturation"
           type="range"
-          min={GREYSCALE_MIN}
-          max={GREYSCALE_MAX}
-          step={GREYSCALE_AMOUNT}
-          onChange={onGreyscaleChange}
-          value={grayscale}
+          min={SATURATION_MIN}
+          max={SATURATION_MAX}
+          step={SATURATION_AMOUNT}
+          onChange={onSaturationChange}
+          value={saturation}
         />
       </InputWrapper>
       <InputWrapper>

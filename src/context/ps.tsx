@@ -20,8 +20,8 @@ export type PsContextType = {
   setFlipX: React.Dispatch<React.SetStateAction<number>>;
   flipY: number;
   setFlipY: React.Dispatch<React.SetStateAction<number>>;
-  grayscale: number;
-  setGrayscale: React.Dispatch<React.SetStateAction<number>>;
+  saturation: number;
+  setSaturation: React.Dispatch<React.SetStateAction<number>>;
   contrast: number;
   setContrast: React.Dispatch<React.SetStateAction<number>>;
   zoom: number;
@@ -40,7 +40,7 @@ export default function PsContextProvider({ children }: Props) {
   const [zoom, setZoom] = React.useState<number>(1);
   const [flipX, setFlipX] = React.useState<number>(1);
   const [flipY, setFlipY] = React.useState<number>(1);
-  const [grayscale, setGrayscale] = React.useState<number>(0);
+  const [saturation, setSaturation] = React.useState<number>(1);
   const [contrast, setContrast] = React.useState<number>(1);
 
   const reset = React.useCallback(() => {
@@ -50,7 +50,7 @@ export default function PsContextProvider({ children }: Props) {
     setZoom(DEFAULTS.zoom);
     setFlipX(DEFAULTS.flipX);
     setFlipY(DEFAULTS.flipY);
-    setGrayscale(DEFAULTS.grayscale);
+    setSaturation(DEFAULTS.saturation);
     setContrast(DEFAULTS.contrast);
   }, []);
 
@@ -96,8 +96,8 @@ export default function PsContextProvider({ children }: Props) {
         setFlipX,
         flipY,
         setFlipY,
-        grayscale,
-        setGrayscale,
+        saturation,
+        setSaturation,
         contrast,
         setContrast,
         zoom,

@@ -25,7 +25,7 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
     setPosition,
     flipX,
     flipY,
-    grayscale,
+    saturation,
     contrast,
     zoom,
     setZoom,
@@ -42,7 +42,7 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
     const translateX = position.x * width;
     const translateY = position.y * height;
     return {
-      filter: `grayscale(${grayscale * 100}%) contrast(${contrast})`,
+      filter: `saturate(${saturation}) contrast(${contrast})`,
       transform: `translate(${translateX}px, ${translateY}px) scale(${zoom}) rotate(${rotation}deg) scaleX(${flipX}) scaleY(${flipY})`,
     };
   }, [
@@ -53,7 +53,7 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
     rotation,
     flipX,
     flipY,
-    grayscale,
+    saturation,
     contrast,
   ]);
 
