@@ -6,7 +6,9 @@ import { MOVE_ICON, ZOOM_ICON } from "../../config/images";
 import { PsContext, PsContextType } from "../../context/ps";
 
 export default function Toolbar() {
-  const { action, setAction } = React.useContext(PsContext) as PsContextType;
+  const { action, setAction, keys } = React.useContext(
+    PsContext
+  ) as PsContextType;
 
   const toggleAction = React.useCallback(
     (selectedAction: ActionType) => {
@@ -18,6 +20,11 @@ export default function Toolbar() {
     },
     [setAction]
   );
+
+  React.useEffect(() => {
+    if (keys.includes("z")) toggleAction(ACTION_ZOOM)();
+    if (keys.includes("v")) toggleAction(ACTION_MOVE)();
+  }, [keys, toggleAction]);
 
   return (
     <Wrapper>
