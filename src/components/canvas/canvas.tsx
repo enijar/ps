@@ -3,7 +3,7 @@ import { Wrapper } from "./styles";
 import { Position, Props } from "./types";
 import { ACTION_MOVE, ACTION_ZOOM, ZOOM_AMOUNT } from "../../config/consts";
 import { TRANSPARENT_BACKGROUND } from "../../config/images";
-import { getCursor } from "../../utils";
+import { clamp, getCursor } from "../../utils";
 import { PsContext, PsContextType } from "../../context/ps";
 import usePointer from "../../hooks/use-pointer";
 import useOnContext from "../../hooks/use-on-context";
@@ -29,12 +29,19 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
     y: 0,
   });
   const [zoom, setZoom] = React.useState<number>(1);
+  const { transform } = React.useMemo(() => {
+    const translateX = position.x * width;
+    const translateY = position.y * height;
+    return {
+      transform: `scale(${zoom}) translate(${translateX}px, ${translateY}px)`,
+    };
+  }, [position, width, height, zoom]);
 
   React.useEffect(() => {
     if (!pointer.down || action !== ACTION_MOVE) return;
     setPosition({
-      x: pointer.x,
-      y: pointer.y,
+      x: clamp(pointer.x, -0.5, 1.5),
+      y: clamp(pointer.y, -0.5, 1.5),
     });
   }, [pointer, action]);
 
@@ -64,11 +71,7 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
         alt=""
         onDragStart={onDragStart}
         ref={img}
-        style={{
-          left: `${position.x * width}px`,
-          top: `${position.y * height}px`,
-          transform: `scale(${zoom})`,
-        }}
+        style={{ transform }}
       />
     </Wrapper>
   );

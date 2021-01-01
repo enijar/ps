@@ -4,6 +4,9 @@ import { clamp } from "../utils";
 import { PsContext, PsContextType } from "../context/ps";
 import { ACTION_MOVE } from "../config/consts";
 
+const MOVE_MIN = -0.5;
+const MOVE_MAX = 0.5;
+
 export default function usePointer(
   wrapper: React.MutableRefObject<HTMLDivElement | null>,
   img: React.MutableRefObject<HTMLImageElement | null>
@@ -35,8 +38,16 @@ export default function usePointer(
           const y = clamp(event.pageY, 0, height) / height;
           pointer.startX = x;
           pointer.startY = y;
-          pointer.x = x - pointer.startX + pointer.lastX;
-          pointer.y = y - pointer.startY + pointer.lastY;
+          pointer.x = clamp(
+            x - pointer.startX + pointer.lastX,
+            MOVE_MIN,
+            MOVE_MAX
+          );
+          pointer.y = clamp(
+            y - pointer.startY + pointer.lastY,
+            MOVE_MIN,
+            MOVE_MAX
+          );
         }
         pointer.down = event.target === imgElement;
         return { ...pointer };
@@ -52,14 +63,22 @@ export default function usePointer(
         if (action === ACTION_MOVE) {
           const x = clamp(event.pageX, 0, width) / width;
           const y = clamp(event.pageY, 0, height) / height;
-          pointer.x = x - pointer.startX + pointer.lastX;
-          pointer.y = y - pointer.startY + pointer.lastY;
+          pointer.x = clamp(
+            x - pointer.startX + pointer.lastX,
+            MOVE_MIN,
+            MOVE_MAX
+          );
+          pointer.y = clamp(
+            y - pointer.startY + pointer.lastY,
+            MOVE_MIN,
+            MOVE_MAX
+          );
         }
         return { ...pointer };
       });
     }
 
-    function onPointerUp(event: PointerEvent): void {
+    function onPointerUp(): void {
       if (action === null) return;
       if (!pointer.down) return;
       setPointer((pointer) => {
