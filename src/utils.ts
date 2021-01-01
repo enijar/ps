@@ -8,6 +8,8 @@ export function getCursor(action: ActionType): string {
   switch (action) {
     case "move":
       return "move";
+    case "zoom":
+      return "zoom-in";
     default:
       return "default";
   }

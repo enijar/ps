@@ -14,6 +14,6 @@ export const Wrapper = styled.div`
 
 export const Inner = styled.div`
   display: inline-flex;
-  padding: 1em;
+  padding: 1em 1em 1em 0;
   background-color: ${vars.colors.black300};
 `;

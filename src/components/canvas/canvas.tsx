@@ -1,7 +1,7 @@
 import React from "react";
 import { Wrapper } from "./styles";
 import { Position, Props } from "./types";
-import { ACTION_MOVE } from "../../config/consts";
+import { ACTION_MOVE, ACTION_ZOOM } from "../../config/consts";
 import { TRANSPARENT_BACKGROUND } from "../../config/images";
 import { getCursor } from "../../utils";
 import { PsContext, PsContextType } from "../../context/ps";
@@ -10,7 +10,7 @@ import useOnContext from "../../hooks/use-on-context";
 import useOnDrag from "../../hooks/use-on-drag";
 
 export default function Canvas({ src, width = 640, height = 480 }: Props) {
-  const { action } = React.useContext(PsContext) as PsContextType;
+  const { action, keys } = React.useContext(PsContext) as PsContextType;
   const wrapper = React.useRef<HTMLDivElement | null>(null);
   const img = React.useRef<HTMLImageElement | null>(null);
   const [position, setPosition] = React.useState<Position>({
@@ -20,6 +20,12 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
   const pointer = usePointer(wrapper, img);
   const onContextMenu = useOnContext();
   const onDragStart = useOnDrag();
+  const cursor = React.useMemo(() => {
+    if (action === ACTION_ZOOM && keys.includes("alt")) {
+      return "zoom-out";
+    }
+    return getCursor(action);
+  }, [action, keys]);
 
   React.useEffect(() => {
     if (!pointer.down || action !== ACTION_MOVE) return;
@@ -27,6 +33,10 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
       x: pointer.x,
       y: pointer.y,
     });
+  }, [pointer, action]);
+
+  React.useEffect(() => {
+    console.log(pointer.down, action);
   }, [pointer, action]);
 
   return (
@@ -38,7 +48,7 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
         backgroundImage: `url("${TRANSPARENT_BACKGROUND}")`,
         width: `${width}px`,
         height: `${height}px`,
-        cursor: getCursor(action),
+        cursor,
       }}
       onContextMenu={onContextMenu}
     >

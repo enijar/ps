@@ -1,6 +1,6 @@
-import { ACTION_MOVE } from "./consts";
+import { ACTION_MOVE, ACTION_ZOOM } from "./consts";
 
-export type ActionType = ACTION_MOVE | null;
+export type ActionType = null | ACTION_MOVE | ACTION_ZOOM;
 
 export type Pointer = {
   startX: number;
