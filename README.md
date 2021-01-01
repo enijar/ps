@@ -12,6 +12,6 @@ npm start # http://localhost:3000
 ### Roadmap
 
 - [ ] Filters: grayscale, hue, saturation, etc.
-- [ ] Rotate
+- [x] Rotate
 - [ ] Crop
 - [x] Scale
