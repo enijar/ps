@@ -32,11 +32,13 @@ export default function Toolbar() {
         selected={action === ACTION_MOVE}
         onClick={toggleAction(ACTION_MOVE)}
         style={{ backgroundImage: `url("${MOVE_ICON}")` }}
+        title="Move (v)"
       />
       <Tool
         selected={action === ACTION_ZOOM}
         onClick={toggleAction(ACTION_ZOOM)}
         style={{ backgroundImage: `url("${ZOOM_ICON}")` }}
+        title="Zoom (z)"
       />
     </Wrapper>
   );
