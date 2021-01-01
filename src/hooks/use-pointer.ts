@@ -1,14 +1,14 @@
 import React from "react";
-import { ActionType, Pointer } from "../config/types";
+import { Pointer } from "../config/types";
 import { clamp } from "../utils";
-import emitter from "../services/emitter";
 import { ACTION_MOVE } from "../config/consts";
+import { PsContext, PsContextType } from "../context/ps";
 
 export default function usePointer(
   wrapper: React.MutableRefObject<HTMLDivElement | null>,
   img: React.MutableRefObject<HTMLImageElement | null>
 ): Pointer {
-  const [action, setAction] = React.useState<ActionType>(null);
+  const { action } = React.useContext(PsContext) as PsContextType;
   const [pointer, setPointer] = React.useState<Pointer>({
     startX: 0,
     startY: 0,
@@ -75,10 +75,6 @@ export default function usePointer(
       window.removeEventListener("pointerup", onPointerUp);
     };
   }, [wrapper, img, action]);
-
-  React.useEffect(() => {
-    return emitter.subscribe("action", setAction);
-  }, []);
 
   return pointer;
 }

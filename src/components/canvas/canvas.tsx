@@ -1,19 +1,18 @@
 import React from "react";
 import { Wrapper } from "./styles";
 import { Position, Props } from "./types";
-import { ActionType } from "../../config/types";
 import { ACTION_MOVE } from "../../config/consts";
 import { TRANSPARENT_BACKGROUND } from "../../config/images";
 import { getCursor } from "../../utils";
-import emitter from "../../services/emitter";
+import { PsContext, PsContextType } from "../../context/ps";
 import usePointer from "../../hooks/use-pointer";
 import useOnContext from "../../hooks/use-on-context";
 import useOnDrag from "../../hooks/use-on-drag";
 
 export default function Canvas({ src, width = 640, height = 480 }: Props) {
+  const { action } = React.useContext(PsContext) as PsContextType;
   const wrapper = React.useRef<HTMLDivElement | null>(null);
   const img = React.useRef<HTMLImageElement | null>(null);
-  const [action, setAction] = React.useState<ActionType>(null);
   const [position, setPosition] = React.useState<Position>({
     x: 0,
     y: 0,
@@ -29,10 +28,6 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
       y: pointer.y,
     });
   }, [pointer, action]);
-
-  React.useEffect(() => {
-    return emitter.subscribe("action", setAction);
-  }, []);
 
   return (
     <Wrapper

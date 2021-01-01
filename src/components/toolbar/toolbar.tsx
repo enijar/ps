@@ -3,22 +3,21 @@ import { Tool, Wrapper } from "./styles";
 import { ActionType } from "../../config/types";
 import { ACTION_MOVE } from "../../config/consts";
 import { MOVE_ICON } from "../../config/images";
-import emitter from "../../services/emitter";
+import { PsContext, PsContextType } from "../../context/ps";
 
 export default function Toolbar() {
-  const [action, setAction] = React.useState<ActionType>(null);
+  const { action, setAction } = React.useContext(PsContext) as PsContextType;
 
-  const toggleAction = React.useCallback((selectedAction: ActionType) => {
-    return () => {
-      setAction((action: ActionType) => {
-        return action === selectedAction ? null : selectedAction;
-      });
-    };
-  }, []);
-
-  React.useEffect(() => {
-    emitter.emit("action", action);
-  }, [action]);
+  const toggleAction = React.useCallback(
+    (selectedAction: ActionType) => {
+      return () => {
+        setAction((action: ActionType) => {
+          return action === selectedAction ? null : selectedAction;
+        });
+      };
+    },
+    [setAction]
+  );
 
   return (
     <Wrapper>
