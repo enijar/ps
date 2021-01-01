@@ -1,13 +1,13 @@
 import React from "react";
-import { Wrapper, InputWrapper } from "./styles";
+import { InputWrapper, Wrapper } from "./styles";
 import { PsContext, PsContextType } from "../../context/ps";
 import {
   OPACITY_AMOUNT,
   OPACITY_MAX,
   OPACITY_MIN,
-  ROTATION_MIN,
-  ROTATION_MAX,
   ROTATION_AMOUNT,
+  ROTATION_MAX,
+  ROTATION_MIN,
 } from "../../config/consts";
 
 export default function Sidebar() {

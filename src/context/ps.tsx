@@ -34,6 +34,7 @@ export default function PsContextProvider({ children }: Props) {
         return keys;
       });
     }
+
     function onKeyUp(event: KeyboardEvent) {
       const key = event.key.toLowerCase();
       setKeys((keys: string[]) => {
@@ -42,6 +43,7 @@ export default function PsContextProvider({ children }: Props) {
         return [...keys];
       });
     }
+
     window.addEventListener("keydown", onKeyDown);
     window.addEventListener("keyup", onKeyUp);
     return () => {
