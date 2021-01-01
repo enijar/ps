@@ -11,3 +11,8 @@ export type Pointer = {
   lastY: number;
   down: boolean;
 };
+
+export type Position = {
+  x: number;
+  y: number;
+};

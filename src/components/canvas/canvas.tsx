@@ -1,6 +1,6 @@
 import React from "react";
 import { Wrapper } from "./styles";
-import { Position, Props } from "./types";
+import { Props } from "./types";
 import {
   ACTION_MOVE,
   ACTION_ZOOM,
@@ -16,9 +16,14 @@ import useOnContext from "../../hooks/use-on-context";
 import useOnDrag from "../../hooks/use-on-drag";
 
 export default function Canvas({ src, width = 640, height = 480 }: Props) {
-  const { action, keys, opacity, rotation } = React.useContext(
-    PsContext
-  ) as PsContextType;
+  const {
+    action,
+    keys,
+    opacity,
+    rotation,
+    position,
+    setPosition,
+  } = React.useContext(PsContext) as PsContextType;
   const wrapper = React.useRef<HTMLDivElement | null>(null);
   const img = React.useRef<HTMLImageElement | null>(null);
   const pointer = usePointer(wrapper, img);
@@ -30,12 +35,6 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
     }
     return getCursor(action);
   }, [action, keys]);
-  // Effected state
-  // @todo merge these into one object
-  const [position, setPosition] = React.useState<Position>({
-    x: 0,
-    y: 0,
-  });
   const [zoom, setZoom] = React.useState<number>(1);
   const { transform } = React.useMemo(() => {
     const translateX = position.x * width;
@@ -51,7 +50,7 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
       x: clamp(pointer.x, -0.5, 1.5),
       y: clamp(pointer.y, -0.5, 1.5),
     });
-  }, [pointer, action]);
+  }, [pointer, action, setPosition]);
 
   // Zoom
   React.useEffect(() => {

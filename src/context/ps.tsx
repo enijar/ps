@@ -1,5 +1,5 @@
 import React from "react";
-import { ActionType } from "../config/types";
+import { ActionType, Position } from "../config/types";
 
 type Props = {
   children: any;
@@ -13,6 +13,8 @@ export type PsContextType = {
   setOpacity: (opacity: number) => void;
   rotation: number;
   setRotation: (rotation: number) => void;
+  position: Position;
+  setPosition: (position: Position) => void;
 };
 
 export const PsContext = React.createContext({});
@@ -22,6 +24,7 @@ export default function PsContextProvider({ children }: Props) {
   const [keys, setKeys] = React.useState<string[]>([]);
   const [opacity, setOpacity] = React.useState<number>(1);
   const [rotation, setRotation] = React.useState<number>(0);
+  const [position, setPosition] = React.useState<Position>({ x: 0, y: 0 });
 
   React.useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -57,6 +60,8 @@ export default function PsContextProvider({ children }: Props) {
         setOpacity,
         rotation,
         setRotation,
+        position,
+        setPosition,
       }}
     >
       {children}
