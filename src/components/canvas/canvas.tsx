@@ -16,7 +16,9 @@ import useOnContext from "../../hooks/use-on-context";
 import useOnDrag from "../../hooks/use-on-drag";
 
 export default function Canvas({ src, width = 640, height = 480 }: Props) {
-  const { action, keys } = React.useContext(PsContext) as PsContextType;
+  const { action, keys, opacity } = React.useContext(
+    PsContext
+  ) as PsContextType;
   const wrapper = React.useRef<HTMLDivElement | null>(null);
   const img = React.useRef<HTMLImageElement | null>(null);
   const pointer = usePointer(wrapper, img);
@@ -79,7 +81,7 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
         alt=""
         onDragStart={onDragStart}
         ref={img}
-        style={{ transform }}
+        style={{ transform, opacity }}
       />
     </Wrapper>
   );
