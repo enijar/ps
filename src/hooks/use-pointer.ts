@@ -80,7 +80,7 @@ export default function usePointer(
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerup", onPointerUp);
     };
-  }, [wrapper, img, action]);
+  }, [wrapper, img, action, pointer.down]);
 
   return pointer;
 }
