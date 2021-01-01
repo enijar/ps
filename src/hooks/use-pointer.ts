@@ -55,22 +55,21 @@ export default function usePointer(
       if (action === null) return;
       if (wrapperElement === null) return;
       if (!pointer.down) return;
+      if (action !== ACTION_MOVE) return;
       const { width, height } = wrapperElement.getBoundingClientRect();
       setPointer((pointer) => {
-        if (action === ACTION_MOVE) {
-          const x = clamp(event.pageX, 0, width) / width;
-          const y = clamp(event.pageY, 0, height) / height;
-          pointer.x = clamp(
-            x - pointer.startX + pointer.lastX,
-            MOVE_MIN,
-            MOVE_MAX
-          );
-          pointer.y = clamp(
-            y - pointer.startY + pointer.lastY,
-            MOVE_MIN,
-            MOVE_MAX
-          );
-        }
+        const x = clamp(event.pageX, 0, width) / width;
+        const y = clamp(event.pageY, 0, height) / height;
+        pointer.x = clamp(
+          x - pointer.startX + pointer.lastX,
+          MOVE_MIN,
+          MOVE_MAX
+        );
+        pointer.y = clamp(
+          y - pointer.startY + pointer.lastY,
+          MOVE_MIN,
+          MOVE_MAX
+        );
         return { ...pointer };
       });
     }
