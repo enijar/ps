@@ -11,9 +11,14 @@ import {
 } from "../../config/consts";
 
 export default function Sidebar() {
-  const { opacity, setOpacity, rotation, setRotation } = React.useContext(
-    PsContext
-  ) as PsContextType;
+  const {
+    opacity,
+    setOpacity,
+    rotation,
+    setRotation,
+    setFlipX,
+    setFlipY,
+  } = React.useContext(PsContext) as PsContextType;
 
   const onOpacityChange = React.useCallback<React.ChangeEventHandler>(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,6 +59,10 @@ export default function Sidebar() {
           onChange={onRotationChange}
           value={rotation}
         />
+      </InputWrapper>
+      <InputWrapper>
+        <button onClick={() => setFlipX((flipX) => flipX * -1)}>FlipX</button>
+        <button onClick={() => setFlipY((flipY) => flipY * -1)}>FlipY</button>
       </InputWrapper>
     </Wrapper>
   );

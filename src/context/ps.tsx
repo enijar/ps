@@ -7,14 +7,18 @@ type Props = {
 
 export type PsContextType = {
   action: ActionType;
-  setAction: (action: ActionType) => void;
+  setAction: React.Dispatch<React.SetStateAction<ActionType>>;
   keys: string[];
   opacity: number;
-  setOpacity: (opacity: number) => void;
+  setOpacity: React.Dispatch<React.SetStateAction<number>>;
   rotation: number;
-  setRotation: (rotation: number) => void;
+  setRotation: React.Dispatch<React.SetStateAction<number>>;
   position: Position;
-  setPosition: (position: Position) => void;
+  setPosition: React.Dispatch<React.SetStateAction<Position>>;
+  flipX: number;
+  setFlipX: React.Dispatch<React.SetStateAction<number>>;
+  flipY: number;
+  setFlipY: React.Dispatch<React.SetStateAction<number>>;
 };
 
 export const PsContext = React.createContext({});
@@ -25,6 +29,8 @@ export default function PsContextProvider({ children }: Props) {
   const [opacity, setOpacity] = React.useState<number>(1);
   const [rotation, setRotation] = React.useState<number>(0);
   const [position, setPosition] = React.useState<Position>({ x: 0, y: 0 });
+  const [flipX, setFlipX] = React.useState<number>(1);
+  const [flipY, setFlipY] = React.useState<number>(1);
 
   React.useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -64,6 +70,10 @@ export default function PsContextProvider({ children }: Props) {
         setRotation,
         position,
         setPosition,
+        flipX,
+        setFlipX,
+        flipY,
+        setFlipY,
       }}
     >
       {children}

@@ -23,6 +23,8 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
     rotation,
     position,
     setPosition,
+    flipX,
+    flipY,
   } = React.useContext(PsContext) as PsContextType;
   const wrapper = React.useRef<HTMLDivElement | null>(null);
   const img = React.useRef<HTMLImageElement | null>(null);
@@ -40,9 +42,9 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
     const translateX = position.x * width;
     const translateY = position.y * height;
     return {
-      transform: `translate(${translateX}px, ${translateY}px) scale(${zoom}) rotate(${rotation}deg)`,
+      transform: `translate(${translateX}px, ${translateY}px) scale(${zoom}) rotate(${rotation}deg) scaleX(${flipX}) scaleY(${flipY})`,
     };
-  }, [position, width, height, zoom, rotation]);
+  }, [position, width, height, zoom, rotation, flipX, flipY]);
 
   React.useEffect(() => {
     if (!pointer.down || action !== ACTION_MOVE) return;
