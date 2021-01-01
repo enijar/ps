@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import vars from "../../config/vars";
 
 export const Wrapper = styled.div`
   position: absolute;
@@ -6,13 +7,13 @@ export const Wrapper = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #1c1c1c;
-  color: #ffffff;
+  background-color: ${vars.colors.black100};
+  color: ${vars.colors.white};
   user-select: none;
 `;
 
 export const Inner = styled.div`
   display: inline-flex;
   padding: 1em;
-  background-color: #333;
+  background-color: ${vars.colors.black300};
 `;

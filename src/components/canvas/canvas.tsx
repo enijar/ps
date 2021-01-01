@@ -4,6 +4,7 @@ import { Position, Props } from "./types";
 import { ActionType } from "../../config/types";
 import { ACTION_MOVE } from "../../config/consts";
 import { TRANSPARENT_BACKGROUND } from "../../config/images";
+import { getCursor } from "../../utils";
 import emitter from "../../services/emitter";
 import usePointer from "../../hooks/use-pointer";
 import useOnContext from "../../hooks/use-on-context";
@@ -42,6 +43,7 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
         backgroundImage: `url("${TRANSPARENT_BACKGROUND}")`,
         width: `${width}px`,
         height: `${height}px`,
+        cursor: getCursor(action),
       }}
       onContextMenu={onContextMenu}
     >

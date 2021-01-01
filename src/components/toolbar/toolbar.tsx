@@ -2,6 +2,7 @@ import React from "react";
 import { Tool, Wrapper } from "./styles";
 import { ActionType } from "../../config/types";
 import { ACTION_MOVE } from "../../config/consts";
+import { MOVE_ICON } from "../../config/images";
 import emitter from "../../services/emitter";
 
 export default function Toolbar() {
@@ -24,9 +25,8 @@ export default function Toolbar() {
       <Tool
         selected={action === ACTION_MOVE}
         onClick={toggleAction(ACTION_MOVE)}
-      >
-        <span>move</span>
-      </Tool>
+        style={{ backgroundImage: `url("${MOVE_ICON}")` }}
+      />
     </Wrapper>
   );
 }
