@@ -1,7 +1,13 @@
 import React from "react";
 import { Wrapper } from "./styles";
 import { Position, Props } from "./types";
-import { ACTION_MOVE, ACTION_ZOOM, ZOOM_AMOUNT } from "../../config/consts";
+import {
+  ACTION_MOVE,
+  ACTION_ZOOM,
+  ZOOM_AMOUNT,
+  ZOOM_MAX,
+  ZOOM_MIN,
+} from "../../config/consts";
 import { TRANSPARENT_BACKGROUND } from "../../config/images";
 import { clamp, getCursor } from "../../utils";
 import { PsContext, PsContextType } from "../../context/ps";
@@ -33,7 +39,7 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
     const translateX = position.x * width;
     const translateY = position.y * height;
     return {
-      transform: `scale(${zoom}) translate(${translateX}px, ${translateY}px)`,
+      transform: `translate(${translateX}px, ${translateY}px) scale(${zoom})`,
     };
   }, [position, width, height, zoom]);
 
@@ -49,7 +55,9 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
   React.useEffect(() => {
     if (pointer.down && action === ACTION_ZOOM) {
       const dir = keys.includes("alt") ? -1 : 1;
-      setZoom((zoom) => zoom + ZOOM_AMOUNT * dir);
+      setZoom((zoom) => {
+        return clamp(zoom + ZOOM_AMOUNT * dir, ZOOM_MIN, ZOOM_MAX);
+      });
     }
   }, [pointer, action, keys]);
 

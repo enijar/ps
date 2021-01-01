@@ -1,11 +1,8 @@
 import React from "react";
-import { Pointer } from "../config/types";
 import { clamp } from "../utils";
+import { Pointer } from "../config/types";
 import { PsContext, PsContextType } from "../context/ps";
-import { ACTION_MOVE } from "../config/consts";
-
-const MOVE_MIN = -0.5;
-const MOVE_MAX = 0.5;
+import { ACTION_MOVE, MOVE_MAX, MOVE_MIN } from "../config/consts";
 
 export default function usePointer(
   wrapper: React.MutableRefObject<HTMLDivElement | null>,
