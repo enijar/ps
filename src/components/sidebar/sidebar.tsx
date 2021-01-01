@@ -2,6 +2,9 @@ import React from "react";
 import { InputWrapper, Wrapper } from "./styles";
 import { PsContext, PsContextType } from "../../context/ps";
 import {
+  CONTRAST_AMOUNT,
+  CONTRAST_MAX,
+  CONTRAST_MIN,
   GREYSCALE_AMOUNT,
   GREYSCALE_MAX,
   GREYSCALE_MIN,
@@ -23,6 +26,8 @@ export default function Sidebar() {
     setFlipY,
     grayscale,
     setGrayscale,
+    contrast,
+    setContrast,
   } = React.useContext(PsContext) as PsContextType;
 
   const onOpacityChange = React.useCallback<React.ChangeEventHandler>(
@@ -46,6 +51,13 @@ export default function Sidebar() {
     [setGrayscale]
   );
 
+  const onContrastChange = React.useCallback<React.ChangeEventHandler>(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setContrast(parseFloat(event.target.value));
+    },
+    [setContrast]
+  );
+
   return (
     <Wrapper>
       <InputWrapper>
@@ -63,7 +75,7 @@ export default function Sidebar() {
       <InputWrapper>
         <label htmlFor="sidebar-rotation">Rotation:</label>
         <input
-          id="sidebar-opacity"
+          id="sidebar-rotation"
           type="range"
           min={ROTATION_MIN}
           max={ROTATION_MAX}
@@ -77,15 +89,27 @@ export default function Sidebar() {
         <button onClick={() => setFlipY((flipY) => flipY * -1)}>FlipY</button>
       </InputWrapper>
       <InputWrapper>
-        <label htmlFor="sidebar-rotation">Greyscale:</label>
+        <label htmlFor="sidebar-grayscale">Grayscale:</label>
         <input
-          id="sidebar-opacity"
+          id="sidebar-grayscale"
           type="range"
           min={GREYSCALE_MIN}
           max={GREYSCALE_MAX}
           step={GREYSCALE_AMOUNT}
           onChange={onGreyscaleChange}
           value={grayscale}
+        />
+      </InputWrapper>
+      <InputWrapper>
+        <label htmlFor="sidebar-contrast">Contrast:</label>
+        <input
+          id="sidebar-contrast"
+          type="range"
+          min={CONTRAST_MIN}
+          max={CONTRAST_MAX}
+          step={CONTRAST_AMOUNT}
+          onChange={onContrastChange}
+          value={contrast}
         />
       </InputWrapper>
     </Wrapper>

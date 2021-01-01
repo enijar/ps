@@ -21,6 +21,8 @@ export type PsContextType = {
   setFlipY: React.Dispatch<React.SetStateAction<number>>;
   grayscale: number;
   setGrayscale: React.Dispatch<React.SetStateAction<number>>;
+  contrast: number;
+  setContrast: React.Dispatch<React.SetStateAction<number>>;
 };
 
 export const PsContext = React.createContext({});
@@ -34,6 +36,7 @@ export default function PsContextProvider({ children }: Props) {
   const [flipX, setFlipX] = React.useState<number>(1);
   const [flipY, setFlipY] = React.useState<number>(1);
   const [grayscale, setGrayscale] = React.useState<number>(0);
+  const [contrast, setContrast] = React.useState<number>(1);
 
   React.useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -79,6 +82,8 @@ export default function PsContextProvider({ children }: Props) {
         setFlipY,
         grayscale,
         setGrayscale,
+        contrast,
+        setContrast,
       }}
     >
       {children}

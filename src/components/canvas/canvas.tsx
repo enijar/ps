@@ -26,6 +26,7 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
     flipX,
     flipY,
     grayscale,
+    contrast,
   } = React.useContext(PsContext) as PsContextType;
   const wrapper = React.useRef<HTMLDivElement | null>(null);
   const img = React.useRef<HTMLImageElement | null>(null);
@@ -33,20 +34,27 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
   const onContextMenu = useOnContext();
   const onDragStart = useOnDrag();
   const cursor = React.useMemo(() => {
-    if (action === ACTION_ZOOM && keys.includes("alt")) {
-      return "zoom-out";
-    }
-    return getCursor(action);
+    return getCursor(action, keys);
   }, [action, keys]);
   const [zoom, setZoom] = React.useState<number>(1);
   const { transform, filter } = React.useMemo(() => {
     const translateX = position.x * width;
     const translateY = position.y * height;
     return {
-      filter: `grayscale(${grayscale * 100}%)`,
+      filter: `grayscale(${grayscale * 100}%) contrast(${contrast})`,
       transform: `translate(${translateX}px, ${translateY}px) scale(${zoom}) rotate(${rotation}deg) scaleX(${flipX}) scaleY(${flipY})`,
     };
-  }, [position, width, height, zoom, rotation, flipX, flipY, grayscale]);
+  }, [
+    position,
+    width,
+    height,
+    zoom,
+    rotation,
+    flipX,
+    flipY,
+    grayscale,
+    contrast,
+  ]);
 
   React.useEffect(() => {
     if (!pointer.down || action !== ACTION_MOVE) return;
