@@ -3,7 +3,7 @@ import { ToolProps } from "./types";
 import vars from "../../config/vars";
 
 const WRAPPER_WIDTH = 50;
-const TOOL_WIDTH = WRAPPER_WIDTH * 0.75;
+const TOOL_SIZE = WRAPPER_WIDTH * 0.75;
 
 export const Wrapper = styled.div`
   width: ${WRAPPER_WIDTH}px;
@@ -14,10 +14,8 @@ export const Wrapper = styled.div`
 `;
 
 export const Tool = styled.button<ToolProps>`
-  max-width: ${TOOL_WIDTH}px;
-  width: 100%;
-  height: 0;
-  padding: 0 0 calc(100% / ${WRAPPER_WIDTH} * ${TOOL_WIDTH}) 0;
+  width: ${TOOL_SIZE}px;
+  height: ${TOOL_SIZE}px;
   margin-top: 0.25em;
   margin-bottom: 0.25em;
   overflow: auto;
