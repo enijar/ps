@@ -12,6 +12,11 @@ export const Wrapper = styled.div`
 export const InputWrapper = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 0.5em;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 
   label {
     margin-right: 0.5em;
