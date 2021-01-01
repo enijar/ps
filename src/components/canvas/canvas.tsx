@@ -1,10 +1,13 @@
 import React from "react";
+import { Wrapper } from "./styles";
 import { Position, Props } from "./types";
 import { ActionType } from "../../config/types";
 import { ACTION_MOVE } from "../../config/consts";
-import usePointer from "../../hooks/use-pointer";
+import { TRANSPARENT_BACKGROUND } from "../../config/images";
 import emitter from "../../services/emitter";
-import Ui from "./ui";
+import usePointer from "../../hooks/use-pointer";
+import useOnContext from "../../hooks/use-on-context";
+import useOnDrag from "../../hooks/use-on-drag";
 
 export default function Canvas({ src, width = 640, height = 480 }: Props) {
   const wrapper = React.useRef<HTMLDivElement | null>(null);
@@ -15,6 +18,8 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
     y: 0,
   });
   const pointer = usePointer(wrapper, img);
+  const onContextMenu = useOnContext();
+  const onDragStart = useOnDrag();
 
   React.useEffect(() => {
     if (!pointer.down || action !== ACTION_MOVE) return;
@@ -29,13 +34,27 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
   }, []);
 
   return (
-    <Ui
-      src={src}
+    <Wrapper
       width={width}
       height={height}
-      wrapper={wrapper}
-      img={img}
-      position={position}
-    />
+      ref={wrapper}
+      style={{
+        backgroundImage: `url("${TRANSPARENT_BACKGROUND}")`,
+        width: `${width}px`,
+        height: `${height}px`,
+      }}
+      onContextMenu={onContextMenu}
+    >
+      <img
+        src={src}
+        alt=""
+        onDragStart={onDragStart}
+        ref={img}
+        style={{
+          left: `${position.x * width}px`,
+          top: `${position.y * height}px`,
+        }}
+      />
+    </Wrapper>
   );
 }
