@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import vars from "../../config/vars";
 
 const WRAPPER_WIDTH = 250;
 
@@ -24,5 +25,26 @@ export const InputWrapper = styled.div`
 
   input {
     outline: none;
+  }
+
+  button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    padding: 0.25em 0.5em;
+    margin: 0.25em;
+    background-color: ${vars.colors.black200};
+
+    &:hover {
+      background-color: ${vars.colors.black100};
+    }
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
   }
 `;
