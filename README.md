@@ -14,4 +14,4 @@ npm start # http://localhost:3000
 - [ ] Filters: grayscale, hue, saturation, etc.
 - [ ] Rotate
 - [ ] Crop
-- [ ] Scale
+- [x] Scale
