@@ -11,7 +11,11 @@ npm start # http://localhost:3000
 
 ### Roadmap
 
-- [ ] Filters: grayscale, hue, saturation, etc.
+- [x] Filters: grayscale, hue, saturation, etc.
 - [x] Rotate
-- [ ] Crop
 - [x] Scale
+- [ ] Crop
+- [ ] Layers
+- [ ] Text overlay
+- [ ] Brush (drawing)
+- [ ] Convert to blob and data URI
