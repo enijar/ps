@@ -30,7 +30,7 @@ export type PsContextType = {
   setZoom: React.Dispatch<React.SetStateAction<number>>;
   reset: React.RefCallback<any>;
   invert: number;
-  setInvert: React.RefCallback<any>;
+  setInvert: React.Dispatch<React.SetStateAction<number>>;
 };
 
 export const PsContext = React.createContext({});
