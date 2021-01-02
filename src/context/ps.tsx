@@ -24,6 +24,8 @@ export type PsContextType = {
   setSaturation: React.Dispatch<React.SetStateAction<number>>;
   contrast: number;
   setContrast: React.Dispatch<React.SetStateAction<number>>;
+  hue: number;
+  setHue: React.Dispatch<React.SetStateAction<number>>;
   zoom: number;
   setZoom: React.Dispatch<React.SetStateAction<number>>;
   reset: React.RefCallback<any>;
@@ -42,6 +44,7 @@ export default function PsContextProvider({ children }: Props) {
   const [flipY, setFlipY] = React.useState<number>(1);
   const [saturation, setSaturation] = React.useState<number>(1);
   const [contrast, setContrast] = React.useState<number>(1);
+  const [hue, setHue] = React.useState<number>(0);
 
   const reset = React.useCallback(() => {
     setPosition(DEFAULTS.position);
@@ -52,6 +55,7 @@ export default function PsContextProvider({ children }: Props) {
     setFlipY(DEFAULTS.flipY);
     setSaturation(DEFAULTS.saturation);
     setContrast(DEFAULTS.contrast);
+    setHue(DEFAULTS.hue);
   }, []);
 
   React.useEffect(() => {
@@ -100,6 +104,8 @@ export default function PsContextProvider({ children }: Props) {
         setSaturation,
         contrast,
         setContrast,
+        hue,
+        setHue,
         zoom,
         setZoom,
         reset,

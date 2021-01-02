@@ -24,6 +24,10 @@ export const CONTRAST_MIN = 0;
 export const CONTRAST_MAX = 3;
 export const CONTRAST_AMOUNT = 0.01;
 
+export const HUE_MIN = 0;
+export const HUE_MAX = 360;
+export const HUE_AMOUNT = 1;
+
 export const DEFAULTS = {
   position: {
     x: 0,
@@ -36,4 +40,5 @@ export const DEFAULTS = {
   flipY: 1,
   saturation: 1,
   contrast: 1,
+  hue: 0,
 };

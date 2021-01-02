@@ -5,15 +5,18 @@ import {
   CONTRAST_AMOUNT,
   CONTRAST_MAX,
   CONTRAST_MIN,
-  SATURATION_AMOUNT,
-  SATURATION_MAX,
-  SATURATION_MIN,
+  HUE_AMOUNT,
+  HUE_MAX,
+  HUE_MIN,
   OPACITY_AMOUNT,
   OPACITY_MAX,
   OPACITY_MIN,
   ROTATION_AMOUNT,
   ROTATION_MAX,
   ROTATION_MIN,
+  SATURATION_AMOUNT,
+  SATURATION_MAX,
+  SATURATION_MIN,
 } from "../../config/consts";
 
 export default function Sidebar() {
@@ -28,6 +31,8 @@ export default function Sidebar() {
     setSaturation,
     contrast,
     setContrast,
+    hue,
+    setHue,
     reset,
   } = React.useContext(PsContext) as PsContextType;
 
@@ -57,6 +62,13 @@ export default function Sidebar() {
       setContrast(parseFloat(event.target.value));
     },
     [setContrast]
+  );
+
+  const onHueChange = React.useCallback<React.ChangeEventHandler>(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setHue(parseFloat(event.target.value));
+    },
+    [setHue]
   );
 
   return (
@@ -114,6 +126,18 @@ export default function Sidebar() {
           step={CONTRAST_AMOUNT}
           onChange={onContrastChange}
           value={contrast}
+        />
+      </InputWrapper>
+      <InputWrapper>
+        <label htmlFor="sidebar-hue">Hue:</label>
+        <input
+          id="sidebar-hue"
+          type="range"
+          min={HUE_MIN}
+          max={HUE_MAX}
+          step={HUE_AMOUNT}
+          onChange={onHueChange}
+          value={hue}
         />
       </InputWrapper>
     </Wrapper>

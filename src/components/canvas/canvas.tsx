@@ -27,6 +27,7 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
     flipY,
     saturation,
     contrast,
+    hue,
     zoom,
     setZoom,
   } = React.useContext(PsContext) as PsContextType;
@@ -42,7 +43,7 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
     const translateX = position.x * width;
     const translateY = position.y * height;
     return {
-      filter: `saturate(${saturation}) contrast(${contrast})`,
+      filter: `saturate(${saturation}) contrast(${contrast}) hue-rotate(${hue}deg)`,
       transform: `translate(${translateX}px, ${translateY}px) scale(${zoom}) rotate(${rotation}deg) scaleX(${flipX}) scaleY(${flipY})`,
     };
   }, [
@@ -55,6 +56,7 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
     flipY,
     saturation,
     contrast,
+    hue,
   ]);
 
   React.useEffect(() => {
