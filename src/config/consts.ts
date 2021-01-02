@@ -41,4 +41,5 @@ export const DEFAULTS = {
   saturation: 1,
   contrast: 1,
   hue: 0,
+  invert: 0,
 };

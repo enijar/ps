@@ -29,6 +29,8 @@ export type PsContextType = {
   zoom: number;
   setZoom: React.Dispatch<React.SetStateAction<number>>;
   reset: React.RefCallback<any>;
+  invert: number;
+  setInvert: React.RefCallback<any>;
 };
 
 export const PsContext = React.createContext({});
@@ -45,6 +47,7 @@ export default function PsContextProvider({ children }: Props) {
   const [saturation, setSaturation] = React.useState<number>(1);
   const [contrast, setContrast] = React.useState<number>(1);
   const [hue, setHue] = React.useState<number>(0);
+  const [invert, setInvert] = React.useState<number>(0);
 
   const reset = React.useCallback(() => {
     setPosition(DEFAULTS.position);
@@ -56,6 +59,7 @@ export default function PsContextProvider({ children }: Props) {
     setSaturation(DEFAULTS.saturation);
     setContrast(DEFAULTS.contrast);
     setHue(DEFAULTS.hue);
+    setHue(DEFAULTS.invert);
   }, []);
 
   React.useEffect(() => {
@@ -109,6 +113,8 @@ export default function PsContextProvider({ children }: Props) {
         zoom,
         setZoom,
         reset,
+        invert,
+        setInvert,
       }}
     >
       {children}

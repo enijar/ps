@@ -30,6 +30,7 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
     hue,
     zoom,
     setZoom,
+    invert,
   } = React.useContext(PsContext) as PsContextType;
   const wrapper = React.useRef<HTMLDivElement | null>(null);
   const img = React.useRef<HTMLImageElement | null>(null);
@@ -43,7 +44,7 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
     const translateX = position.x * width;
     const translateY = position.y * height;
     return {
-      filter: `saturate(${saturation}) contrast(${contrast}) hue-rotate(${hue}deg)`,
+      filter: `saturate(${saturation}) contrast(${contrast}) hue-rotate(${hue}deg) invert(${invert})`,
       transform: `translate(${translateX}px, ${translateY}px) scale(${zoom}) rotate(${rotation}deg) scaleX(${flipX}) scaleY(${flipY})`,
     };
   }, [
@@ -57,6 +58,7 @@ export default function Canvas({ src, width = 640, height = 480 }: Props) {
     saturation,
     contrast,
     hue,
+    invert,
   ]);
 
   React.useEffect(() => {

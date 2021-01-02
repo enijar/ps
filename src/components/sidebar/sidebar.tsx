@@ -34,6 +34,8 @@ export default function Sidebar() {
     hue,
     setHue,
     reset,
+    invert,
+    setInvert,
   } = React.useContext(PsContext) as PsContextType;
 
   const onOpacityChange = React.useCallback<React.ChangeEventHandler>(
@@ -70,6 +72,10 @@ export default function Sidebar() {
     },
     [setHue]
   );
+
+  const toggleInvert = React.useCallback<React.RefCallback<any>>(() => {
+    setInvert((invert: number) => (invert === 0 ? 1 : 0));
+  }, [setInvert]);
 
   return (
     <Wrapper>
@@ -139,6 +145,9 @@ export default function Sidebar() {
           onChange={onHueChange}
           value={hue}
         />
+      </InputWrapper>
+      <InputWrapper>
+        <button onClick={toggleInvert}>Invert</button>
       </InputWrapper>
     </Wrapper>
   );
