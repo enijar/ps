@@ -264,6 +264,21 @@ export default function Ps({ src }: Props) {
         />
       </div>
       <div>
+        <label>saturation({filters.saturation}):</label>
+        <br />
+        <input
+          type="range"
+          min={0}
+          max={3}
+          step={0.01}
+          value={filters.saturation}
+          onChange={(e) => setFilters((filters) => ({
+            ...filters,
+            saturation: parseFloat(e.target.value),
+          }))}
+        />
+      </div>
+      <div>
         <label>brushSize({brushSize}px):</label>
         <br />
         <input
