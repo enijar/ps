@@ -1,5 +1,6 @@
 import React from "react";
 import { Wrapper, Canvas } from "./styles";
+import { TRANSPARENT_BACKGROUND } from "../../config/images";
 import { getPoints, getPosition } from "./utils";
 import {
   Filters,
@@ -181,7 +182,9 @@ export default function Ps({ src }: Props) {
 
   return (
     <Wrapper>
-      <Canvas style={style}>
+      <Canvas
+        style={{ ...style, backgroundImage: `url(${TRANSPARENT_BACKGROUND})` }}
+      >
         <svg
           ref={svg}
           viewBox={`0 0 ${size.width} ${size.height}`}

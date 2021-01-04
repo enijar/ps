@@ -17,5 +17,5 @@ export const Wrapper = styled.div`
 `;
 
 export const Canvas = styled.div`
-  //
+  background-repeat: repeat;
 `;
