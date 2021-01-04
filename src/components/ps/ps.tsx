@@ -1,4 +1,5 @@
 import React from "react";
+import { Wrapper, Canvas } from "./styles";
 import { getPoints, getPosition } from "./utils";
 import {
   Filters,
@@ -179,56 +180,58 @@ export default function Ps({ src }: Props) {
   }, [pointer, draw]);
 
   return (
-    <div style={style}>
-      <svg
-        ref={svg}
-        viewBox={`0 0 ${size.width} ${size.height}`}
-        xmlns="http://www.w3.org/2000/svg"
-        xmlnsXlink="http://www.w3.org/1999/xlink"
-      >
-        <filter id="filters">
-          {/* blur */}
-          <feGaussianBlur stdDeviation={filters.blur} />
-          {/* hur */}
-          <feColorMatrix type="hueRotate" values={filters.hue.toString()} />
-          {/* saturation */}
-          <feColorMatrix
-            type="saturate"
-            values={filters.saturation.toString()}
-          />
-          {/* sepia */}
-          {filters.sepia && (
+    <Wrapper>
+      <Canvas style={style}>
+        <svg
+          ref={svg}
+          viewBox={`0 0 ${size.width} ${size.height}`}
+          xmlns="http://www.w3.org/2000/svg"
+          xmlnsXlink="http://www.w3.org/1999/xlink"
+        >
+          <filter id="filters">
+            {/* blur */}
+            <feGaussianBlur stdDeviation={filters.blur} />
+            {/* hur */}
+            <feColorMatrix type="hueRotate" values={filters.hue.toString()} />
+            {/* saturation */}
             <feColorMatrix
-              type="matrix"
-              values="0.39 0.769 0.189 0 0 0.349 0.686 0.168 0 0 0.272 0.534 0.131 0 0 0 0 0 1 0"
+              type="saturate"
+              values={filters.saturation.toString()}
             />
-          )}
-        </filter>
+            {/* sepia */}
+            {filters.sepia && (
+              <feColorMatrix
+                type="matrix"
+                values="0.39 0.769 0.189 0 0 0.349 0.686 0.168 0 0 0.272 0.534 0.131 0 0 0 0 0 1 0"
+              />
+            )}
+          </filter>
 
-        <image
-          xlinkHref={src}
-          filter="url(#filters)"
-          transform={`translate(${position.x * size.width} ${
-            position.y * size.height
-          }) rotate(${rotation}, ${size.width / 2}, ${size.height / 2})`}
-        />
+          <image
+            xlinkHref={src}
+            filter="url(#filters)"
+            transform={`translate(${position.x * size.width} ${
+              position.y * size.height
+            }) rotate(${rotation}, ${size.width / 2}, ${size.height / 2})`}
+          />
 
-        {pointGroups.map((pointGroup, index) => {
-          return (
-            <path
-              key={index}
-              stroke={pointGroup.color}
-              fill="none"
-              d={`M${pointGroup.points
-                .map((p) => [p.x * size.width, p.y * size.height].join(","))
-                .join(",")}`}
-              strokeWidth={pointGroup.size}
-              strokeLinecap={settings.lineCap}
-              strokeLinejoin="round"
-            />
-          );
-        })}
-      </svg>
+          {pointGroups.map((pointGroup, index) => {
+            return (
+              <path
+                key={index}
+                stroke={pointGroup.color}
+                fill="none"
+                d={`M${pointGroup.points
+                  .map((p) => [p.x * size.width, p.y * size.height].join(","))
+                  .join(",")}`}
+                strokeWidth={pointGroup.size}
+                strokeLinecap={settings.lineCap}
+                strokeLinejoin="round"
+              />
+            );
+          })}
+        </svg>
+      </Canvas>
       <div>
         <label>
           draw:
@@ -272,10 +275,12 @@ export default function Ps({ src }: Props) {
           max={3}
           step={0.01}
           value={filters.saturation}
-          onChange={(e) => setFilters((filters) => ({
-            ...filters,
-            saturation: parseFloat(e.target.value),
-          }))}
+          onChange={(e) =>
+            setFilters((filters) => ({
+              ...filters,
+              saturation: parseFloat(e.target.value),
+            }))
+          }
         />
       </div>
       <div>
@@ -339,6 +344,6 @@ export default function Ps({ src }: Props) {
       <div>
         <button onClick={download}>download</button>
       </div>
-    </div>
+    </Wrapper>
   );
 }
