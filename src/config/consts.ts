@@ -1,1 +1,27 @@
+import vars from "./vars";
+import { Tool } from "../components/ps/types";
+
 export const IS_TOUCH = "ontouchstart" in window;
+
+export const DEFAULTS = {
+  position: {
+    x: 0,
+    y: 0,
+    startX: 0,
+    startY: 0,
+    lastX: 0,
+    lastY: 0,
+  },
+  filters: {
+    blur: 0,
+    saturation: 1,
+    hue: 0,
+    sepia: false,
+  },
+  color: vars.colors.black,
+  brushSize: 10,
+  rotation: 0,
+  tool: Tool.move,
+  opacity: 1,
+  scale: 1,
+};

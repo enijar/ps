@@ -1,6 +1,6 @@
 import React from "react";
 import { Canvas, Flex, Inner, Sidebar, Toolbar, Wrapper } from "./styles";
-import { getPoints, getPosition, getCursor } from "./utils";
+import { getCursor, getPoints, getPosition } from "./utils";
 import {
   Filters,
   Pointer,
@@ -11,7 +11,9 @@ import {
   Size,
   Tool,
 } from "./types";
-import { IS_TOUCH } from "../../config/consts";
+import { DEFAULTS, IS_TOUCH } from "../../config/consts";
+
+console.log(DEFAULTS);
 
 export default function Ps({ src }: Props) {
   const [blob, setBlob] = React.useState<string>("");
@@ -34,26 +36,14 @@ export default function Ps({ src }: Props) {
       p: 3 * size.ratio, // precision
     };
   }, [size]);
-  const [rotation, setRotation] = React.useState<number>(0);
+  const [rotation, setRotation] = React.useState<number>(DEFAULTS.rotation);
   const [tool, setTool] = React.useState<Tool>(Tool.move);
-  const [position, setPosition] = React.useState<Position>({
-    x: 0,
-    y: 0,
-    startX: 0,
-    startY: 0,
-    lastX: 0,
-    lastY: 0,
-  });
-  const [filters, setFilters] = React.useState<Filters>({
-    blur: 0,
-    saturation: 1,
-    hue: 0,
-    sepia: false,
-  });
-  const [color, setColor] = React.useState<string>("#000000");
-  const [brushSize, setBrushSize] = React.useState<number>(10);
-  const [scale, setScale] = React.useState<number>(1);
-  const [opacity, setOpacity] = React.useState<number>(1);
+  const [position, setPosition] = React.useState<Position>(DEFAULTS.position);
+  const [filters, setFilters] = React.useState<Filters>(DEFAULTS.filters);
+  const [color, setColor] = React.useState<string>(DEFAULTS.color);
+  const [brushSize, setBrushSize] = React.useState<number>(DEFAULTS.brushSize);
+  const [scale, setScale] = React.useState<number>(DEFAULTS.scale);
+  const [opacity, setOpacity] = React.useState<number>(DEFAULTS.opacity);
   const transform = React.useMemo(() => {
     const cx = size.width / 2;
     const cy = size.height / 2;
@@ -91,6 +81,17 @@ export default function Ps({ src }: Props) {
     svg.current.removeAttribute("width");
     svg.current.removeAttribute("height");
   }, [svg, size]);
+
+  const reset = React.useCallback(() => {
+    setPosition(DEFAULTS.position);
+    setFilters(DEFAULTS.filters);
+    setColor(DEFAULTS.color);
+    setBrushSize(DEFAULTS.brushSize);
+    setRotation(DEFAULTS.rotation);
+    setTool(DEFAULTS.tool);
+    setOpacity(DEFAULTS.opacity);
+    setScale(DEFAULTS.scale);
+  }, []);
 
   React.useEffect(() => {
     const img = new Image();
@@ -402,6 +403,9 @@ export default function Ps({ src }: Props) {
             </div>
             <div>
               <button onClick={download}>download</button>
+            </div>
+            <div>
+              <button onClick={reset}>reset</button>
             </div>
           </Sidebar>
         </Flex>
