@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { createGlobalStyle } from "styled-components";
-import { TEST } from "./config/images";
+import testLandscape from "./assets/test-landscape.png";
 import Ps from "./components/ps/ps";
 
 const Style = createGlobalStyle`
@@ -30,7 +30,7 @@ ReactDOM.render(
   <React.StrictMode>
     <>
       <Style />
-      <Ps src={TEST} />
+      <Ps src={testLandscape} />
     </>
   </React.StrictMode>,
   document.getElementById("root")

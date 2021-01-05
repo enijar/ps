@@ -13,6 +13,7 @@ import {
 import { IS_TOUCH } from "../../config/consts";
 
 export default function Ps({ src }: Props) {
+  const [blob, setBlob] = React.useState<string>("");
   const [pointGroups, setPointGroups] = React.useState<PointGroup[]>([]);
   const [pointGroupIndex, setPointGroupIndex] = React.useState<number>(-1);
   const [pointer, setPointer] = React.useState<Pointer>({
@@ -93,6 +94,15 @@ export default function Ps({ src }: Props) {
   React.useEffect(() => {
     const img = new Image();
     img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const ctx: CanvasRenderingContext2D | null = canvas.getContext("2d");
+      // @todo resize image to improve performance on large images
+      if (ctx !== null) {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+        setBlob(canvas.toDataURL("image/png"));
+      }
       setSize({
         width: img.width,
         height: img.height,
@@ -209,7 +219,7 @@ export default function Ps({ src }: Props) {
           </filter>
 
           <image
-            xlinkHref={src}
+            xlinkHref={blob}
             filter="url(#filters)"
             transform={transform}
             opacity={opacity}
