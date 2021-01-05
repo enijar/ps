@@ -18,7 +18,7 @@ export function getPosition(
   top = Math.abs(top);
   let x;
   let y;
-  if (event instanceof TouchEvent) {
+  if (event instanceof window.TouchEvent) {
     x = event.touches[0]?.pageX ?? 0;
     y = event.touches[0]?.pageY ?? 0;
   } else {
