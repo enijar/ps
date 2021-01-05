@@ -117,7 +117,7 @@ export default function Ps({ src }: Props) {
 
     if (svgElement === null) return;
 
-    function onPointerDown(event: TouchEvent | MouseEvent) {
+    function onPointerDown(event: TouchEvent | PointerEvent) {
       const point = getPosition(event, svgElement);
       if (draw) {
         setPointGroupIndex((pointGroupIndex) => pointGroupIndex + 1);
@@ -134,7 +134,7 @@ export default function Ps({ src }: Props) {
       setPointer((pointer) => ({ ...pointer, ...point, down: true }));
     }
 
-    function onPointerMove(event: TouchEvent | MouseEvent) {
+    function onPointerMove(event: TouchEvent | PointerEvent) {
       event.preventDefault();
       const point = getPosition(event, svgElement);
       setPointer((pointer) => {

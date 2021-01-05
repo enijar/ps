@@ -9,7 +9,7 @@ export function dist(a: Point, b: Point): number {
 }
 
 export function getPosition(
-  event: TouchEvent | MouseEvent,
+  event: TouchEvent | PointerEvent,
   element: SVGSVGElement | null
 ): Point {
   if (element === null) return { x: 0, y: 0 };
