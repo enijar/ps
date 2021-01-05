@@ -18,6 +18,8 @@ export const DEFAULTS = {
     hue: 0,
     sepia: false,
   },
+  pointGroups: [],
+  pointGroupIndex: -1,
   color: vars.colors.black,
   brushSize: 10,
   rotation: 0,

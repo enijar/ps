@@ -13,12 +13,10 @@ import {
 } from "./types";
 import { DEFAULTS, IS_TOUCH } from "../../config/consts";
 
-console.log(DEFAULTS);
-
 export default function Ps({ src }: Props) {
   const [blob, setBlob] = React.useState<string>("");
-  const [pointGroups, setPointGroups] = React.useState<PointGroup[]>([]);
-  const [pointGroupIndex, setPointGroupIndex] = React.useState<number>(-1);
+  const [pointGroups, setPointGroups] = React.useState<PointGroup[]>(DEFAULTS.pointGroups);
+  const [pointGroupIndex, setPointGroupIndex] = React.useState<number>(DEFAULTS.pointGroupIndex);
   const [pointer, setPointer] = React.useState<Pointer>({
     down: false,
     x: 0,
@@ -85,6 +83,8 @@ export default function Ps({ src }: Props) {
   const reset = React.useCallback(() => {
     setPosition(DEFAULTS.position);
     setFilters(DEFAULTS.filters);
+    setPointGroups(DEFAULTS.pointGroups);
+    setPointGroupIndex(DEFAULTS.pointGroupIndex);
     setColor(DEFAULTS.color);
     setBrushSize(DEFAULTS.brushSize);
     setRotation(DEFAULTS.rotation);
