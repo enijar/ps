@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import vars from "../../config/vars";
+import { TRANSPARENT_BACKGROUND } from "../../config/images";
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -17,5 +18,8 @@ export const Wrapper = styled.div`
 `;
 
 export const Canvas = styled.div`
-  background-repeat: repeat;
+  svg {
+    background-repeat: repeat;
+    background-image: url(${TRANSPARENT_BACKGROUND});
+  }
 `;

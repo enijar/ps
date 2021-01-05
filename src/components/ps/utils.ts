@@ -13,7 +13,9 @@ export function getPosition(
   element: SVGSVGElement | null
 ): Point {
   if (element === null) return { x: 0, y: 0 };
-  const { left, top, width, height } = element.getBoundingClientRect();
+  let { left, top, width, height } = element.getBoundingClientRect();
+  left = Math.abs(left);
+  top = Math.abs(top);
   let x;
   let y;
   if (event instanceof TouchEvent) {

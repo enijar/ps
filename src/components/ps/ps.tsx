@@ -33,7 +33,6 @@ export default function Ps({ src }: Props) {
       p: 3 * size.ratio, // precision
     };
   }, [size]);
-  const [style, setStyle] = React.useState<object>({});
   const [rotation, setRotation] = React.useState<number>(0);
   const [draw, setDraw] = React.useState<boolean>(false);
   const [position, setPosition] = React.useState<Position>({
@@ -91,23 +90,6 @@ export default function Ps({ src }: Props) {
     };
     img.src = src;
   }, [src]);
-
-  React.useEffect(() => {
-    function onResize() {
-      const maxSize = 700;
-      const width = "100%";
-      const height = "100%";
-      const maxWidth = `${maxSize}px`;
-      const maxHeight = `${maxSize / size.ratio}px`;
-      setStyle({ width, height, maxWidth, maxHeight });
-    }
-
-    onResize();
-    window.addEventListener("resize", onResize);
-    return () => {
-      window.removeEventListener("resize", onResize);
-    };
-  }, [size]);
 
   React.useEffect(() => {
     const svgElement: SVGSVGElement | null = svg.current;
@@ -188,14 +170,13 @@ export default function Ps({ src }: Props) {
 
   return (
     <Wrapper>
-      <Canvas
-        style={{ ...style, backgroundImage: `url(${TRANSPARENT_BACKGROUND})` }}
-      >
+      <Canvas>
         <svg
           ref={svg}
           viewBox={`0 0 ${size.width} ${size.height}`}
           xmlns="http://www.w3.org/2000/svg"
           xmlnsXlink="http://www.w3.org/1999/xlink"
+          style={{ maxWidth: `${size.width}px`, maxHeight: `${size.height}px` }}
         >
           <filter id="filters">
             {/* blur */}
