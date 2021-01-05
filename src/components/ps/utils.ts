@@ -1,5 +1,4 @@
-import React from "react";
-import { Point, GetPointsProps, PointGroup } from "./types";
+import { GetPointsProps, Point, PointGroup } from "./types";
 
 export function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);

@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { createGlobalStyle } from "styled-components";
-import {TEST} from "./config/images";
+import { TEST } from "./config/images";
 import Ps from "./components/ps/ps";
 
 const Style = createGlobalStyle`
