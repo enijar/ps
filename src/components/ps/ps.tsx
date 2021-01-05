@@ -11,7 +11,6 @@ import {
   Size,
 } from "./types";
 import { IS_TOUCH } from "../../config/consts";
-import vars from "../../config/vars";
 
 export default function Ps({ src }: Props) {
   const [blob, setBlob] = React.useState<string>("");
