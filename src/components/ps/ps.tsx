@@ -50,6 +50,17 @@ export default function Ps({ src }: Props) {
   });
   const [color, setColor] = React.useState<string>("#000000");
   const [brushSize, setBrushSize] = React.useState<number>(10);
+  const [scale, setScale] = React.useState<number>(1);
+  const transform = React.useMemo(() => {
+    const cx = size.width / 2;
+    const cy = size.height / 2;
+    const s = scale;
+    return [
+      `translate(${position.x * size.width} ${position.y * size.height})`,
+      `rotate(${rotation}, ${size.width / 2}, ${size.height / 2})`,
+      `matrix(${s}, 0, 0, ${s}, ${cx - s * cx}, ${cy - s * cy})`,
+    ].join(" ");
+  }, [size, scale, position, rotation]);
 
   const download = React.useCallback(() => {
     const svgElement: SVGSVGElement | null = svg.current;
@@ -196,13 +207,7 @@ export default function Ps({ src }: Props) {
             )}
           </filter>
 
-          <image
-            xlinkHref={src}
-            filter="url(#filters)"
-            transform={`translate(${position.x * size.width} ${
-              position.y * size.height
-            }) rotate(${rotation}, ${size.width / 2}, ${size.height / 2})`}
-          />
+          <image xlinkHref={src} filter="url(#filters)" transform={transform} />
 
           {pointGroups.map((pointGroup, index) => {
             return (
@@ -328,6 +333,18 @@ export default function Ps({ src }: Props) {
               hue: parseInt(e.target.value, 10),
             }))
           }
+        />
+      </div>
+      <div>
+        <label>scale({scale}):</label>
+        <br />
+        <input
+          type="range"
+          min={0.1}
+          max={2}
+          step={0.01}
+          value={scale}
+          onChange={(e) => setScale(parseFloat(e.target.value))}
         />
       </div>
       <div>
