@@ -1,6 +1,6 @@
 import React from "react";
 import { Canvas, Flex, Inner, Sidebar, Toolbar, Wrapper } from "./styles";
-import { getPoints, getPosition } from "./utils";
+import { getPoints, getPosition, getCursor } from "./utils";
 import {
   Filters,
   Pointer,
@@ -9,6 +9,7 @@ import {
   Props,
   Settings,
   Size,
+  Tool,
 } from "./types";
 import { IS_TOUCH } from "../../config/consts";
 
@@ -34,7 +35,7 @@ export default function Ps({ src }: Props) {
     };
   }, [size]);
   const [rotation, setRotation] = React.useState<number>(0);
-  const [draw, setDraw] = React.useState<boolean>(false);
+  const [tool, setTool] = React.useState<Tool>(Tool.move);
   const [position, setPosition] = React.useState<Position>({
     x: 0,
     y: 0,
@@ -119,7 +120,7 @@ export default function Ps({ src }: Props) {
 
     function onPointerDown(event: TouchEvent | PointerEvent) {
       const point = getPosition(event, svgElement);
-      if (draw) {
+      if (tool === Tool.brush) {
         setPointGroupIndex((pointGroupIndex) => pointGroupIndex + 1);
         setPointGroups((pointGroups) => [
           ...pointGroups,
@@ -163,10 +164,10 @@ export default function Ps({ src }: Props) {
       window.removeEventListener(moveType, onPointerMove);
       window.removeEventListener(upType, onPointerUp);
     };
-  }, [svg, draw, size, color, brushSize]);
+  }, [svg, tool, size, color, brushSize]);
 
   React.useEffect(() => {
-    if (!pointer.down || !draw) return;
+    if (!pointer.down || tool !== Tool.brush) return;
     setPointGroups((pointGroups) =>
       getPoints({
         pointGroups,
@@ -177,16 +178,16 @@ export default function Ps({ src }: Props) {
         settings,
       })
     );
-  }, [draw, pointer, pointGroupIndex, color, size, settings]);
+  }, [tool, pointer, pointGroupIndex, color, size, settings]);
 
   React.useEffect(() => {
-    if (!pointer.down || draw) return;
+    if (!pointer.down || tool === Tool.brush) return;
     setPosition((position) => ({
       ...position,
       x: pointer.x - position.startX + position.lastX,
       y: pointer.y - position.startY + position.lastY,
     }));
-  }, [pointer, draw]);
+  }, [pointer, tool]);
 
   return (
     <Wrapper>
@@ -194,7 +195,7 @@ export default function Ps({ src }: Props) {
         <Toolbar>toolbar</Toolbar>
 
         <Flex>
-          <Canvas>
+          <Canvas style={{ cursor: getCursor(tool) }}>
             <svg
               ref={svg}
               viewBox={`0 0 ${size.width} ${size.height}`}
@@ -203,7 +204,6 @@ export default function Ps({ src }: Props) {
               style={{
                 maxWidth: `${size.width}px`,
                 maxHeight: `${size.height}px`,
-                cursor: draw ? "none" : "default",
               }}
             >
               <filter id="filters">
@@ -252,7 +252,7 @@ export default function Ps({ src }: Props) {
                   />
                 );
               })}
-              {draw && (
+              {tool === Tool.brush && (
                 <circle
                   cx={(pointer.x * size.width).toString()}
                   cy={(pointer.y * size.height).toString()}
@@ -270,8 +270,10 @@ export default function Ps({ src }: Props) {
                 draw:
                 <input
                   type="checkbox"
-                  checked={draw}
-                  onChange={(e) => setDraw(e.target.checked)}
+                  checked={tool === Tool.brush}
+                  onChange={(e) =>
+                    setTool(e.target.checked ? Tool.brush : Tool.move)
+                  }
                 />
               </label>
             </div>

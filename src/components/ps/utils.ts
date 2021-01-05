@@ -1,4 +1,4 @@
-import { GetPointsProps, Point, PointGroup } from "./types";
+import {GetPointsProps, Point, PointGroup, Tool} from "./types";
 
 export function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
@@ -61,4 +61,15 @@ export function getPoints({
     { x: pointer.x, y: pointer.y },
   ];
   return [...pointGroups];
+}
+
+export function getCursor(tool: Tool): string {
+  switch (tool) {
+    case Tool.move:
+      return "move";
+    case Tool.brush:
+      return "none";
+    default:
+      return "default";
+  }
 }

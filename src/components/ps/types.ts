@@ -58,3 +58,8 @@ export type GetPointsProps = {
   };
   settings: Settings;
 };
+
+export enum Tool {
+  move,
+  brush,
+}
