@@ -11,6 +11,7 @@ import {
   Size,
 } from "./types";
 import { IS_TOUCH } from "../../config/consts";
+import vars from "../../config/vars";
 
 export default function Ps({ src }: Props) {
   const [blob, setBlob] = React.useState<string>("");
@@ -138,8 +139,7 @@ export default function Ps({ src }: Props) {
       event.preventDefault();
       const point = getPosition(event, svgElement);
       setPointer((pointer) => {
-        if (!pointer.down) return pointer;
-        return { ...pointer, ...point, down: true };
+        return { ...pointer, ...point };
       });
     }
 
@@ -204,6 +204,7 @@ export default function Ps({ src }: Props) {
               style={{
                 maxWidth: `${size.width}px`,
                 maxHeight: `${size.height}px`,
+                cursor: draw ? "none" : "default",
               }}
             >
               <filter id="filters">
@@ -252,6 +253,15 @@ export default function Ps({ src }: Props) {
                   />
                 );
               })}
+              {draw && (
+                <circle
+                  cx={(pointer.x * size.width).toString()}
+                  cy={(pointer.y * size.height).toString()}
+                  r={brushSize / 2}
+                  fill={color}
+                  strokeMiterlimit="10"
+                />
+              )}
             </svg>
           </Canvas>
 
