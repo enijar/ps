@@ -1,5 +1,5 @@
 import React from "react";
-import { Canvas, Toolbar, Wrapper } from "./styles";
+import { Canvas, Flex, Inner, Sidebar, Toolbar, Wrapper } from "./styles";
 import { getPoints, getPosition } from "./utils";
 import {
   Filters,
@@ -191,196 +191,210 @@ export default function Ps({ src }: Props) {
 
   return (
     <Wrapper>
-      <Canvas>
-        <svg
-          ref={svg}
-          viewBox={`0 0 ${size.width} ${size.height}`}
-          xmlns="http://www.w3.org/2000/svg"
-          xmlnsXlink="http://www.w3.org/1999/xlink"
-          style={{ maxWidth: `${size.width}px`, maxHeight: `${size.height}px` }}
-        >
-          <filter id="filters">
-            {/* blur */}
-            <feGaussianBlur stdDeviation={filters.blur} />
-            {/* hur */}
-            <feColorMatrix type="hueRotate" values={filters.hue.toString()} />
-            {/* saturation */}
-            <feColorMatrix
-              type="saturate"
-              values={filters.saturation.toString()}
-            />
-            {/* sepia */}
-            {filters.sepia && (
-              <feColorMatrix
-                type="matrix"
-                values="0.39 0.769 0.189 0 0 0.349 0.686 0.168 0 0 0.272 0.534 0.131 0 0 0 0 0 1 0"
+      <Inner>
+        <Toolbar>toolbar</Toolbar>
+
+        <Flex>
+          <Canvas>
+            <svg
+              ref={svg}
+              viewBox={`0 0 ${size.width} ${size.height}`}
+              xmlns="http://www.w3.org/2000/svg"
+              xmlnsXlink="http://www.w3.org/1999/xlink"
+              style={{
+                maxWidth: `${size.width}px`,
+                maxHeight: `${size.height}px`,
+              }}
+            >
+              <filter id="filters">
+                {/* blur */}
+                <feGaussianBlur stdDeviation={filters.blur} />
+                {/* hur */}
+                <feColorMatrix
+                  type="hueRotate"
+                  values={filters.hue.toString()}
+                />
+                {/* saturation */}
+                <feColorMatrix
+                  type="saturate"
+                  values={filters.saturation.toString()}
+                />
+                {/* sepia */}
+                {filters.sepia && (
+                  <feColorMatrix
+                    type="matrix"
+                    values="0.39 0.769 0.189 0 0 0.349 0.686 0.168 0 0 0.272 0.534 0.131 0 0 0 0 0 1 0"
+                  />
+                )}
+              </filter>
+
+              <image
+                xlinkHref={blob}
+                filter="url(#filters)"
+                transform={transform}
+                opacity={opacity}
               />
-            )}
-          </filter>
 
-          <image
-            xlinkHref={blob}
-            filter="url(#filters)"
-            transform={transform}
-            opacity={opacity}
-          />
+              {pointGroups.map((pointGroup, index) => {
+                return (
+                  <path
+                    key={index}
+                    stroke={pointGroup.color}
+                    fill="none"
+                    d={`M${pointGroup.points
+                      .map((p) =>
+                        [p.x * size.width, p.y * size.height].join(",")
+                      )
+                      .join(",")}`}
+                    strokeWidth={pointGroup.size}
+                    strokeLinecap={settings.lineCap}
+                    strokeLinejoin="round"
+                  />
+                );
+              })}
+            </svg>
+          </Canvas>
 
-          {pointGroups.map((pointGroup, index) => {
-            return (
-              <path
-                key={index}
-                stroke={pointGroup.color}
-                fill="none"
-                d={`M${pointGroup.points
-                  .map((p) => [p.x * size.width, p.y * size.height].join(","))
-                  .join(",")}`}
-                strokeWidth={pointGroup.size}
-                strokeLinecap={settings.lineCap}
-                strokeLinejoin="round"
+          <Sidebar>
+            <div>
+              <label>
+                draw:
+                <input
+                  type="checkbox"
+                  checked={draw}
+                  onChange={(e) => setDraw(e.target.checked)}
+                />
+              </label>
+            </div>
+            <div>
+              <label>
+                sepia:
+                <input
+                  type="checkbox"
+                  checked={filters.sepia}
+                  onChange={(e) =>
+                    setFilters((filters) => ({
+                      ...filters,
+                      sepia: e.target.checked,
+                    }))
+                  }
+                />
+              </label>
+            </div>
+            <div>
+              <label>color({color}):</label>
+              <br />
+              <input
+                type="color"
+                value={color}
+                onChange={(e) => setColor(e.target.value)}
               />
-            );
-          })}
-        </svg>
-      </Canvas>
-
-      <Toolbar>
-        <div>
-          <label>
-            draw:
-            <input
-              type="checkbox"
-              checked={draw}
-              onChange={(e) => setDraw(e.target.checked)}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            sepia:
-            <input
-              type="checkbox"
-              checked={filters.sepia}
-              onChange={(e) =>
-                setFilters((filters) => ({
-                  ...filters,
-                  sepia: e.target.checked,
-                }))
-              }
-            />
-          </label>
-        </div>
-        <div>
-          <label>color({color}):</label>
-          <br />
-          <input
-            type="color"
-            value={color}
-            onChange={(e) => setColor(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>saturation({filters.saturation}):</label>
-          <br />
-          <input
-            type="range"
-            min={0}
-            max={3}
-            step={0.01}
-            value={filters.saturation}
-            onChange={(e) =>
-              setFilters((filters) => ({
-                ...filters,
-                saturation: parseFloat(e.target.value),
-              }))
-            }
-          />
-        </div>
-        <div>
-          <label>brushSize({brushSize}px):</label>
-          <br />
-          <input
-            type="range"
-            min={0}
-            max={100}
-            step={1}
-            value={brushSize}
-            onChange={(e) => setBrushSize(parseInt(e.target.value, 10))}
-          />
-        </div>
-        <div>
-          <label>rotation({rotation}&deg;):</label>
-          <br />
-          <input
-            type="range"
-            min={0}
-            max={360}
-            step={1}
-            value={rotation}
-            onChange={(e) => setRotation(parseInt(e.target.value, 10))}
-          />
-        </div>
-        <div>
-          <label>blur({filters.blur}px):</label>
-          <br />
-          <input
-            type="range"
-            min={0}
-            max={100}
-            step={1}
-            value={filters.blur}
-            onChange={(e) =>
-              setFilters((filters) => ({
-                ...filters,
-                blur: parseInt(e.target.value, 10),
-              }))
-            }
-          />
-        </div>
-        <div>
-          <label>hue({filters.blur}&deg;):</label>
-          <br />
-          <input
-            type="range"
-            min={0}
-            max={360}
-            step={1}
-            value={filters.hue}
-            onChange={(e) =>
-              setFilters((filters) => ({
-                ...filters,
-                hue: parseInt(e.target.value, 10),
-              }))
-            }
-          />
-        </div>
-        <div>
-          <label>scale({scale}):</label>
-          <br />
-          <input
-            type="range"
-            min={0.1}
-            max={2}
-            step={0.01}
-            value={scale}
-            onChange={(e) => setScale(parseFloat(e.target.value))}
-          />
-        </div>
-        <div>
-          <label>opacity({opacity}):</label>
-          <br />
-          <input
-            type="range"
-            min={0}
-            max={1}
-            step={0.01}
-            value={opacity}
-            onChange={(e) => setOpacity(parseFloat(e.target.value))}
-          />
-        </div>
-        <div>
-          <button onClick={download}>download</button>
-        </div>
-      </Toolbar>
+            </div>
+            <div>
+              <label>saturation({filters.saturation}):</label>
+              <br />
+              <input
+                type="range"
+                min={0}
+                max={3}
+                step={0.01}
+                value={filters.saturation}
+                onChange={(e) =>
+                  setFilters((filters) => ({
+                    ...filters,
+                    saturation: parseFloat(e.target.value),
+                  }))
+                }
+              />
+            </div>
+            <div>
+              <label>brushSize({brushSize}px):</label>
+              <br />
+              <input
+                type="range"
+                min={0}
+                max={100}
+                step={1}
+                value={brushSize}
+                onChange={(e) => setBrushSize(parseInt(e.target.value, 10))}
+              />
+            </div>
+            <div>
+              <label>rotation({rotation}&deg;):</label>
+              <br />
+              <input
+                type="range"
+                min={0}
+                max={360}
+                step={1}
+                value={rotation}
+                onChange={(e) => setRotation(parseInt(e.target.value, 10))}
+              />
+            </div>
+            <div>
+              <label>blur({filters.blur}px):</label>
+              <br />
+              <input
+                type="range"
+                min={0}
+                max={100}
+                step={1}
+                value={filters.blur}
+                onChange={(e) =>
+                  setFilters((filters) => ({
+                    ...filters,
+                    blur: parseInt(e.target.value, 10),
+                  }))
+                }
+              />
+            </div>
+            <div>
+              <label>hue({filters.blur}&deg;):</label>
+              <br />
+              <input
+                type="range"
+                min={0}
+                max={360}
+                step={1}
+                value={filters.hue}
+                onChange={(e) =>
+                  setFilters((filters) => ({
+                    ...filters,
+                    hue: parseInt(e.target.value, 10),
+                  }))
+                }
+              />
+            </div>
+            <div>
+              <label>scale({scale}):</label>
+              <br />
+              <input
+                type="range"
+                min={0.1}
+                max={2}
+                step={0.01}
+                value={scale}
+                onChange={(e) => setScale(parseFloat(e.target.value))}
+              />
+            </div>
+            <div>
+              <label>opacity({opacity}):</label>
+              <br />
+              <input
+                type="range"
+                min={0}
+                max={1}
+                step={0.01}
+                value={opacity}
+                onChange={(e) => setOpacity(parseFloat(e.target.value))}
+              />
+            </div>
+            <div>
+              <button onClick={download}>download</button>
+            </div>
+          </Sidebar>
+        </Flex>
+      </Inner>
     </Wrapper>
   );
 }
