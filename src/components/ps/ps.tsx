@@ -51,6 +51,7 @@ export default function Ps({ src }: Props) {
   const [color, setColor] = React.useState<string>("#000000");
   const [brushSize, setBrushSize] = React.useState<number>(10);
   const [scale, setScale] = React.useState<number>(1);
+  const [opacity, setOpacity] = React.useState<number>(1);
   const transform = React.useMemo(() => {
     const cx = size.width / 2;
     const cy = size.height / 2;
@@ -207,7 +208,12 @@ export default function Ps({ src }: Props) {
             )}
           </filter>
 
-          <image xlinkHref={src} filter="url(#filters)" transform={transform} />
+          <image
+            xlinkHref={src}
+            filter="url(#filters)"
+            transform={transform}
+            opacity={opacity}
+          />
 
           {pointGroups.map((pointGroup, index) => {
             return (
@@ -345,6 +351,18 @@ export default function Ps({ src }: Props) {
           step={0.01}
           value={scale}
           onChange={(e) => setScale(parseFloat(e.target.value))}
+        />
+      </div>
+      <div>
+        <label>opacity({opacity}):</label>
+        <br />
+        <input
+          type="range"
+          min={0}
+          max={1}
+          step={0.01}
+          value={opacity}
+          onChange={(e) => setOpacity(parseFloat(e.target.value))}
         />
       </div>
       <div>
