@@ -1,5 +1,5 @@
 import React from "react";
-import { Wrapper, Canvas } from "./styles";
+import { Canvas, Wrapper } from "./styles";
 import { TRANSPARENT_BACKGROUND } from "../../config/images";
 import { getPoints, getPosition } from "./utils";
 import {
@@ -11,6 +11,7 @@ import {
   Settings,
   Size,
 } from "./types";
+import { IS_TOUCH } from "../../config/consts";
 
 export default function Ps({ src }: Props) {
   const [pointGroups, setPointGroups] = React.useState<PointGroup[]>([]);
@@ -113,7 +114,7 @@ export default function Ps({ src }: Props) {
 
     if (svgElement === null) return;
 
-    function onPointerDown(event: PointerEvent) {
+    function onPointerDown(event: TouchEvent | MouseEvent) {
       const point = getPosition(event, svgElement);
       if (draw) {
         setPointGroupIndex((pointGroupIndex) => pointGroupIndex + 1);
@@ -130,7 +131,8 @@ export default function Ps({ src }: Props) {
       setPointer((pointer) => ({ ...pointer, ...point, down: true }));
     }
 
-    function onPointerMove(event: PointerEvent) {
+    function onPointerMove(event: TouchEvent | MouseEvent) {
+      event.preventDefault();
       const point = getPosition(event, svgElement);
       setPointer((pointer) => {
         if (!pointer.down) return pointer;
@@ -147,13 +149,17 @@ export default function Ps({ src }: Props) {
       setPointer((pointer) => ({ ...pointer, down: false }));
     }
 
-    svgElement.addEventListener("pointerdown", onPointerDown);
-    window.addEventListener("pointermove", onPointerMove);
-    window.addEventListener("pointerup", onPointerUp);
+    const downType = IS_TOUCH ? "touchstart" : "pointerdown";
+    const moveType = IS_TOUCH ? "touchmove" : "pointermove";
+    const upType = IS_TOUCH ? "touchend" : "pointerup";
+
+    svgElement.addEventListener(downType, onPointerDown, { passive: false });
+    window.addEventListener(moveType, onPointerMove, { passive: false });
+    window.addEventListener(upType, onPointerUp, { passive: false });
     return () => {
-      svgElement.removeEventListener("pointerdown", onPointerDown);
-      window.removeEventListener("pointermove", onPointerMove);
-      window.removeEventListener("pointerup", onPointerUp);
+      svgElement.removeEventListener(downType, onPointerDown);
+      window.removeEventListener(moveType, onPointerMove);
+      window.removeEventListener(upType, onPointerUp);
     };
   }, [svg, draw, size, color, brushSize]);
 

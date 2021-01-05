@@ -1,3 +1,4 @@
+import React from "react";
 import { Point, GetPointsProps, PointGroup } from "./types";
 
 export function clamp(value: number, min: number, max: number): number {
@@ -9,14 +10,23 @@ export function dist(a: Point, b: Point): number {
 }
 
 export function getPosition(
-  event: PointerEvent,
+  event: TouchEvent | MouseEvent,
   element: SVGSVGElement | null
 ): Point {
   if (element === null) return { x: 0, y: 0 };
   const { left, top, width, height } = element.getBoundingClientRect();
+  let x;
+  let y;
+  if (event instanceof TouchEvent) {
+    x = event.touches[0]?.pageX ?? 0;
+    y = event.touches[0]?.pageY ?? 0;
+  } else {
+    x = event.pageX;
+    y = event.pageY;
+  }
   return {
-    x: clamp(event.pageX - left, 0, width) / width,
-    y: clamp(event.pageY - top, 0, height) / height,
+    x: clamp(x - left, 0, width) / width,
+    y: clamp(y - top, 0, height) / height,
   };
 }
 
