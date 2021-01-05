@@ -1,6 +1,5 @@
 import React from "react";
 import { Canvas, Wrapper } from "./styles";
-import { TRANSPARENT_BACKGROUND } from "../../config/images";
 import { getPoints, getPosition } from "./utils";
 import {
   Filters,
