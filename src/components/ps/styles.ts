@@ -42,6 +42,10 @@ export const Canvas = styled.div`
     display: block;
     background-repeat: repeat;
     background-image: url(${TRANSPARENT_BACKGROUND});
+
+    image {
+      pointer-events: none;
+    }
   }
 `;
 

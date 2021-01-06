@@ -1,4 +1,4 @@
-import {GetPointsProps, Point, PointGroup, Tool} from "./types";
+import { GetPointsProps, Point, PointGroup, Tool } from "./types";
 
 export function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
@@ -18,7 +18,7 @@ export function getPosition(
   top = Math.abs(top);
   let x;
   let y;
-  if (event instanceof window.TouchEvent) {
+  if ("touches" in event) {
     x = event.touches[0]?.pageX ?? 0;
     y = event.touches[0]?.pageY ?? 0;
   } else {
