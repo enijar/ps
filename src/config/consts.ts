@@ -1,7 +1,5 @@
 import vars from "./vars";
-import { Tool } from "../components/ps/types";
-
-export const IS_TOUCH = "ontouchstart" in window;
+import { Tool } from "./types";
 
 export const DEFAULTS = {
   position: {
@@ -27,3 +25,9 @@ export const DEFAULTS = {
   opacity: 1,
   scale: 1,
 };
+
+export const MOBILE_WIDTH = 700;
+
+export const MAX_CANVAS_WIDTH = 800;
+
+export const MAX_SIDEBAR_WIDTH = 200;
