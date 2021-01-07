@@ -1,4 +1,11 @@
-import { GetPointsProps, Point, PointGroup, Tool } from "./config/types";
+import {
+  GetPointsProps,
+  Point,
+  PointGroup,
+  PressedKeys,
+  Tool,
+  ToolHotKey,
+} from "./config/types";
 
 export function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
@@ -63,12 +70,15 @@ export function getPoints({
   return [...pointGroups];
 }
 
-export function getCursor(tool: Tool): string {
+export function getCursor(tool: Tool, pressedKeys: PressedKeys = []): string {
   switch (tool) {
     case Tool.move:
       return "move";
     case Tool.brush:
       return "none";
+    case Tool.zoom:
+      const direction = pressedKeys.includes(ToolHotKey.zoomOut) ? "out" : "in";
+      return `zoom-${direction}`;
     default:
       return "default";
   }

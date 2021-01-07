@@ -1,12 +1,10 @@
 import React from "react";
 import { SidebarWrapper } from "./styles";
-import { PsContextType, Tool } from "../../config/types";
+import { PsContextType } from "../../config/types";
 import { PsContext } from "../ps/context";
 
 export default function Sidebar() {
   const {
-    tool,
-    setTool,
     filters,
     setFilters,
     color,
@@ -25,16 +23,6 @@ export default function Sidebar() {
 
   return (
     <SidebarWrapper>
-      <div>
-        <label>
-          draw:
-          <input
-            type="checkbox"
-            checked={tool === Tool.brush}
-            onChange={(e) => setTool(e.target.checked ? Tool.brush : Tool.move)}
-          />
-        </label>
-      </div>
       <div>
         <label>
           sepia:

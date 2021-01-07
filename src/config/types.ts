@@ -64,7 +64,17 @@ export type GetPointsProps = {
 export enum Tool {
   move,
   brush,
+  zoom,
 }
+
+export enum ToolHotKey {
+  move = "v",
+  brush = "b",
+  zoom = "z",
+  zoomOut = "alt",
+}
+
+export type PressedKeys = string[];
 
 export type PsContextType = {
   blob: string;
@@ -93,6 +103,8 @@ export type PsContextType = {
   setScale: React.Dispatch<React.SetStateAction<number>>;
   opacity: number;
   setOpacity: React.Dispatch<React.SetStateAction<number>>;
+  pressedKeys: PressedKeys;
+  setPressedKeys: React.Dispatch<React.SetStateAction<PressedKeys>>;
   transform: string;
   settings: Settings;
   svg: React.MutableRefObject<SVGSVGElement | null>;

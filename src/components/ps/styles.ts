@@ -13,13 +13,6 @@ export const PsWrapper = styled.div`
   color: ${vars.colors.white};
   user-select: none;
   padding: 1em;
-
-  button {
-    border: none;
-    color: ${vars.colors.black300};
-    background-color: ${vars.colors.white};
-    padding: 0.25em 1em;
-  }
 `;
 
 export const PsInner = styled.div`

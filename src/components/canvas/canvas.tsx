@@ -18,10 +18,11 @@ export default function Canvas() {
     brushSize,
     color,
     svg,
+    pressedKeys,
   } = React.useContext(PsContext) as PsContextType;
 
   return (
-    <CanvasWrapper style={{ cursor: getCursor(tool) }}>
+    <CanvasWrapper style={{ cursor: getCursor(tool, pressedKeys) }}>
       <svg
         ref={svg}
         viewBox={`0 0 ${size.width} ${size.height}`}

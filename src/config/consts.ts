@@ -24,6 +24,7 @@ export const DEFAULTS = {
   tool: Tool.move,
   opacity: 1,
   scale: 1,
+  pressedKeys: [],
 };
 
 export const MOBILE_WIDTH = 700;
@@ -31,3 +32,5 @@ export const MOBILE_WIDTH = 700;
 export const MAX_CANVAS_WIDTH = 800;
 
 export const MAX_SIDEBAR_WIDTH = 200;
+
+export const ZOOM_DELTA = 0.01;

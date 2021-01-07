@@ -4,12 +4,14 @@ import {
   Pointer,
   PointGroup,
   Position,
+  PressedKeys,
   PsContextType,
   Settings,
   Size,
   Tool,
+  ToolHotKey,
 } from "../../config/types";
-import { DEFAULTS } from "../../config/consts";
+import { DEFAULTS, ZOOM_DELTA } from "../../config/consts";
 import { getPoints, getPosition } from "../../utils";
 
 type Props = {
@@ -45,6 +47,9 @@ export default function PsContextProvider({ children, src }: Props) {
   const [brushSize, setBrushSize] = React.useState<number>(DEFAULTS.brushSize);
   const [scale, setScale] = React.useState<number>(DEFAULTS.scale);
   const [opacity, setOpacity] = React.useState<number>(DEFAULTS.opacity);
+  const [pressedKeys, setPressedKeys] = React.useState<PressedKeys>(
+    DEFAULTS.pressedKeys
+  );
   const transform = React.useMemo((): string => {
     const cx = size.width / 2;
     const cy = size.height / 2;
@@ -74,6 +79,7 @@ export default function PsContextProvider({ children, src }: Props) {
     setTool(DEFAULTS.tool);
     setOpacity(DEFAULTS.opacity);
     setScale(DEFAULTS.scale);
+    setPressedKeys(DEFAULTS.pressedKeys);
   }, []);
 
   const download = React.useCallback(() => {
@@ -206,13 +212,63 @@ export default function PsContextProvider({ children, src }: Props) {
   }, [tool, pointer, pointGroupIndex, color, size, settings, setPointGroups]);
 
   React.useEffect(() => {
-    if (!pointer.down || tool === Tool.brush) return;
+    if (!pointer.down || tool !== Tool.move) return;
     setPosition((position) => ({
       ...position,
       x: pointer.x - position.startX + position.lastX,
       y: pointer.y - position.startY + position.lastY,
     }));
   }, [pointer, tool, setPosition]);
+
+  React.useEffect(() => {
+    if (pressedKeys.includes(ToolHotKey.move)) {
+      setTool(Tool.move);
+    }
+    if (pressedKeys.includes(ToolHotKey.brush)) {
+      setTool(Tool.brush);
+    }
+    if (pressedKeys.includes(ToolHotKey.zoom)) {
+      setTool(Tool.zoom);
+    }
+  }, [pressedKeys]);
+
+  React.useEffect(() => {
+    if (pointer.down && tool === Tool.zoom) {
+      const direction = pressedKeys.includes(ToolHotKey.zoomOut) ? -1 : 1;
+      setScale((scale) => scale + ZOOM_DELTA * direction);
+    }
+  }, [pressedKeys, tool, pointer.down]);
+
+  React.useEffect(() => {
+    function getKey(event: KeyboardEvent): string {
+      return event.key.toLowerCase();
+    }
+
+    function onKeyDown(event: KeyboardEvent) {
+      const key = getKey(event);
+      setPressedKeys((pressedKeys) => {
+        if (pressedKeys.includes(key)) return pressedKeys;
+        return [...pressedKeys, key];
+      });
+    }
+
+    function onKeyUp(event: KeyboardEvent) {
+      const key = getKey(event);
+      setPressedKeys((pressedKeys) => {
+        const index = pressedKeys.indexOf(key);
+        if (index === -1) return pressedKeys;
+        pressedKeys.splice(index, 1);
+        return [...pressedKeys];
+      });
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("keyup", onKeyUp);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("keyup", onKeyUp);
+    };
+  }, []);
 
   const context: PsContextType = {
     blob,
@@ -241,6 +297,8 @@ export default function PsContextProvider({ children, src }: Props) {
     setScale,
     opacity,
     setOpacity,
+    pressedKeys,
+    setPressedKeys,
     transform,
     settings,
     svg,
