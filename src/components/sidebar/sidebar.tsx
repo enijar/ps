@@ -7,8 +7,6 @@ export default function Sidebar() {
   const {
     filters,
     setFilters,
-    color,
-    setColor,
     brushSize,
     setBrushSize,
     rotation,
@@ -35,15 +33,6 @@ export default function Sidebar() {
             }
           />
         </label>
-      </div>
-      <div>
-        <label>color({color}):</label>
-        <br />
-        <input
-          type="color"
-          value={color}
-          onChange={(e) => setColor(e.target.value)}
-        />
       </div>
       <div>
         <label>saturation({filters.saturation}):</label>

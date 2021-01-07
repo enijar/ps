@@ -19,3 +19,8 @@ export const ZOOM_ICON = encode(
 export const BRUSH_ICON = encode(
   `<svg width="99.93" height="102.85" viewBox="0 0 99.93 102.85" xmlns="http://www.w3.org/2000/svg"><path d="m2628.24 1289.83s-2.56-8.1-13.65-10.23c10.6-12.15 50.94-60.57 58-54.58 8.92 7.55-44.35 64.81-44.35 64.81zm-3.41 10.24s1.1 27.29-51.18 27.29c0 0 10.24-7.01 10.24-13.65 0-6.82 6.65-30.7 23.88-30.7 17.06 0 17.06 17.06 17.06 17.06z" fill="${vars.colors.white}" fill-rule="evenodd" transform="translate(-2573.66 -1224.53)"/></svg>`
 );
+
+export const COLOR_ICON = (foreground: string) =>
+  encode(
+    `<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="m2674 2022h-70v-30h-30v-70h70v30h30zm-10-60h-20v30h-30v20h50z" fill="${foreground}" fill-rule="evenodd" transform="translate(-2574 -1922)"/></svg>`
+  );

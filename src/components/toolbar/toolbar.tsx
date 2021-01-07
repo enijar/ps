@@ -1,12 +1,25 @@
 import React from "react";
 import { ToolbarWrapper, ToolButton } from "./styles";
-import { BRUSH_ICON, MOVE_ICON, ZOOM_ICON } from "../../config/images";
+import {
+  BRUSH_ICON,
+  COLOR_ICON,
+  MOVE_ICON,
+  ZOOM_ICON,
+} from "../../config/images";
 import { PsContextType, Tool } from "../../config/types";
 import { PsContext } from "../ps/context";
 import { DEFAULTS } from "../../config/consts";
 
+// const HIDDEN_STYLE = {
+//   opacity: 0,
+//
+// };
+
 export default function Toolbar() {
-  const { tool, setTool } = React.useContext(PsContext) as PsContextType;
+  const { tool, setTool, color, setColor } = React.useContext(
+    PsContext
+  ) as PsContextType;
+  const colorInput = React.useRef<HTMLInputElement | null>(null);
 
   const toggleTool = React.useCallback(
     (tool: Tool) => {
@@ -30,6 +43,14 @@ export default function Toolbar() {
       </ToolButton>
       <ToolButton onClick={toggleTool(Tool.brush)} active={tool === Tool.brush}>
         <img src={BRUSH_ICON} alt="Brush (b)" />
+      </ToolButton>
+      <ToolButton inactive>
+        <img src={COLOR_ICON(color)} alt="Color" />
+        <input
+          ref={colorInput}
+          type="color"
+          onChange={(e) => setColor(e.target.value)}
+        />
       </ToolButton>
     </ToolbarWrapper>
   );

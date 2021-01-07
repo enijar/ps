@@ -11,7 +11,8 @@ export const ToolbarWrapper = styled.div`
 `;
 
 type ToolButtonProps = {
-  active: boolean;
+  active?: boolean;
+  inactive?: boolean;
 };
 
 export const ToolButton = styled.button<ToolButtonProps>`
@@ -19,6 +20,7 @@ export const ToolButton = styled.button<ToolButtonProps>`
   background-color: transparent;
   cursor: pointer;
   outline: none;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -31,6 +33,13 @@ export const ToolButton = styled.button<ToolButtonProps>`
 
   &:hover {
     background-color: ${vars.colors.black100};
+
+    ${(props) => {
+      if (!props.inactive) return;
+      return css`
+        background-color: transparent;
+      `;
+    }}
   }
 
   ${(props) => {
@@ -39,9 +48,21 @@ export const ToolButton = styled.button<ToolButtonProps>`
       background-color: ${vars.colors.black100};
     `;
   }}
+
   img {
     width: 2em;
     align-self: center;
     flex-shrink: 0;
+  }
+
+  input {
+    position: absolute;
+    cursor: pointer;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
   }
 `;
