@@ -50,7 +50,7 @@ export const ToolButton = styled.button<ToolButtonProps>`
   }}
 
   img {
-    width: 2em;
+    width: 1.5em;
     align-self: center;
     flex-shrink: 0;
   }
