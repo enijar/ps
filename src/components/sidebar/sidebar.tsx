@@ -13,8 +13,6 @@ export default function Sidebar() {
     setBrushSize,
     rotation,
     setRotation,
-    scale,
-    setScale,
     opacity,
     setOpacity,
     download,
@@ -120,18 +118,6 @@ export default function Sidebar() {
               hue: parseInt(e.target.value, 10),
             }))
           }
-        />
-      </div>
-      <div>
-        <label>scale({scale}):</label>
-        <br />
-        <input
-          type="range"
-          min={0.1}
-          max={2}
-          step={0.01}
-          value={scale}
-          onChange={(e) => setScale(parseFloat(e.target.value))}
         />
       </div>
       <div>
