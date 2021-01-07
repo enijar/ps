@@ -35,17 +35,29 @@ export default function Toolbar() {
 
   return (
     <ToolbarWrapper>
-      <ToolButton onClick={toggleTool(Tool.move)} active={tool === Tool.move}>
-        <img src={MOVE_ICON} alt="Move (v)" />
+      <ToolButton
+        onClick={toggleTool(Tool.move)}
+        active={tool === Tool.move}
+        title="Move (v)"
+      >
+        <img src={MOVE_ICON} />
       </ToolButton>
-      <ToolButton onClick={toggleTool(Tool.zoom)} active={tool === Tool.zoom}>
-        <img src={ZOOM_ICON} alt="Zoom (z)" />
+      <ToolButton
+        onClick={toggleTool(Tool.zoom)}
+        active={tool === Tool.zoom}
+        title="Zoom (z)"
+      >
+        <img src={ZOOM_ICON} />
       </ToolButton>
-      <ToolButton onClick={toggleTool(Tool.brush)} active={tool === Tool.brush}>
-        <img src={BRUSH_ICON} alt="Brush (b)" />
+      <ToolButton
+        onClick={toggleTool(Tool.brush)}
+        active={tool === Tool.brush}
+        title="Brush (b)"
+      >
+        <img src={BRUSH_ICON} />
       </ToolButton>
-      <ToolButton inactive>
-        <img src={COLOR_ICON(color)} alt="Color" />
+      <ToolButton inactive title="Color">
+        <img src={COLOR_ICON(color)} />
         <input
           ref={colorInput}
           type="color"
