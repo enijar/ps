@@ -8,6 +8,7 @@ import {
   ToolHotKey,
 } from "./config/types";
 import { CROP_ICON_CURSOR } from "./config/images";
+import { DEFAULTS } from "./config/consts";
 
 export function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
@@ -98,17 +99,32 @@ export function createLayer(file: File): Promise<Layer> {
     const src = URL.createObjectURL(file);
     const img = new Image();
     img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      if (ctx === null) {
+        reject("Failed to load image");
+        return;
+      }
+      canvas.width = img.width;
+      canvas.height = img.height;
+      // @todo scale down large images to improve performance
+      ctx.drawImage(img, 0, 0);
       resolve({
-        file,
         image: {
-          src,
+          src: canvas.toDataURL("image/png"),
           width: img.width,
           height: img.height,
           ratio: img.width / img.height,
         },
+        rotation: DEFAULTS.rotation,
+        position: DEFAULTS.position,
+        filters: DEFAULTS.filters,
+        scale: DEFAULTS.scale,
+        opacity: DEFAULTS.opacity,
         // @todo increment z-index
         zIndex: 0,
       });
+      URL.revokeObjectURL(src);
     };
     img.src = src;
   });

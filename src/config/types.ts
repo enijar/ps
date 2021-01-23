@@ -75,13 +75,17 @@ export enum ToolHotKey {
 export type PressedKeys = string[];
 
 export type Layer = {
-  file: File;
   image: {
     src: string;
     width: number;
     height: number;
     ratio: number;
   };
+  rotation: number;
+  position: Position;
+  filters: Filters;
+  scale: number;
+  opacity: number;
   zIndex: number;
 };
 
