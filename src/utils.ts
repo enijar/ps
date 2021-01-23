@@ -100,7 +100,7 @@ export function uuid(): string {
 }
 
 export function createLayer(file: File, zIndex = 0): Promise<Layer> {
-  const allowedTypes = ["image/png", "image/jpg"];
+  const allowedTypes = ["image/png", "image/jpg", "image/jpeg"];
   return new Promise((resolve, reject) => {
     if (!allowedTypes.includes(file.type)) {
       reject(`Invalid image file, must be one of: ${allowedTypes.join(" ")}`);
