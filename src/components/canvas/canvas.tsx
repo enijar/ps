@@ -1,6 +1,6 @@
 import React from "react";
 import { CanvasWrapper } from "./styles";
-import { PsContextType, Tool } from "../../config/types";
+import { Layer, PsContextType, Tool } from "../../config/types";
 import { PsContext } from "../ps/context";
 import { getCursor, createLayer } from "../../utils";
 
@@ -32,15 +32,17 @@ export default function Canvas() {
     async (event: React.DragEvent<any>) => {
       event.stopPropagation();
       event.preventDefault();
-      for (let i = 0; i < event.dataTransfer.files.length; i++) {
+      const files = Array.from(event.dataTransfer.files);
+      const newLayers: Layer[] = [];
+      for (let i = 0; i < files.length; i++) {
         try {
-          const layer = await createLayer(event.dataTransfer.files[i]);
-          setLayers((layers) => [...layers, layer]);
+          newLayers.push(await createLayer(files[i]));
         } catch (err) {
           // @todo handle error for user
           console.error(err);
         }
       }
+      setLayers((layers) => [...layers, ...newLayers]);
     },
     [setLayers]
   );
@@ -54,6 +56,10 @@ export default function Canvas() {
       });
     }
   }, [layers, setSize]);
+
+  React.useEffect(() => {
+    console.log(layers);
+  }, [layers]);
 
   return (
     <CanvasWrapper
