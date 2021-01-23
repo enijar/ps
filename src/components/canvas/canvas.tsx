@@ -106,6 +106,7 @@ export default function Canvas() {
           {sortLayers(layers).map((layer, index) => {
             return (
               <image
+                onDragStart={(event) => event.preventDefault()}
                 onMouseOver={() => {
                   if (!pointer.down) {
                     setSelectedLayer(layer);
