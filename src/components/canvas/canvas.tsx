@@ -1,5 +1,5 @@
 import React from "react";
-import { CanvasWrapper } from "./styles";
+import { CanvasWrapper, CanvasHelper } from "./styles";
 import { Layer, PsContextType, Tool } from "../../config/types";
 import { PsContext } from "../ps/context";
 import { getCursor, createLayer } from "../../utils";
@@ -67,6 +67,9 @@ export default function Canvas() {
       onDragOver={onDragOver}
       onDrop={onDrop}
     >
+      <CanvasHelper style={{ display: layers.length > 0 ? "none" : undefined }}>
+        Drop images here to get started!
+      </CanvasHelper>
       <svg
         ref={svg}
         viewBox={`0 0 ${size.width} ${size.height}`}
@@ -75,6 +78,7 @@ export default function Canvas() {
         style={{
           maxWidth: `${size.width}px`,
           maxHeight: `${size.height}px`,
+          display: layers.length === 0 ? "none" : undefined,
         }}
       >
         <filter id="filters">
