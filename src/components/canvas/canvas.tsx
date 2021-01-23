@@ -7,6 +7,7 @@ import { getCursor, createLayer, createTransform } from "../../utils";
 export default function Canvas() {
   const {
     size,
+    scale,
     setSize,
     setSelectedLayer,
     filters,
@@ -101,7 +102,7 @@ export default function Canvas() {
           )}
         </filter>
 
-        <g filter="url(#filters)">
+        <g filter="url(#filters)" style={{ transform: `scale(${scale})` }}>
           {sortLayers(layers).map((layer, index) => {
             return (
               <image

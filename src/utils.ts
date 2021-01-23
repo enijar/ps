@@ -130,7 +130,6 @@ export function createLayer(file: File, zIndex = 0): Promise<Layer> {
         rotation: DEFAULTS.rotation,
         position: DEFAULTS.position,
         filters: DEFAULTS.filters,
-        scale: DEFAULTS.scale,
         opacity: DEFAULTS.opacity,
         zIndex,
       });
@@ -141,10 +140,10 @@ export function createLayer(file: File, zIndex = 0): Promise<Layer> {
 }
 
 export function createTransform(size: Size, layer: Layer): string {
-  const { rotation, position, scale } = layer;
+  const { rotation, position } = layer;
   const cx = size.width / 2;
   const cy = size.height / 2;
-  const s = scale;
+  const s = 1;
   return [
     `translate(${position.x * size.width} ${position.y * size.height})`,
     `rotate(${rotation}, ${size.width / 2}, ${size.height / 2})`,

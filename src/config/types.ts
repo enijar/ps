@@ -85,7 +85,6 @@ export type Layer = {
   rotation: number;
   position: Position;
   filters: Filters;
-  scale: number;
   opacity: number;
   zIndex: number;
 };
