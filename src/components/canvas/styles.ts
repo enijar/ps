@@ -14,6 +14,7 @@ export const CanvasWrapper = styled.div`
   }
 
   svg {
+    margin: auto;
     display: block;
     background-repeat: repeat;
     background-image: url(${TRANSPARENT_BACKGROUND});

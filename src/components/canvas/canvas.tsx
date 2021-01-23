@@ -104,6 +104,8 @@ export default function Canvas() {
           {layers.map((layer, index) => {
             return (
               <image
+                style={{ pointerEvents: "all" }}
+                onMouseOver={() => console.log(index)}
                 key={index}
                 href={layer.image.src}
                 transform={transform}
