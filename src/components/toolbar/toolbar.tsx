@@ -10,13 +10,8 @@ import { PsContextType, Tool } from "../../config/types";
 import { PsContext } from "../ps/context";
 import { DEFAULTS } from "../../config/consts";
 
-// const HIDDEN_STYLE = {
-//   opacity: 0,
-//
-// };
-
 export default function Toolbar() {
-  const { tool, setTool, color, setColor } = React.useContext(
+  const { tool, setTool, setColor } = React.useContext(
     PsContext
   ) as PsContextType;
   const colorInput = React.useRef<HTMLInputElement | null>(null);
@@ -57,7 +52,7 @@ export default function Toolbar() {
         <img src={BRUSH_ICON} alt="" />
       </ToolButton>
       <ToolButton inactive title="Color">
-        <img src={COLOR_ICON(color)} alt="" />
+        <img src={COLOR_ICON} alt="" />
         <input
           ref={colorInput}
           type="color"
