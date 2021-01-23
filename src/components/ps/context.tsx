@@ -230,6 +230,9 @@ export default function PsContextProvider({ children, src }: Props) {
     if (pressedKeys.includes(ToolHotKey.zoom)) {
       setTool(Tool.zoom);
     }
+    if (pressedKeys.includes(ToolHotKey.crop)) {
+      setTool(Tool.crop);
+    }
   }, [pressedKeys]);
 
   React.useEffect(() => {

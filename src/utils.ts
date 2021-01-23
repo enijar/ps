@@ -6,6 +6,7 @@ import {
   Tool,
   ToolHotKey,
 } from "./config/types";
+import { CROP_ICON_CURSOR } from "./config/images";
 
 export function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
@@ -79,6 +80,8 @@ export function getCursor(tool: Tool, pressedKeys: PressedKeys = []): string {
     case Tool.zoom:
       const direction = pressedKeys.includes(ToolHotKey.zoomOut) ? "out" : "in";
       return `zoom-${direction}`;
+    case Tool.crop:
+      return `url("${CROP_ICON_CURSOR}") 17 0, default`;
     default:
       return "default";
   }

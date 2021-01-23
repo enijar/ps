@@ -65,6 +65,7 @@ export enum Tool {
   move,
   brush,
   zoom,
+  crop,
 }
 
 export enum ToolHotKey {
@@ -72,6 +73,7 @@ export enum ToolHotKey {
   brush = "b",
   zoom = "z",
   zoomOut = "alt",
+  crop = "c",
 }
 
 export type PressedKeys = string[];

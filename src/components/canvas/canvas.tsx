@@ -52,12 +52,9 @@ export default function Canvas() {
           )}
         </filter>
 
-        <image
-          xlinkHref={blob}
-          filter="url(#filters)"
-          transform={transform}
-          opacity={opacity}
-        />
+        <g filter="url(#filters)">
+          <image xlinkHref={blob} transform={transform} opacity={opacity} />
+        </g>
 
         {pointGroups.map((pointGroup, index) => {
           return (

@@ -3,10 +3,11 @@ import { ToolbarWrapper, ToolButton } from "./styles";
 import {
   BRUSH_ICON,
   COLOR_ICON,
+  CROP_ICON,
   MOVE_ICON,
   ZOOM_ICON,
 } from "../../config/images";
-import { PsContextType, Tool } from "../../config/types";
+import { PsContextType, Tool, ToolHotKey } from "../../config/types";
 import { PsContext } from "../ps/context";
 import { DEFAULTS } from "../../config/consts";
 
@@ -33,21 +34,21 @@ export default function Toolbar() {
       <ToolButton
         onClick={toggleTool(Tool.move)}
         active={tool === Tool.move}
-        title="Move (v)"
+        title={`Move (${ToolHotKey.move})`}
       >
         <img src={MOVE_ICON} alt="" />
       </ToolButton>
       <ToolButton
         onClick={toggleTool(Tool.zoom)}
         active={tool === Tool.zoom}
-        title="Zoom (z)"
+        title={`Zoom (${ToolHotKey.zoom})`}
       >
         <img src={ZOOM_ICON} alt="" />
       </ToolButton>
       <ToolButton
         onClick={toggleTool(Tool.brush)}
         active={tool === Tool.brush}
-        title="Brush (b)"
+        title={`Brush (${ToolHotKey.brush})`}
       >
         <img src={BRUSH_ICON} alt="" />
       </ToolButton>
@@ -58,6 +59,13 @@ export default function Toolbar() {
           type="color"
           onChange={(e) => setColor(e.target.value)}
         />
+      </ToolButton>
+      <ToolButton
+        onClick={toggleTool(Tool.crop)}
+        active={tool === Tool.crop}
+        title={`Crop (${ToolHotKey.crop})`}
+      >
+        <img src={CROP_ICON} alt="" />
       </ToolButton>
     </ToolbarWrapper>
   );

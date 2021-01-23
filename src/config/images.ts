@@ -23,3 +23,15 @@ export const BRUSH_ICON = encode(
 export const COLOR_ICON = encode(
   `<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="m2674 2022h-70v-30h-30v-70h70v30h30zm-10-60h-20v30h-30v20h50z" fill="${vars.colors.white}" fill-rule="evenodd" transform="translate(-2574 -1922)"/></svg>`
 );
+
+export const CROP_ICON = encode(
+  `<svg width="100" height="89.188" viewBox="0 0 100 89.188" xmlns="http://www.w3.org/2000/svg"><path d="m1278.45 838.175h-12.17v-8.108h12.17a4.054 4.054 0 0 1 0 8.108zm-21.63 18.919a4.05 4.05 0 0 1 -4.05-4.054v-60.81h-31.08a4.055 4.055 0 1 1 0-8.109h39.19v68.919a4.058 4.058 0 0 1 -4.06 4.054zm-13.51-27.027a4.054 4.054 0 0 1 0 8.108h-39.19v-66.216a4.055 4.055 0 0 1 8.11 0v58.108zm-60.81-41.891a4.05 4.05 0 0 1 4.05-4.055h12.17v8.109h-12.17a4.051 4.051 0 0 1 -4.05-4.054z" fill="${vars.colors.white}" fill-rule="evenodd" transform="translate(-1182.5 -767.906)"/></svg>`
+);
+
+const cursorRatio = 89.188 / 100;
+const cursorScale = 0.5;
+const cursorWidth = 100 * cursorScale;
+const cursorHeight = cursorWidth * cursorScale * cursorRatio;
+export const CROP_ICON_CURSOR = encode(
+  `<svg width="${cursorWidth}" height="${cursorHeight}" viewBox="0 0 100 89.188" xmlns="http://www.w3.org/2000/svg"><path d="m1278.45 838.175h-12.17v-8.108h12.17a4.054 4.054 0 0 1 0 8.108zm-21.63 18.919a4.05 4.05 0 0 1 -4.05-4.054v-60.81h-31.08a4.055 4.055 0 1 1 0-8.109h39.19v68.919a4.058 4.058 0 0 1 -4.06 4.054zm-13.51-27.027a4.054 4.054 0 0 1 0 8.108h-39.19v-66.216a4.055 4.055 0 0 1 8.11 0v58.108zm-60.81-41.891a4.05 4.05 0 0 1 4.05-4.055h12.17v8.109h-12.17a4.051 4.051 0 0 1 -4.05-4.054z" fill="${vars.colors.white}" fill-rule="evenodd" transform="translate(-1182.5 -767.906)"/></svg>`
+);
