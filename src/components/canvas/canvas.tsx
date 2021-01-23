@@ -21,8 +21,23 @@ export default function Canvas() {
     pressedKeys,
   } = React.useContext(PsContext) as PsContextType;
 
+  const onDragOver = React.useCallback((event: React.DragEvent<any>) => {
+    event.stopPropagation();
+    event.preventDefault();
+  }, []);
+
+  const onDrop = React.useCallback((event: React.DragEvent<any>) => {
+    event.stopPropagation();
+    event.preventDefault();
+    console.log(event.dataTransfer.files);
+  }, []);
+
   return (
-    <CanvasWrapper style={{ cursor: getCursor(tool, pressedKeys) }}>
+    <CanvasWrapper
+      style={{ cursor: getCursor(tool, pressedKeys) }}
+      onDragOver={onDragOver}
+      onDrop={onDrop}
+    >
       <svg
         ref={svg}
         viewBox={`0 0 ${size.width} ${size.height}`}
