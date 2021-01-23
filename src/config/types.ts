@@ -75,6 +75,7 @@ export enum ToolHotKey {
 export type PressedKeys = string[];
 
 export type Layer = {
+  id: string;
   image: {
     src: string;
     width: number;
@@ -92,6 +93,8 @@ export type Layer = {
 export type PsContextType = {
   layers: Layer[];
   setLayers: React.Dispatch<React.SetStateAction<Layer[]>>;
+  selectedLayer: Layer | null;
+  setSelectedLayer: React.Dispatch<React.SetStateAction<Layer | null>>;
   pointGroups: PointGroup[];
   setPointGroups: React.Dispatch<React.SetStateAction<PointGroup[]>>;
   pointGroupIndex: number;
@@ -104,8 +107,6 @@ export type PsContextType = {
   setRotation: React.Dispatch<React.SetStateAction<number>>;
   tool: Tool;
   setTool: React.Dispatch<React.SetStateAction<Tool>>;
-  position: Position;
-  setPosition: React.Dispatch<React.SetStateAction<Position>>;
   filters: Filters;
   setFilters: React.Dispatch<React.SetStateAction<Filters>>;
   color: string;
@@ -118,7 +119,6 @@ export type PsContextType = {
   setOpacity: React.Dispatch<React.SetStateAction<number>>;
   pressedKeys: PressedKeys;
   setPressedKeys: React.Dispatch<React.SetStateAction<PressedKeys>>;
-  transform: string;
   settings: Settings;
   svg: React.MutableRefObject<SVGSVGElement | null>;
   reset: React.MouseEventHandler;

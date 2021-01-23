@@ -2,17 +2,16 @@ import React from "react";
 import { CanvasWrapper, CanvasHelper } from "./styles";
 import { Layer, PsContextType, Tool } from "../../config/types";
 import { PsContext } from "../ps/context";
-import { getCursor, createLayer } from "../../utils";
+import { getCursor, createLayer, createTransform } from "../../utils";
 
 export default function Canvas() {
   const {
     size,
     setSize,
+    setSelectedLayer,
     filters,
     layers,
     setLayers,
-    transform,
-    opacity,
     pointGroups,
     settings,
     tool,
@@ -36,30 +35,32 @@ export default function Canvas() {
       const newLayers: Layer[] = [];
       for (let i = 0; i < files.length; i++) {
         try {
-          newLayers.push(await createLayer(files[i]));
+          newLayers.push(await createLayer(files[i], layers.length + i));
         } catch (err) {
-          // @todo handle error for user
+          // @todo show error to user
           console.error(err);
         }
       }
-      setLayers((layers) => [...layers, ...newLayers]);
+      setLayers(layers.concat(newLayers));
     },
-    [setLayers]
+    [layers, setLayers]
   );
 
+  const sortLayers = React.useCallback((layers: Layer[]) => {
+    return layers.sort((a, b) => {
+      return b.zIndex - a.zIndex;
+    });
+  }, []);
+
   React.useEffect(() => {
-    if (layers.length > 0) {
+    if (layers.length > 0 && size.width + size.height === 0) {
       setSize({
         width: layers[0].image.width,
         height: layers[0].image.height,
         ratio: layers[0].image.ratio,
       });
     }
-  }, [layers, setSize]);
-
-  React.useEffect(() => {
-    console.log(layers);
-  }, [layers]);
+  }, [layers, size, setSize]);
 
   return (
     <CanvasWrapper
@@ -101,14 +102,18 @@ export default function Canvas() {
         </filter>
 
         <g filter="url(#filters)">
-          {layers.map((layer, index) => {
+          {sortLayers(layers).map((layer, index) => {
             return (
               <image
-                onMouseOver={() => console.log(index)}
+                onMouseOver={() => {
+                  if (!pointer.down) {
+                    setSelectedLayer(layer);
+                  }
+                }}
                 key={index}
                 href={layer.image.src}
-                transform={transform}
-                opacity={opacity}
+                transform={createTransform(size, layer)}
+                opacity={layer.opacity}
               />
             );
           })}

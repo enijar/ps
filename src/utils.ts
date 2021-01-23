@@ -4,6 +4,7 @@ import {
   Point,
   PointGroup,
   PressedKeys,
+  Size,
   Tool,
   ToolHotKey,
 } from "./config/types";
@@ -89,7 +90,16 @@ export function getCursor(tool: Tool, pressedKeys: PressedKeys = []): string {
   }
 }
 
-export function createLayer(file: File): Promise<Layer> {
+export function uuid(): string {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    // eslint-disable-next-line no-mixed-operators
+    const r = (Math.random() * 16) | 0,
+      v = c === "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
+export function createLayer(file: File, zIndex = 0): Promise<Layer> {
   const allowedTypes = ["image/png", "image/jpg"];
   return new Promise((resolve, reject) => {
     if (!allowedTypes.includes(file.type)) {
@@ -110,6 +120,7 @@ export function createLayer(file: File): Promise<Layer> {
       // @todo scale down large images to improve performance
       ctx.drawImage(img, 0, 0);
       resolve({
+        id: uuid(),
         image: {
           src: canvas.toDataURL("image/png"),
           width: img.width,
@@ -121,11 +132,22 @@ export function createLayer(file: File): Promise<Layer> {
         filters: DEFAULTS.filters,
         scale: DEFAULTS.scale,
         opacity: DEFAULTS.opacity,
-        // @todo increment z-index
-        zIndex: 0,
+        zIndex,
       });
       URL.revokeObjectURL(src);
     };
     img.src = src;
   });
+}
+
+export function createTransform(size: Size, layer: Layer): string {
+  const { rotation, position, scale } = layer;
+  const cx = size.width / 2;
+  const cy = size.height / 2;
+  const s = scale;
+  return [
+    `translate(${position.x * size.width} ${position.y * size.height})`,
+    `rotate(${rotation}, ${size.width / 2}, ${size.height / 2})`,
+    `matrix(${s}, 0, 0, ${s}, ${cx - s * cx}, ${cy - s * cy})`,
+  ].join(" ");
 }

@@ -26,6 +26,7 @@ export const DEFAULTS = {
   scale: 1,
   pressedKeys: [],
   layers: [],
+  selectedLayer: null,
 };
 
 export const MOBILE_WIDTH = 700;
