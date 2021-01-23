@@ -1,5 +1,6 @@
 import {
   GetPointsProps,
+  Layer,
   Point,
   PointGroup,
   PressedKeys,
@@ -85,4 +86,30 @@ export function getCursor(tool: Tool, pressedKeys: PressedKeys = []): string {
     default:
       return "default";
   }
+}
+
+export function createLayer(file: File): Promise<Layer> {
+  const allowedTypes = ["image/png", "image/jpg"];
+  return new Promise((resolve, reject) => {
+    if (!allowedTypes.includes(file.type)) {
+      reject(`Invalid image file, must be one of: ${allowedTypes.join(" ")}`);
+      return;
+    }
+    const src = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      resolve({
+        file,
+        image: {
+          src,
+          width: img.width,
+          height: img.height,
+          ratio: img.width / img.height,
+        },
+        // @todo increment z-index
+        zIndex: 0,
+      });
+    };
+    img.src = src;
+  });
 }

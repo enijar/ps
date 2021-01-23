@@ -25,6 +25,7 @@ export const DEFAULTS = {
   opacity: 1,
   scale: 1,
   pressedKeys: [],
+  layers: [],
 };
 
 export const MOBILE_WIDTH = 700;

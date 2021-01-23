@@ -2,13 +2,15 @@ import React from "react";
 import { CanvasWrapper } from "./styles";
 import { PsContextType, Tool } from "../../config/types";
 import { PsContext } from "../ps/context";
-import { getCursor } from "../../utils";
+import { getCursor, createLayer } from "../../utils";
 
 export default function Canvas() {
   const {
     size,
+    setSize,
     filters,
-    blob,
+    layers,
+    setLayers,
     transform,
     opacity,
     pointGroups,
@@ -26,11 +28,32 @@ export default function Canvas() {
     event.preventDefault();
   }, []);
 
-  const onDrop = React.useCallback((event: React.DragEvent<any>) => {
-    event.stopPropagation();
-    event.preventDefault();
-    console.log(event.dataTransfer.files);
-  }, []);
+  const onDrop = React.useCallback(
+    async (event: React.DragEvent<any>) => {
+      event.stopPropagation();
+      event.preventDefault();
+      for (let i = 0; i < event.dataTransfer.files.length; i++) {
+        try {
+          const layer = await createLayer(event.dataTransfer.files[i]);
+          setLayers((layers) => [...layers, layer]);
+        } catch (err) {
+          // @todo handle error for user
+          console.error(err);
+        }
+      }
+    },
+    [setLayers]
+  );
+
+  React.useEffect(() => {
+    if (layers.length > 0) {
+      setSize({
+        width: layers[0].image.width,
+        height: layers[0].image.height,
+        ratio: layers[0].image.ratio,
+      });
+    }
+  }, [layers, setSize]);
 
   return (
     <CanvasWrapper
@@ -68,7 +91,16 @@ export default function Canvas() {
         </filter>
 
         <g filter="url(#filters)">
-          <image xlinkHref={blob} transform={transform} opacity={opacity} />
+          {layers.map((layer, index) => {
+            return (
+              <image
+                key={index}
+                href={layer.image.src}
+                transform={transform}
+                opacity={opacity}
+              />
+            );
+          })}
         </g>
 
         {pointGroups.map((pointGroup, index) => {

@@ -1,9 +1,5 @@
 import React from "react";
 
-export type Props = {
-  src: string;
-};
-
 export type Point = {
   x: number;
   y: number;
@@ -78,9 +74,20 @@ export enum ToolHotKey {
 
 export type PressedKeys = string[];
 
+export type Layer = {
+  file: File;
+  image: {
+    src: string;
+    width: number;
+    height: number;
+    ratio: number;
+  };
+  zIndex: number;
+};
+
 export type PsContextType = {
-  blob: string;
-  setBlob: React.Dispatch<React.SetStateAction<string>>;
+  layers: Layer[];
+  setLayers: React.Dispatch<React.SetStateAction<Layer[]>>;
   pointGroups: PointGroup[];
   setPointGroups: React.Dispatch<React.SetStateAction<PointGroup[]>>;
   pointGroupIndex: number;

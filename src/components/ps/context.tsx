@@ -10,19 +10,18 @@ import {
   Size,
   Tool,
   ToolHotKey,
+  Layer,
 } from "../../config/types";
 import { DEFAULTS, ZOOM_DELTA } from "../../config/consts";
 import { getPoints, getPosition } from "../../utils";
 
 type Props = {
   children: any;
-  src: string;
 };
 
 export const PsContext = React.createContext({});
 
-export default function PsContextProvider({ children, src }: Props) {
-  const [blob, setBlob] = React.useState<string>("");
+export default function PsContextProvider({ children }: Props) {
   const [pointGroups, setPointGroups] = React.useState<PointGroup[]>(
     DEFAULTS.pointGroups
   );
@@ -47,6 +46,7 @@ export default function PsContextProvider({ children, src }: Props) {
   const [brushSize, setBrushSize] = React.useState<number>(DEFAULTS.brushSize);
   const [scale, setScale] = React.useState<number>(DEFAULTS.scale);
   const [opacity, setOpacity] = React.useState<number>(DEFAULTS.opacity);
+  const [layers, setLayers] = React.useState<Layer[]>(DEFAULTS.layers);
   const [pressedKeys, setPressedKeys] = React.useState<PressedKeys>(
     DEFAULTS.pressedKeys
   );
@@ -80,6 +80,7 @@ export default function PsContextProvider({ children, src }: Props) {
     setOpacity(DEFAULTS.opacity);
     setScale(DEFAULTS.scale);
     setPressedKeys(DEFAULTS.pressedKeys);
+    setLayers(DEFAULTS.layers);
   }, []);
 
   const download = React.useCallback(() => {
@@ -108,27 +109,6 @@ export default function PsContextProvider({ children, src }: Props) {
     svg.current.removeAttribute("width");
     svg.current.removeAttribute("height");
   }, [size, svg]);
-
-  React.useEffect(() => {
-    const img = new Image();
-    img.onload = () => {
-      const canvas = document.createElement("canvas");
-      const ctx: CanvasRenderingContext2D | null = canvas.getContext("2d");
-      // @todo resize image to improve performance on large images
-      if (ctx !== null) {
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
-        setBlob(canvas.toDataURL("image/png"));
-      }
-      setSize({
-        width: img.width,
-        height: img.height,
-        ratio: img.width / img.height,
-      });
-    };
-    img.src = src;
-  }, [src, setSize, setBlob]);
 
   React.useEffect(() => {
     const svgElement: SVGSVGElement | null = svg.current;
@@ -274,8 +254,8 @@ export default function PsContextProvider({ children, src }: Props) {
   }, []);
 
   const context: PsContextType = {
-    blob,
-    setBlob,
+    layers,
+    setLayers,
     pointGroups,
     setPointGroups,
     pointGroupIndex,
