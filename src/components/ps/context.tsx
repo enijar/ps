@@ -98,8 +98,8 @@ export default function PsContextProvider({ children }: Props) {
             if (!layer.visible) return layer;
             if (layer.id === selectedLayer.id) {
               if (tool === Tool.brush) {
-                const pX = point.x - layer.position.x;
-                const pY = point.y - layer.position.y;
+                const x = point.x - layer.position.x;
+                const y = point.y - layer.position.y;
                 layer.pointGroupIndex = layer.pointGroupIndex + 1;
                 layer.pointGroups = [
                   ...layer.pointGroups,
@@ -108,8 +108,8 @@ export default function PsContextProvider({ children }: Props) {
                     size: brushSize,
                     rotation: 0,
                     points: [
-                      { x: pX, y: pY },
-                      { x: pX, y: pY },
+                      { x, y },
+                      { x, y },
                     ],
                   },
                 ];
@@ -120,7 +120,7 @@ export default function PsContextProvider({ children }: Props) {
                 startY: point.y,
               };
             }
-            return layer;
+            return { ...layer };
           });
         });
       }
@@ -186,17 +186,19 @@ export default function PsContextProvider({ children }: Props) {
     if (!pointer.down || tool !== Tool.brush) return;
     setLayers((layers) => {
       return layers.map((layer) => {
-        layer.pointGroups = getPoints({
-          layer,
-          pointer,
-          color,
-          size,
-          settings,
-        });
+        if (selectedLayer?.id === layer.id) {
+          layer.pointGroups = getPoints({
+            layer,
+            pointer,
+            color,
+            size,
+            settings,
+          });
+        }
         return layer;
       });
     });
-  }, [tool, pointer, color, size, settings]);
+  }, [tool, pointer, color, size, settings, selectedLayer]);
 
   React.useEffect(() => {
     if (!pointer.down || tool !== Tool.move || selectedLayer === null) return;
