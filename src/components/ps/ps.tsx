@@ -1,5 +1,6 @@
 import React from "react";
-import { PsFlex, PsInner, PsWrapper } from "./styles";
+import { PsInner, PsWrapper } from "./styles";
+import { Flex } from "../../styles";
 import Toolbar from "../toolbar/toolbar";
 import Canvas from "../canvas/canvas";
 import Sidebar from "../sidebar/sidebar";
@@ -10,11 +11,11 @@ export default function Ps() {
     <PsContextProvider>
       <PsWrapper>
         <PsInner>
-          <PsFlex>
+          <Flex>
             <Toolbar />
             <Canvas />
             <Sidebar />
-          </PsFlex>
+          </Flex>
         </PsInner>
       </PsWrapper>
     </PsContextProvider>

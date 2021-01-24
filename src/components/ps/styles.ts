@@ -1,10 +1,6 @@
 import styled from "styled-components";
 import vars from "../../config/vars";
-import {
-  MAX_CANVAS_WIDTH,
-  MAX_SIDEBAR_WIDTH,
-  MOBILE_WIDTH,
-} from "../../config/consts";
+import { MAX_CANVAS_WIDTH, MAX_SIDEBAR_WIDTH } from "../../config/consts";
 
 export const PsWrapper = styled.div`
   width: 100%;
@@ -20,15 +16,4 @@ export const PsInner = styled.div`
   max-width: ${MAX_CANVAS_WIDTH + MAX_SIDEBAR_WIDTH}px;
   margin-left: auto;
   margin-right: auto;
-`;
-
-export const PsFlex = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-
-  @media (max-width: ${MOBILE_WIDTH}px) {
-    flex-direction: column;
-    justify-content: flex-start;
-  }
 `;

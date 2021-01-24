@@ -45,8 +45,7 @@ export type Size = {
 };
 
 export type GetPointsProps = {
-  pointGroups: PointGroup[];
-  pointGroupIndex: number;
+  layer: Layer;
   pointer: Pointer;
   color: string;
   brushSize?: number;
@@ -89,6 +88,8 @@ export type Layer = {
   filters: Filters;
   opacity: number;
   order: number;
+  pointGroups: PointGroup[];
+  pointGroupIndex: number;
 };
 
 export type PsContextType = {
@@ -96,10 +97,6 @@ export type PsContextType = {
   setLayers: React.Dispatch<React.SetStateAction<Layer[]>>;
   selectedLayer: Layer | null;
   setSelectedLayer: React.Dispatch<React.SetStateAction<Layer | null>>;
-  pointGroups: PointGroup[];
-  setPointGroups: React.Dispatch<React.SetStateAction<PointGroup[]>>;
-  pointGroupIndex: number;
-  setPointGroupIndex: React.Dispatch<React.SetStateAction<number>>;
   pointer: Pointer;
   setPointer: React.Dispatch<React.SetStateAction<Pointer>>;
   size: Size;
@@ -116,8 +113,6 @@ export type PsContextType = {
   setBrushSize: React.Dispatch<React.SetStateAction<number>>;
   scale: number;
   setScale: React.Dispatch<React.SetStateAction<number>>;
-  opacity: number;
-  setOpacity: React.Dispatch<React.SetStateAction<number>>;
   pressedKeys: PressedKeys;
   setPressedKeys: React.Dispatch<React.SetStateAction<PressedKeys>>;
   settings: Settings;

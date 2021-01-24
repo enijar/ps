@@ -3,7 +3,6 @@ import {
   Filters,
   Layer,
   Pointer,
-  PointGroup,
   PressedKeys,
   PsContextType,
   Settings,
@@ -21,12 +20,6 @@ type Props = {
 export const PsContext = React.createContext({});
 
 export default function PsContextProvider({ children }: Props) {
-  const [pointGroups, setPointGroups] = React.useState<PointGroup[]>(
-    DEFAULTS.pointGroups
-  );
-  const [pointGroupIndex, setPointGroupIndex] = React.useState<number>(
-    DEFAULTS.pointGroupIndex
-  );
   const [pointer, setPointer] = React.useState<Pointer>({
     down: false,
     x: 0,
@@ -43,7 +36,6 @@ export default function PsContextProvider({ children }: Props) {
   const [color, setColor] = React.useState<string>(DEFAULTS.color);
   const [brushSize, setBrushSize] = React.useState<number>(DEFAULTS.brushSize);
   const [scale, setScale] = React.useState<number>(DEFAULTS.scale);
-  const [opacity, setOpacity] = React.useState<number>(DEFAULTS.opacity);
   const [layers, setLayers] = React.useState<Layer[]>(DEFAULTS.layers);
   const [selectedLayer, setSelectedLayer] = React.useState<Layer | null>(
     DEFAULTS.selectedLayer
@@ -61,13 +53,10 @@ export default function PsContextProvider({ children }: Props) {
 
   const reset = React.useCallback(() => {
     setFilters(DEFAULTS.filters);
-    setPointGroups(DEFAULTS.pointGroups);
-    setPointGroupIndex(DEFAULTS.pointGroupIndex);
     setColor(DEFAULTS.color);
     setBrushSize(DEFAULTS.brushSize);
     setRotation(DEFAULTS.rotation);
     setTool(DEFAULTS.tool);
-    setOpacity(DEFAULTS.opacity);
     setScale(DEFAULTS.scale);
     setPressedKeys(DEFAULTS.pressedKeys);
     setLayers(DEFAULTS.layers);
@@ -108,18 +97,31 @@ export default function PsContextProvider({ children }: Props) {
 
     function onPointerDown(event: TouchEvent | PointerEvent) {
       const point = getPosition(event, svgElement);
-      if (tool === Tool.brush) {
-        setPointGroupIndex((pointGroupIndex) => pointGroupIndex + 1);
-        setPointGroups((pointGroups) => [
-          ...pointGroups,
-          { color, size: brushSize, points: [point, point] },
-        ]);
-      }
       if (selectedLayer !== null) {
         setLayers((layers) => {
           return layers.map((layer) => {
             if (!layer.visible) return layer;
             if (layer.id === selectedLayer.id) {
+              if (tool === Tool.brush) {
+                layer.pointGroupIndex = layer.pointGroupIndex + 1;
+                layer.pointGroups = [
+                  ...layer.pointGroups,
+                  {
+                    color,
+                    size: brushSize,
+                    points: [
+                      {
+                        x: point.x - layer.position.x,
+                        y: point.y - layer.position.y,
+                      },
+                      {
+                        x: point.x - layer.position.x,
+                        y: point.y - layer.position.y,
+                      },
+                    ],
+                  },
+                ];
+              }
               layer.position = {
                 ...layer.position,
                 startX: point.x,
@@ -182,8 +184,6 @@ export default function PsContextProvider({ children }: Props) {
     size,
     color,
     brushSize,
-    setPointGroupIndex,
-    setPointGroups,
     setPointer,
     selectedLayer,
     setLayers,
@@ -192,17 +192,19 @@ export default function PsContextProvider({ children }: Props) {
 
   React.useEffect(() => {
     if (!pointer.down || tool !== Tool.brush) return;
-    setPointGroups((pointGroups) =>
-      getPoints({
-        pointGroups,
-        pointGroupIndex,
-        pointer,
-        color,
-        size,
-        settings,
-      })
-    );
-  }, [tool, pointer, pointGroupIndex, color, size, settings, setPointGroups]);
+    setLayers((layers) => {
+      return layers.map((layer) => {
+        layer.pointGroups = getPoints({
+          layer,
+          pointer,
+          color,
+          size,
+          settings,
+        });
+        return layer;
+      });
+    });
+  }, [tool, pointer, color, size, settings]);
 
   React.useEffect(() => {
     if (!pointer.down || tool !== Tool.move || selectedLayer === null) return;
@@ -279,10 +281,6 @@ export default function PsContextProvider({ children }: Props) {
     setLayers,
     selectedLayer,
     setSelectedLayer,
-    pointGroups,
-    setPointGroups,
-    pointGroupIndex,
-    setPointGroupIndex,
     pointer,
     setPointer,
     size,
@@ -299,8 +297,6 @@ export default function PsContextProvider({ children }: Props) {
     setBrushSize,
     scale,
     setScale,
-    opacity,
-    setOpacity,
     pressedKeys,
     setPressedKeys,
     settings,

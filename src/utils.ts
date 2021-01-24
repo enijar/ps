@@ -44,8 +44,7 @@ export function getPosition(
 }
 
 export function getPoints({
-  pointGroups,
-  pointGroupIndex,
+  layer,
   pointer,
   color,
   brushSize = 10,
@@ -53,26 +52,26 @@ export function getPoints({
   settings,
 }: GetPointsProps): PointGroup[] {
   const minD = brushSize / Math.min(size.width, size.height) / settings.p;
-  const pointGroup = pointGroups[pointGroupIndex];
+  const pointGroup = layer.pointGroups[layer.pointGroupIndex];
   if (pointGroup === undefined) {
-    pointGroups[pointGroupIndex] = {
+    layer.pointGroups[layer.pointGroupIndex] = {
       color,
       size: brushSize,
       points: [{ x: pointer.x, y: pointer.y }],
     };
-    return [...pointGroups];
+    return [...layer.pointGroups];
   }
   const lastPoint = pointGroup.points[pointGroup.points.length - 1];
   if (lastPoint !== undefined) {
     const d = dist(lastPoint, pointer);
-    if (d < minD) return pointGroups;
+    if (d < minD) return layer.pointGroups;
   }
-  pointGroups[pointGroupIndex].color = color;
-  pointGroups[pointGroupIndex].points = [
-    ...pointGroups[pointGroupIndex].points,
-    { x: pointer.x, y: pointer.y },
+  layer.pointGroups[layer.pointGroupIndex].color = color;
+  layer.pointGroups[layer.pointGroupIndex].points = [
+    ...layer.pointGroups[layer.pointGroupIndex].points,
+    { x: pointer.x - layer.position.x, y: pointer.y - layer.position.y },
   ];
-  return [...pointGroups];
+  return [...layer.pointGroups];
 }
 
 export function getCursor(tool: Tool, pressedKeys: PressedKeys = []): string {
@@ -133,7 +132,9 @@ export function createLayer(file: File, order = 0): Promise<Layer> {
         rotation: DEFAULTS.rotation,
         position: DEFAULTS.position,
         filters: DEFAULTS.filters,
-        opacity: DEFAULTS.opacity,
+        opacity: 1,
+        pointGroups: [],
+        pointGroupIndex: -1,
         order,
       });
       URL.revokeObjectURL(src);

@@ -12,13 +12,11 @@ import {
 export default function Canvas() {
   const {
     size,
-    scale,
     setSize,
     setSelectedLayer,
     filters,
     layers,
     setLayers,
-    pointGroups,
     settings,
     tool,
     pointer,
@@ -66,7 +64,7 @@ export default function Canvas() {
       onDrop={onDrop}
     >
       <CanvasHelper style={{ display: layers.length > 0 ? "none" : undefined }}>
-        Drop images here to get started!
+        Drop image(s) here to get started!
       </CanvasHelper>
       <svg
         ref={svg}
@@ -79,53 +77,61 @@ export default function Canvas() {
           display: layers.length === 0 ? "none" : undefined,
         }}
       >
-        <filter id="filters">
-          {/* blur */}
-          <feGaussianBlur stdDeviation={filters.blur} />
-          {/* hue */}
-          <feColorMatrix type="hueRotate" values={filters.hue.toString()} />
-          {/* saturation */}
-          <feColorMatrix
-            type="saturate"
-            values={filters.saturation.toString()}
-          />
-          {/* sepia */}
-          {filters.sepia && (
-            <feColorMatrix
-              type="matrix"
-              values="0.39 0.769 0.189 0 0 0.349 0.686 0.168 0 0 0.272 0.534 0.131 0 0 0 0 0 1 0"
-            />
-          )}
-        </filter>
-
-        <g filter="url(#filters)" style={{ transform: `scale(${scale})` }}>
-          {sortLayers(layers).map((layer, index) => {
-            if (!layer.visible) return null;
-            return (
-              <image
-                onDragStart={(event) => event.preventDefault()}
-                key={index}
-                href={layer.image.src}
-                transform={createTransform(size, layer)}
-                opacity={layer.opacity}
-              />
-            );
-          })}
-        </g>
-
-        {pointGroups.map((pointGroup, index) => {
+        {sortLayers(layers).map((layer, index) => {
+          if (!layer.visible) return null;
           return (
-            <path
-              key={index}
-              stroke={pointGroup.color}
-              fill="none"
-              d={`M${pointGroup.points
-                .map((p) => [p.x * size.width, p.y * size.height].join(","))
-                .join(",")}`}
-              strokeWidth={pointGroup.size}
-              strokeLinecap={settings.lineCap}
-              strokeLinejoin="round"
-            />
+            <g key={layer.id}>
+              <filter key={layer.id} id={`filters-${index}`}>
+                {/* blur */}
+                <feGaussianBlur stdDeviation={filters.blur} />
+                {/* hue */}
+                <feColorMatrix
+                  type="hueRotate"
+                  values={filters.hue.toString()}
+                />
+                {/* saturation */}
+                <feColorMatrix
+                  type="saturate"
+                  values={filters.saturation.toString()}
+                />
+                {/* sepia */}
+                {filters.sepia && (
+                  <feColorMatrix
+                    type="matrix"
+                    values="0.39 0.769 0.189 0 0 0.349 0.686 0.168 0 0 0.272 0.534 0.131 0 0 0 0 0 1 0"
+                  />
+                )}
+              </filter>
+
+              <g
+                filter={`url(#filters-${index})`}
+                opacity={layer.opacity}
+                transform={createTransform(size, layer)}
+              >
+                <image
+                  onDragStart={(event) => event.preventDefault()}
+                  href={layer.image.src}
+                />
+
+                {layer.pointGroups.map((pointGroup, index) => {
+                  return (
+                    <path
+                      key={index}
+                      stroke={pointGroup.color}
+                      fill="none"
+                      d={`M${pointGroup.points
+                        .map((p) =>
+                          [p.x * size.width, p.y * size.height].join(",")
+                        )
+                        .join(",")}`}
+                      strokeWidth={pointGroup.size}
+                      strokeLinecap={settings.lineCap}
+                      strokeLinejoin="round"
+                    />
+                  );
+                })}
+              </g>
+            </g>
           );
         })}
         {tool === Tool.brush && (
