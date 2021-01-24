@@ -2,6 +2,7 @@ import styled, { css } from "styled-components";
 import vars from "../../config/vars";
 
 export const LayersWrapper = styled.div`
+  position: relative;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   max-height: 250px;
@@ -13,8 +14,6 @@ type LayerItemProps = {
 };
 
 export const LayerItem = styled.div<LayerItemProps>`
-  display: flex;
-  align-items: center;
   cursor: pointer;
   padding: 1em 0.5em;
   border-bottom: 1px solid ${vars.colors.black100};
@@ -35,8 +34,13 @@ export const LayerItem = styled.div<LayerItemProps>`
     border-bottom: none;
   }
 
+  img,
+  div {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
   img {
-    display: block;
     align-self: center;
     width: 1em;
     margin-right: 0.5em;
@@ -49,6 +53,7 @@ export const LayerItem = styled.div<LayerItemProps>`
   }
 
   label {
+    pointer-events: none;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

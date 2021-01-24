@@ -5,6 +5,15 @@ import { EYE_ICON } from "../../config/images";
 import { sortLayers } from "../../utils";
 import { PsContext } from "../ps/context";
 
+type DragData = {
+  layer: Layer;
+  enabled: boolean;
+  startY: number;
+  offsetY: number;
+  // @todo fix type
+  target: any;
+};
+
 export default function Layers() {
   const {
     layers,
@@ -12,8 +21,10 @@ export default function Layers() {
     selectedLayer,
     setSelectedLayer,
   } = React.useContext(PsContext) as PsContextType;
+  const wrapper = React.useRef<HTMLDivElement | null>(null);
   const [renameLayer, setRenameLayer] = React.useState<Layer | null>(null);
   const [layerName, setLayerName] = React.useState<string>("");
+  const [dragData, setDragData] = React.useState<DragData | null>(null);
 
   const selectLayer = React.useCallback(
     (layer) => {
@@ -81,8 +92,55 @@ export default function Layers() {
     [layers, setLayers, renameLayer, layerName]
   );
 
+  const onPointerDown = React.useCallback(
+    (layer) => {
+      // @todo fix event type
+      return (event: any) => {
+        if (wrapper.current === null) return;
+        const { top } = wrapper.current.getBoundingClientRect();
+        setDragData({
+          layer,
+          enabled: true,
+          startY: wrapper.current.scrollTop + top,
+          offsetY: 0,
+          target: event.target,
+        });
+      };
+    },
+    [wrapper]
+  );
+
+  React.useEffect(() => {
+    function onPointerUp() {
+      setDragData(null);
+    }
+    function onPointerMove(event: PointerEvent) {
+      if (!wrapper.current || !dragData || !dragData.enabled) return;
+      const { height } = dragData.target.getBoundingClientRect();
+      console.log(
+        height,
+        dragData.layer.order,
+        layers[layers.length - 1].order
+      );
+      const y = event.pageY - wrapper.current.scrollTop;
+      setDragData((dragData) => {
+        if (!dragData) return null;
+        return {
+          ...dragData,
+          offsetY: y - dragData.startY,
+        };
+      });
+    }
+    window.addEventListener("pointerup", onPointerUp);
+    window.addEventListener("pointermove", onPointerMove);
+    return () => {
+      window.removeEventListener("pointerup", onPointerUp);
+      window.removeEventListener("pointermove", onPointerMove);
+    };
+  }, [dragData, wrapper, layers]);
+
   return (
-    <LayersWrapper>
+    <LayersWrapper ref={wrapper}>
       {sortLayers(layers, OrderType.desc).map((layer) => {
         return (
           <LayerItem
@@ -90,6 +148,13 @@ export default function Layers() {
             title={layer.name}
             selected={selectedLayer?.id === layer.id}
             onClick={selectLayer(layer)}
+            onPointerDown={onPointerDown(layer)}
+            style={{
+              transform:
+                dragData?.layer?.id === layer.id
+                  ? `translateY(${dragData?.offsetY ?? 0}px)`
+                  : undefined,
+            }}
           >
             <img
               src={EYE_ICON}
@@ -98,10 +163,8 @@ export default function Layers() {
               onClick={toggleVisibility(layer)}
               style={{ opacity: layer.visible ? 1 : 0 }}
             />
-            <div>
-              {renameLayer?.id !== layer.id && (
-                <label onDoubleClick={onDoubleClick(layer)}>{layer.name}</label>
-              )}
+            <div onDoubleClick={onDoubleClick(layer)}>
+              {renameLayer?.id !== layer.id && <label>{layer.name}</label>}
               {renameLayer?.id === layer.id && (
                 <form onSubmit={onSubmit}>
                   <input
