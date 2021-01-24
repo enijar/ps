@@ -1,6 +1,6 @@
 import React from "react";
 import { CanvasHelper, CanvasWrapper } from "./styles";
-import { Layer, PsContextType, Tool } from "../../config/types";
+import { Layer, PsContextType, Tool, FilterTypes } from "../../config/types";
 import { PsContext } from "../ps/context";
 import {
   createLayer,
@@ -14,7 +14,6 @@ export default function Canvas() {
     size,
     setSize,
     setSelectedLayer,
-    filters,
     layers,
     setLayers,
     settings,
@@ -83,19 +82,21 @@ export default function Canvas() {
             <g key={layer.id}>
               <filter key={layer.id} id={`filters-${index}`}>
                 {/* blur */}
-                <feGaussianBlur stdDeviation={filters.blur} />
+                <feGaussianBlur
+                  stdDeviation={layer.filters[FilterTypes.blur]}
+                />
                 {/* hue */}
                 <feColorMatrix
                   type="hueRotate"
-                  values={filters.hue.toString()}
+                  values={layer.filters[FilterTypes.hue].toString()}
                 />
                 {/* saturation */}
                 <feColorMatrix
                   type="saturate"
-                  values={filters.saturation.toString()}
+                  values={layer.filters[FilterTypes.saturation].toString()}
                 />
                 {/* sepia */}
-                {filters.sepia && (
+                {layer.filters[FilterTypes.sepia] && (
                   <feColorMatrix
                     type="matrix"
                     values="0.39 0.769 0.189 0 0 0.349 0.686 0.168 0 0 0.272 0.534 0.131 0 0 0 0 0 1 0"
@@ -105,7 +106,7 @@ export default function Canvas() {
 
               <g
                 filter={`url(#filters-${index})`}
-                opacity={layer.opacity}
+                opacity={layer.filters[FilterTypes.opacity]}
                 transform={createTransform(size, layer)}
               >
                 <image

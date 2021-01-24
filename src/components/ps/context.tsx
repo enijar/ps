@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Filters,
   Layer,
   Pointer,
   PressedKeys,
@@ -32,7 +31,6 @@ export default function PsContextProvider({ children }: Props) {
   });
   const [rotation, setRotation] = React.useState<number>(DEFAULTS.rotation);
   const [tool, setTool] = React.useState<Tool>(Tool.move);
-  const [filters, setFilters] = React.useState<Filters>(DEFAULTS.filters);
   const [color, setColor] = React.useState<string>(DEFAULTS.color);
   const [brushSize, setBrushSize] = React.useState<number>(DEFAULTS.brushSize);
   const [scale, setScale] = React.useState<number>(DEFAULTS.scale);
@@ -52,7 +50,6 @@ export default function PsContextProvider({ children }: Props) {
   const svg = React.useRef<SVGSVGElement | null>(null);
 
   const reset = React.useCallback(() => {
-    setFilters(DEFAULTS.filters);
     setColor(DEFAULTS.color);
     setBrushSize(DEFAULTS.brushSize);
     setRotation(DEFAULTS.rotation);
@@ -289,8 +286,6 @@ export default function PsContextProvider({ children }: Props) {
     setRotation,
     tool,
     setTool,
-    filters,
-    setFilters,
     color,
     setColor,
     brushSize,

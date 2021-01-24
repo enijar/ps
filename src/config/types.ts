@@ -31,11 +31,20 @@ export type Position = {
   lastY: number;
 };
 
+export enum FilterTypes {
+  opacity,
+  blur,
+  saturation,
+  hue,
+  sepia,
+}
+
 export type Filters = {
-  blur: number;
-  saturation: number;
-  hue: number;
-  sepia: boolean;
+  [FilterTypes.opacity]: number;
+  [FilterTypes.blur]: number;
+  [FilterTypes.saturation]: number;
+  [FilterTypes.hue]: number;
+  [FilterTypes.sepia]: boolean;
 };
 
 export type Size = {
@@ -86,7 +95,6 @@ export type Layer = {
   rotation: number;
   position: Position;
   filters: Filters;
-  opacity: number;
   order: number;
   pointGroups: PointGroup[];
   pointGroupIndex: number;
@@ -105,8 +113,6 @@ export type PsContextType = {
   setRotation: React.Dispatch<React.SetStateAction<number>>;
   tool: Tool;
   setTool: React.Dispatch<React.SetStateAction<Tool>>;
-  filters: Filters;
-  setFilters: React.Dispatch<React.SetStateAction<Filters>>;
   color: string;
   setColor: React.Dispatch<React.SetStateAction<string>>;
   brushSize: number;

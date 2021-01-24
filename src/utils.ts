@@ -8,6 +8,7 @@ import {
   Size,
   Tool,
   ToolHotKey,
+  FilterTypes,
 } from "./config/types";
 import { CROP_ICON_CURSOR } from "./config/images";
 import { DEFAULTS } from "./config/consts";
@@ -131,8 +132,13 @@ export function createLayer(file: File, order = 0): Promise<Layer> {
         },
         rotation: DEFAULTS.rotation,
         position: DEFAULTS.position,
-        filters: DEFAULTS.filters,
-        opacity: 1,
+        filters: {
+          [FilterTypes.opacity]: 1,
+          [FilterTypes.blur]: 0,
+          [FilterTypes.saturation]: 1,
+          [FilterTypes.hue]: 0,
+          [FilterTypes.sepia]: false,
+        },
         pointGroups: [],
         pointGroupIndex: -1,
         order,

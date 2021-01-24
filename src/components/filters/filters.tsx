@@ -1,12 +1,10 @@
 import React from "react";
 import { FiltersWrapper } from "./styles";
+import { FilterTypes, PsContextType } from "../../config/types";
 import { PsContext } from "../ps/context";
-import { PsContextType } from "../../config/types";
 
 export default function Filters() {
   const {
-    filters,
-    setFilters,
     brushSize,
     setBrushSize,
     rotation,
@@ -16,6 +14,51 @@ export default function Filters() {
     setLayers,
   } = React.useContext(PsContext) as PsContextType;
 
+  const applyFilter = React.useCallback(
+    (type: FilterTypes) => {
+      return (event: React.ChangeEvent<HTMLInputElement>) => {
+        const updatedLayers = [...layers];
+        const index = updatedLayers.findIndex(
+          (layer) => layer.id === selectedLayer?.id
+        );
+        if (index === -1) return;
+        switch (type) {
+          case FilterTypes.sepia:
+            updatedLayers[index].filters = {
+              ...updatedLayers[index].filters,
+              [FilterTypes.sepia]: event.target.checked,
+            };
+            break;
+          case FilterTypes.saturation:
+            updatedLayers[index].filters = {
+              ...updatedLayers[index].filters,
+              [FilterTypes.saturation]: parseFloat(event.target.value),
+            };
+            break;
+          case FilterTypes.blur:
+            updatedLayers[index].filters = {
+              ...updatedLayers[index].filters,
+              [FilterTypes.blur]: parseInt(event.target.value, 10),
+            };
+            break;
+          case FilterTypes.hue:
+            updatedLayers[index].filters = {
+              ...updatedLayers[index].filters,
+              [FilterTypes.hue]: parseInt(event.target.value, 10),
+            };
+            break;
+          case FilterTypes.opacity:
+            updatedLayers[index].filters[FilterTypes.opacity] = parseFloat(
+              event.currentTarget.value
+            );
+            break;
+        }
+        setLayers(updatedLayers);
+      };
+    },
+    [layers, selectedLayer, setLayers]
+  );
+
   return (
     <FiltersWrapper>
       <div>
@@ -23,35 +66,25 @@ export default function Filters() {
           sepia:
           <input
             type="checkbox"
-            checked={filters.sepia}
-            onChange={(e) =>
-              setFilters((filters) => ({
-                ...filters,
-                sepia: e.target.checked,
-              }))
-            }
+            checked={selectedLayer?.filters?.[FilterTypes.sepia] ?? false}
+            onChange={applyFilter(FilterTypes.sepia)}
           />
         </label>
       </div>
       <div>
-        <label>saturation({filters.saturation}):</label>
+        <label>saturation:</label>
         <br />
         <input
           type="range"
           min={0}
           max={3}
           step={0.01}
-          value={filters.saturation}
-          onChange={(e) =>
-            setFilters((filters) => ({
-              ...filters,
-              saturation: parseFloat(e.target.value),
-            }))
-          }
+          value={selectedLayer?.filters?.[FilterTypes.saturation] ?? ""}
+          onChange={applyFilter(FilterTypes.saturation)}
         />
       </div>
       <div>
-        <label>brushSize({brushSize}px):</label>
+        <label>brushSize:</label>
         <br />
         <input
           type="range"
@@ -63,7 +96,7 @@ export default function Filters() {
         />
       </div>
       <div>
-        <label>rotation({rotation}&deg;):</label>
+        <label>rotation:</label>
         <br />
         <input
           type="range"
@@ -75,37 +108,27 @@ export default function Filters() {
         />
       </div>
       <div>
-        <label>blur({filters.blur}px):</label>
+        <label>blur({selectedLayer?.filters?.[FilterTypes.blur]}px):</label>
         <br />
         <input
           type="range"
           min={0}
           max={100}
           step={1}
-          value={filters.blur}
-          onChange={(e) =>
-            setFilters((filters) => ({
-              ...filters,
-              blur: parseInt(e.target.value, 10),
-            }))
-          }
+          value={selectedLayer?.filters?.[FilterTypes.blur] ?? ""}
+          onChange={applyFilter(FilterTypes.blur)}
         />
       </div>
       <div>
-        <label>hue({filters.hue}&deg;):</label>
+        <label>hue({selectedLayer?.filters?.[FilterTypes.hue]}&deg;):</label>
         <br />
         <input
           type="range"
           min={0}
           max={360}
           step={1}
-          value={filters.hue}
-          onChange={(e) =>
-            setFilters((filters) => ({
-              ...filters,
-              hue: parseInt(e.target.value, 10),
-            }))
-          }
+          value={selectedLayer?.filters?.[FilterTypes.hue] ?? ""}
+          onChange={applyFilter(FilterTypes.hue)}
         />
       </div>
       <div>
@@ -116,16 +139,8 @@ export default function Filters() {
           min={0}
           max={1}
           step={0.01}
-          value={selectedLayer?.opacity ?? 0}
-          onChange={(e) => {
-            const updatedLayers = [...layers];
-            const index = updatedLayers.findIndex(
-              (layer) => layer.id === selectedLayer?.id
-            );
-            if (index === -1) return;
-            updatedLayers[index].opacity = parseFloat(e.target.value);
-            setLayers(updatedLayers);
-          }}
+          value={selectedLayer?.filters?.[FilterTypes.opacity] ?? "0"}
+          onChange={applyFilter(FilterTypes.opacity)}
         />
       </div>
     </FiltersWrapper>
