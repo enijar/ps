@@ -14,8 +14,9 @@ npm start # http://localhost:3000
 - [x] Filters: grayscale, hue, saturation, etc.
 - [x] Rotate
 - [x] Scale
-- [ ] Crop
-- [x] Layers
-- [ ] Text overlay
 - [x] Brush (drawing)
 - [x] Convert to blob and data URI
+- [x] Layers
+- [ ] Text overlay
+- [ ] History
+- [ ] Crop
