@@ -58,6 +58,7 @@ export function getPoints({
     layer.pointGroups[layer.pointGroupIndex] = {
       color,
       size: brushSize,
+      rotation: 0,
       points: [{ x: pointer.x, y: pointer.y }],
     };
     return [...layer.pointGroups];
@@ -130,7 +131,7 @@ export function createLayer(file: File, order = 0): Promise<Layer> {
           height: img.height,
           ratio: img.width / img.height,
         },
-        rotation: DEFAULTS.rotation,
+        rotation: 0,
         position: DEFAULTS.position,
         filters: {
           [FilterTypes.opacity]: 1,
@@ -149,8 +150,12 @@ export function createLayer(file: File, order = 0): Promise<Layer> {
   });
 }
 
-export function createTransform(size: Size, layer: Layer): string {
-  const { rotation, position } = layer;
+export function createTransform(
+  size: Size,
+  layer: Layer,
+  rotation: number = 0
+): string {
+  const { position } = layer;
   const cx = size.width / 2;
   const cy = size.height / 2;
   const s = 1;

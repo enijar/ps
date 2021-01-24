@@ -29,11 +29,10 @@ export default function PsContextProvider({ children }: Props) {
     height: 0,
     ratio: 1,
   });
-  const [rotation, setRotation] = React.useState<number>(DEFAULTS.rotation);
   const [tool, setTool] = React.useState<Tool>(Tool.move);
   const [color, setColor] = React.useState<string>(DEFAULTS.color);
-  const [brushSize, setBrushSize] = React.useState<number>(DEFAULTS.brushSize);
   const [scale, setScale] = React.useState<number>(DEFAULTS.scale);
+  const [brushSize, setBrushSize] = React.useState<number>(DEFAULTS.brushSize);
   const [layers, setLayers] = React.useState<Layer[]>(DEFAULTS.layers);
   const [selectedLayer, setSelectedLayer] = React.useState<Layer | null>(
     DEFAULTS.selectedLayer
@@ -50,11 +49,10 @@ export default function PsContextProvider({ children }: Props) {
   const svg = React.useRef<SVGSVGElement | null>(null);
 
   const reset = React.useCallback(() => {
+    setScale(DEFAULTS.scale);
     setColor(DEFAULTS.color);
     setBrushSize(DEFAULTS.brushSize);
-    setRotation(DEFAULTS.rotation);
     setTool(DEFAULTS.tool);
-    setScale(DEFAULTS.scale);
     setPressedKeys(DEFAULTS.pressedKeys);
     setLayers(DEFAULTS.layers);
     setSelectedLayer(DEFAULTS.selectedLayer);
@@ -100,21 +98,18 @@ export default function PsContextProvider({ children }: Props) {
             if (!layer.visible) return layer;
             if (layer.id === selectedLayer.id) {
               if (tool === Tool.brush) {
+                const pX = point.x - layer.position.x;
+                const pY = point.y - layer.position.y;
                 layer.pointGroupIndex = layer.pointGroupIndex + 1;
                 layer.pointGroups = [
                   ...layer.pointGroups,
                   {
                     color,
                     size: brushSize,
+                    rotation: 0,
                     points: [
-                      {
-                        x: point.x - layer.position.x,
-                        y: point.y - layer.position.y,
-                      },
-                      {
-                        x: point.x - layer.position.x,
-                        y: point.y - layer.position.y,
-                      },
+                      { x: pX, y: pY },
+                      { x: pX, y: pY },
                     ],
                   },
                 ];
@@ -282,22 +277,20 @@ export default function PsContextProvider({ children }: Props) {
     setPointer,
     size,
     setSize,
-    rotation,
-    setRotation,
     tool,
     setTool,
     color,
     setColor,
     brushSize,
     setBrushSize,
-    scale,
-    setScale,
     pressedKeys,
     setPressedKeys,
     settings,
     svg,
     reset,
     download,
+    scale,
+    setScale,
   };
 
   return <PsContext.Provider value={context}>{children}</PsContext.Provider>;

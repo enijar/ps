@@ -7,8 +7,6 @@ export default function Filters() {
   const {
     brushSize,
     setBrushSize,
-    rotation,
-    setRotation,
     selectedLayer,
     layers,
     setLayers,
@@ -103,8 +101,22 @@ export default function Filters() {
           min={0}
           max={360}
           step={1}
-          value={rotation}
-          onChange={(e) => setRotation(parseInt(e.target.value, 10))}
+          value={selectedLayer?.rotation ?? "0"}
+          onChange={(event) => {
+            setLayers((layers) => {
+              return layers.map((layer) => {
+                if (layer.id === selectedLayer?.id) {
+                  const r = parseInt(event.target.value, 10);
+                  layer.rotation = r;
+                  layer.pointGroups = layer.pointGroups.map((pointGroup) => {
+                    pointGroup.rotation = r;
+                    return pointGroup;
+                  });
+                }
+                return layer;
+              });
+            });
+          }}
         />
       </div>
       <div>

@@ -8,6 +8,7 @@ export type Point = {
 export type PointGroup = {
   color: string;
   size: number;
+  rotation: number;
   points: Point[];
 };
 
@@ -109,16 +110,14 @@ export type PsContextType = {
   setPointer: React.Dispatch<React.SetStateAction<Pointer>>;
   size: Size;
   setSize: React.Dispatch<React.SetStateAction<Size>>;
-  rotation: number;
-  setRotation: React.Dispatch<React.SetStateAction<number>>;
+  scale: number;
+  setScale: React.Dispatch<React.SetStateAction<number>>;
   tool: Tool;
   setTool: React.Dispatch<React.SetStateAction<Tool>>;
   color: string;
   setColor: React.Dispatch<React.SetStateAction<string>>;
   brushSize: number;
   setBrushSize: React.Dispatch<React.SetStateAction<number>>;
-  scale: number;
-  setScale: React.Dispatch<React.SetStateAction<number>>;
   pressedKeys: PressedKeys;
   setPressedKeys: React.Dispatch<React.SetStateAction<PressedKeys>>;
   settings: Settings;
