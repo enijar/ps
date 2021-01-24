@@ -4,10 +4,10 @@ import vars from "../../config/vars";
 const TOOL_BUTTON_PADDING = "0.5em";
 
 export const ToolbarWrapper = styled.div`
-  width: 100%;
   background-color: ${vars.colors.black300};
   padding: 0.25em;
   display: flex;
+  flex-direction: column;
 `;
 
 type ToolButtonProps = {
@@ -25,10 +25,10 @@ export const ToolButton = styled.button<ToolButtonProps>`
   align-items: center;
   justify-content: center;
   padding: ${TOOL_BUTTON_PADDING};
-  margin-right: 0.25em;
+  margin-bottom: 0.25em;
 
   &:last-child {
-    margin-right: 0;
+    margin-bottom: 0;
   }
 
   &:hover {

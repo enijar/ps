@@ -10,8 +10,8 @@ export default function Ps() {
     <PsContextProvider>
       <PsWrapper>
         <PsInner>
-          <Toolbar />
           <PsFlex>
+            <Toolbar />
             <Canvas />
             <Sidebar />
           </PsFlex>
