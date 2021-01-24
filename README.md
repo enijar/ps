@@ -2,6 +2,8 @@
 
 Photoshop in the browser.
 
+> Only tested in Chromium browsers. Cross-browser support will come when all items in the roadmap are complete.
+
 ### Getting started
 
 ```bash
@@ -20,3 +22,5 @@ npm start # http://localhost:3000
 - [ ] Text overlay
 - [ ] History
 - [ ] Crop
+- [ ] Cross-browser support
+- [ ] Optimisations
