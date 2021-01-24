@@ -15,7 +15,7 @@ npm start # http://localhost:3000
 - [x] Rotate
 - [x] Scale
 - [ ] Crop
-- [ ] Layers
+- [x] Layers
 - [ ] Text overlay
 - [x] Brush (drawing)
 - [x] Convert to blob and data URI
