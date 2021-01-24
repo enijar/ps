@@ -4,14 +4,12 @@ import { OrderType, PsContextType } from "../../config/types";
 import { EYE_ICON } from "../../config/images";
 import { sortLayers } from "../../utils";
 import { PsContext } from "../ps/context";
+import emitter from "../../services/emitter";
 
 export default function Layers() {
-  const {
-    layers,
-    setLayers,
-    selectedLayer,
-    setSelectedLayer,
-  } = React.useContext(PsContext) as PsContextType;
+  const { layers, selectedLayer, setSelectedLayer } = React.useContext(
+    PsContext
+  ) as PsContextType;
 
   const selectLayer = React.useCallback(
     (layer) => {
@@ -22,22 +20,12 @@ export default function Layers() {
     [setSelectedLayer]
   );
 
-  const toggleVisibility = React.useCallback(
-    (layer) => {
-      return (event: React.MouseEvent) => {
-        event.stopPropagation();
-        setLayers((layers) => {
-          return layers.map((item) => {
-            if (item.id === layer.id) {
-              item.visible = !layer.visible;
-            }
-            return item;
-          });
-        });
-      };
-    },
-    [setLayers]
-  );
+  const toggleVisibility = React.useCallback((layer) => {
+    return (event: React.MouseEvent) => {
+      event.stopPropagation();
+      emitter.emit("layer.visibility", layer);
+    };
+  }, []);
 
   return (
     <LayersWrapper>

@@ -13,6 +13,7 @@ import {
 } from "../../config/types";
 import { DEFAULTS, ZOOM_DELTA } from "../../config/consts";
 import { getPoints, getPosition } from "../../utils";
+import emitter from "../../services/emitter";
 
 type Props = {
   children: any;
@@ -239,6 +240,15 @@ export default function PsContextProvider({ children }: Props) {
       setScale((scale) => scale + ZOOM_DELTA * direction);
     }
   }, [pressedKeys, tool, pointer.down]);
+
+  React.useEffect(() => {
+    return emitter.subscribe("layer.visibility", (layer: Layer) => {
+      const index = layers.findIndex((item) => item.id === layer.id);
+      if (index === -1) return [];
+      layers[index].visible = !layers[index].visible;
+      setLayers([...layers]);
+    });
+  }, [layers]);
 
   React.useEffect(() => {
     function getKey(event: KeyboardEvent): string {
