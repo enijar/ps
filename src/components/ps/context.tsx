@@ -119,6 +119,7 @@ export default function PsContextProvider({ children }: Props) {
       if (selectedLayer !== null) {
         setLayers((layers) => {
           return layers.map((layer) => {
+            if (!layer.visible) return layer;
             if (layer.id === selectedLayer.id) {
               layer.position = {
                 ...layer.position,
@@ -143,6 +144,7 @@ export default function PsContextProvider({ children }: Props) {
       if (selectedLayer !== null) {
         setLayers((layers) => {
           return layers.map((layer) => {
+            if (!layer.visible) return layer;
             if (layer.id === selectedLayer.id) {
               layer.position = {
                 ...layer.position,
@@ -207,6 +209,7 @@ export default function PsContextProvider({ children }: Props) {
     if (!pointer.down || tool !== Tool.move || selectedLayer === null) return;
     setLayers((layers) => {
       return layers.map((layer) => {
+        if (!layer.visible) return layer;
         if (layer.id === selectedLayer.id) {
           layer.position = {
             ...layer.position,
