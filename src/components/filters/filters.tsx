@@ -1,6 +1,6 @@
 import React from "react";
 import { FiltersWrapper } from "./styles";
-import { FilterTypes, PsContextType } from "../../config/types";
+import { FilterTypes, Layer, PsContextType } from "../../config/types";
 import { PsContext } from "../ps/context";
 
 export default function Filters() {
@@ -11,6 +11,11 @@ export default function Filters() {
     layers,
     setLayers,
   } = React.useContext(PsContext) as PsContextType;
+  const currentLayer = React.useMemo<Layer | null>(() => {
+    const index = layers.findIndex((layer) => layer.id === selectedLayer?.id);
+    if (index === -1) return null;
+    return layers[index];
+  }, [selectedLayer, layers]);
 
   const applyFilter = React.useCallback(
     (type: FilterTypes) => {
@@ -64,7 +69,7 @@ export default function Filters() {
           sepia:
           <input
             type="checkbox"
-            checked={selectedLayer?.filters?.[FilterTypes.sepia] ?? false}
+            checked={currentLayer?.filters?.[FilterTypes.sepia] ?? false}
             onChange={applyFilter(FilterTypes.sepia)}
           />
         </label>
@@ -77,7 +82,7 @@ export default function Filters() {
           min={0}
           max={3}
           step={0.01}
-          value={selectedLayer?.filters?.[FilterTypes.saturation] ?? ""}
+          value={currentLayer?.filters?.[FilterTypes.saturation] ?? ""}
           onChange={applyFilter(FilterTypes.saturation)}
         />
       </div>
@@ -101,7 +106,7 @@ export default function Filters() {
           min={0}
           max={360}
           step={1}
-          value={selectedLayer?.rotation ?? "0"}
+          value={currentLayer?.rotation ?? "0"}
           onChange={(event) => {
             setLayers((layers) => {
               return layers.map((layer) => {
@@ -120,26 +125,26 @@ export default function Filters() {
         />
       </div>
       <div>
-        <label>blur({selectedLayer?.filters?.[FilterTypes.blur]}px):</label>
+        <label>blur({currentLayer?.filters?.[FilterTypes.blur]}px):</label>
         <br />
         <input
           type="range"
           min={0}
           max={100}
           step={1}
-          value={selectedLayer?.filters?.[FilterTypes.blur] ?? ""}
+          value={currentLayer?.filters?.[FilterTypes.blur] ?? ""}
           onChange={applyFilter(FilterTypes.blur)}
         />
       </div>
       <div>
-        <label>hue({selectedLayer?.filters?.[FilterTypes.hue]}&deg;):</label>
+        <label>hue({currentLayer?.filters?.[FilterTypes.hue]}&deg;):</label>
         <br />
         <input
           type="range"
           min={0}
           max={360}
           step={1}
-          value={selectedLayer?.filters?.[FilterTypes.hue] ?? ""}
+          value={currentLayer?.filters?.[FilterTypes.hue] ?? ""}
           onChange={applyFilter(FilterTypes.hue)}
         />
       </div>
@@ -151,7 +156,7 @@ export default function Filters() {
           min={0}
           max={1}
           step={0.01}
-          value={selectedLayer?.filters?.[FilterTypes.opacity] ?? "0"}
+          value={currentLayer?.filters?.[FilterTypes.opacity] ?? "0"}
           onChange={applyFilter(FilterTypes.opacity)}
         />
       </div>
