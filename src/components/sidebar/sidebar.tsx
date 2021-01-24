@@ -2,6 +2,7 @@ import React from "react";
 import { SidebarWrapper } from "./styles";
 import { PsContextType } from "../../config/types";
 import { PsContext } from "../ps/context";
+import Layers from "../layers/layers";
 
 export default function Sidebar() {
   const {
@@ -127,6 +128,7 @@ export default function Sidebar() {
       <div>
         <button onClick={reset}>reset</button>
       </div>
+      <Layers />
     </SidebarWrapper>
   );
 }

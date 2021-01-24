@@ -76,6 +76,8 @@ export type PressedKeys = string[];
 
 export type Layer = {
   id: string;
+  name: string;
+  visible: boolean;
   image: {
     src: string;
     width: number;
@@ -123,3 +125,8 @@ export type PsContextType = {
   reset: React.MouseEventHandler;
   download: React.MouseEventHandler;
 };
+
+export enum OrderType {
+  asc,
+  desc,
+}

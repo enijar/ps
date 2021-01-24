@@ -1,6 +1,7 @@
 import {
   GetPointsProps,
   Layer,
+  OrderType,
   Point,
   PointGroup,
   PressedKeys,
@@ -121,6 +122,8 @@ export function createLayer(file: File, zIndex = 0): Promise<Layer> {
       ctx.drawImage(img, 0, 0);
       resolve({
         id: uuid(),
+        name: file.name ?? `Layer ${zIndex + 1}`,
+        visible: true,
         image: {
           src: canvas.toDataURL("image/png"),
           width: img.width,
@@ -149,4 +152,15 @@ export function createTransform(size: Size, layer: Layer): string {
     `rotate(${rotation}, ${size.width / 2}, ${size.height / 2})`,
     `matrix(${s}, 0, 0, ${s}, ${cx - s * cx}, ${cy - s * cy})`,
   ].join(" ");
+}
+
+export function sortLayers(
+  layers: Layer[],
+  order: OrderType = OrderType.desc
+): Layer[] {
+  return layers.sort((a, b) => {
+    if (order === OrderType.desc) return b.zIndex - a.zIndex;
+    if (order === OrderType.asc) return a.zIndex - b.zIndex;
+    return 0;
+  });
 }

@@ -2,7 +2,12 @@ import React from "react";
 import { CanvasWrapper, CanvasHelper } from "./styles";
 import { Layer, PsContextType, Tool } from "../../config/types";
 import { PsContext } from "../ps/context";
-import { getCursor, createLayer, createTransform } from "../../utils";
+import {
+  getCursor,
+  createLayer,
+  createTransform,
+  sortLayers,
+} from "../../utils";
 
 export default function Canvas() {
   const {
@@ -47,12 +52,6 @@ export default function Canvas() {
     [layers, setLayers]
   );
 
-  const sortLayers = React.useCallback((layers: Layer[]) => {
-    return layers.sort((a, b) => {
-      return b.zIndex - a.zIndex;
-    });
-  }, []);
-
   React.useEffect(() => {
     if (layers.length > 0 && size.width + size.height === 0) {
       setSize({
@@ -60,8 +59,9 @@ export default function Canvas() {
         height: layers[0].image.height,
         ratio: layers[0].image.ratio,
       });
+      setSelectedLayer(layers[0]);
     }
-  }, [layers, size, setSize]);
+  }, [layers, size, setSize, setSelectedLayer]);
 
   return (
     <CanvasWrapper
@@ -104,14 +104,10 @@ export default function Canvas() {
 
         <g filter="url(#filters)" style={{ transform: `scale(${scale})` }}>
           {sortLayers(layers).map((layer, index) => {
+            if (!layer.visible) return null;
             return (
               <image
                 onDragStart={(event) => event.preventDefault()}
-                onMouseOver={() => {
-                  if (!pointer.down) {
-                    setSelectedLayer(layer);
-                  }
-                }}
                 key={index}
                 href={layer.image.src}
                 transform={createTransform(size, layer)}
