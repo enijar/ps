@@ -1,6 +1,6 @@
 import React from "react";
 import { LayerItem, LayersWrapper } from "./styles";
-import { OrderType, PsContextType } from "../../config/types";
+import { Layer, OrderType, PsContextType } from "../../config/types";
 import { EYE_ICON } from "../../config/images";
 import { sortLayers } from "../../utils";
 import { PsContext } from "../ps/context";
@@ -12,6 +12,8 @@ export default function Layers() {
     selectedLayer,
     setSelectedLayer,
   } = React.useContext(PsContext) as PsContextType;
+  const [renameLayer, setRenameLayer] = React.useState<Layer | null>(null);
+  const [layerName, setLayerName] = React.useState<string>("");
 
   const selectLayer = React.useCallback(
     (layer) => {
@@ -33,6 +35,52 @@ export default function Layers() {
     [layers, setLayers]
   );
 
+  const onDoubleClick = React.useCallback((layer: Layer) => {
+    return () => {
+      setLayerName(layer.name);
+      setRenameLayer(layer);
+    };
+  }, []);
+
+  const onKeyDown = React.useCallback((event: React.KeyboardEvent) => {
+    event.stopPropagation();
+    if (event.key.toLowerCase() === "escape") {
+      setRenameLayer(null);
+    }
+  }, []);
+
+  // @todo fix event type
+  const onFocus = React.useCallback((event: any) => {
+    event.target.select();
+  }, []);
+
+  const onBlur = React.useCallback(() => {
+    setRenameLayer(null);
+  }, []);
+
+  const onChange = React.useCallback(
+    (event: React.FormEvent<HTMLInputElement>) => {
+      setLayerName(event.currentTarget.value);
+    },
+    []
+  );
+
+  const onSubmit = React.useCallback(
+    (event: React.FormEvent) => {
+      event.preventDefault();
+      if (renameLayer === null) return;
+      const updatedLayers = [...layers];
+      const index = updatedLayers.findIndex(
+        (item) => item.id === renameLayer.id
+      );
+      if (index === -1) return;
+      updatedLayers[index].name = layerName;
+      setLayers(updatedLayers);
+      setRenameLayer(null);
+    },
+    [layers, setLayers, renameLayer, layerName]
+  );
+
   return (
     <LayersWrapper>
       {sortLayers(layers, OrderType.desc).map((layer) => {
@@ -51,7 +99,21 @@ export default function Layers() {
               style={{ opacity: layer.visible ? 1 : 0 }}
             />
             <div>
-              <label>{layer.name}</label>
+              {renameLayer?.id !== layer.id && (
+                <label onDoubleClick={onDoubleClick(layer)}>{layer.name}</label>
+              )}
+              {renameLayer?.id === layer.id && (
+                <form onSubmit={onSubmit}>
+                  <input
+                    autoFocus
+                    value={layerName}
+                    onChange={onChange}
+                    onFocus={onFocus}
+                    onBlur={onBlur}
+                    onKeyDown={onKeyDown}
+                  />
+                </form>
+              )}
             </div>
           </LayerItem>
         );

@@ -122,7 +122,7 @@ export function createLayer(file: File, order = 0): Promise<Layer> {
       ctx.drawImage(img, 0, 0);
       resolve({
         id: uuid(),
-        name: file.name ?? `Layer ${order + 1}`,
+        name: `Layer ${order + 1}`,
         visible: true,
         image: {
           src: canvas.toDataURL("image/png"),

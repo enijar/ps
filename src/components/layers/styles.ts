@@ -44,7 +44,6 @@ export const LayerItem = styled.div<LayerItemProps>`
   }
 
   div {
-    pointer-events: none;
     overflow: hidden;
     flex: 1 0;
   }
@@ -55,5 +54,10 @@ export const LayerItem = styled.div<LayerItemProps>`
     text-overflow: ellipsis;
     display: block;
     width: 100%;
+  }
+
+  input {
+    display: block;
+    outline: none;
   }
 `;
