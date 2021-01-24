@@ -88,7 +88,7 @@ export type Layer = {
   position: Position;
   filters: Filters;
   opacity: number;
-  zIndex: number;
+  order: number;
 };
 
 export type PsContextType = {

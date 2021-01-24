@@ -28,7 +28,7 @@ export default function Layers() {
 
   return (
     <LayersWrapper>
-      {sortLayers(layers, OrderType.asc).map((layer) => {
+      {sortLayers(layers, OrderType.desc).map((layer) => {
         return (
           <LayerItem
             key={layer.id}

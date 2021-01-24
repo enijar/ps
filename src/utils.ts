@@ -100,7 +100,7 @@ export function uuid(): string {
   });
 }
 
-export function createLayer(file: File, zIndex = 0): Promise<Layer> {
+export function createLayer(file: File, order = 0): Promise<Layer> {
   const allowedTypes = ["image/png", "image/jpg", "image/jpeg"];
   return new Promise((resolve, reject) => {
     if (!allowedTypes.includes(file.type)) {
@@ -122,7 +122,7 @@ export function createLayer(file: File, zIndex = 0): Promise<Layer> {
       ctx.drawImage(img, 0, 0);
       resolve({
         id: uuid(),
-        name: file.name ?? `Layer ${zIndex + 1}`,
+        name: file.name ?? `Layer ${order + 1}`,
         visible: true,
         image: {
           src: canvas.toDataURL("image/png"),
@@ -134,7 +134,7 @@ export function createLayer(file: File, zIndex = 0): Promise<Layer> {
         position: DEFAULTS.position,
         filters: DEFAULTS.filters,
         opacity: DEFAULTS.opacity,
-        zIndex,
+        order,
       });
       URL.revokeObjectURL(src);
     };
@@ -156,11 +156,11 @@ export function createTransform(size: Size, layer: Layer): string {
 
 export function sortLayers(
   layers: Layer[],
-  order: OrderType = OrderType.desc
+  order: OrderType = OrderType.asc
 ): Layer[] {
   return layers.sort((a, b) => {
-    if (order === OrderType.desc) return b.zIndex - a.zIndex;
-    if (order === OrderType.asc) return a.zIndex - b.zIndex;
+    if (order === OrderType.desc) return b.order - a.order;
+    if (order === OrderType.asc) return a.order - b.order;
     return 0;
   });
 }

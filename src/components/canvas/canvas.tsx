@@ -38,18 +38,18 @@ export default function Canvas() {
       event.stopPropagation();
       event.preventDefault();
       const files = Array.from(event.dataTransfer.files);
-      const newLayers: Layer[] = [];
-      for (let i = 0; i < files.length; i++) {
-        try {
-          newLayers.push(await createLayer(files[i], layers.length + i));
-        } catch (err) {
-          // @todo show error to user
-          console.error(err);
-        }
-      }
+      const nextOrder = Math.max(
+        Math.max(...layers.map((layer) => layer.order)) + 1,
+        0
+      );
+      // @todo handle errors
+      const newLayers: Layer[] = await Promise.all(
+        files.map((file, index) => createLayer(file, nextOrder + index))
+      );
       setLayers(layers.concat(newLayers));
+      setSelectedLayer(newLayers[newLayers.length - 1]);
     },
-    [layers, setLayers]
+    [layers, setLayers, setSelectedLayer]
   );
 
   React.useEffect(() => {
