@@ -1,11 +1,11 @@
 import React from "react";
-import { CanvasWrapper, CanvasHelper } from "./styles";
+import { CanvasHelper, CanvasWrapper } from "./styles";
 import { Layer, PsContextType, Tool } from "../../config/types";
 import { PsContext } from "../ps/context";
 import {
-  getCursor,
   createLayer,
   createTransform,
+  getCursor,
   sortLayers,
 } from "../../utils";
 
@@ -46,22 +46,18 @@ export default function Canvas() {
       const newLayers: Layer[] = await Promise.all(
         files.map((file, index) => createLayer(file, nextOrder + index))
       );
+      if (layers.length === 0) {
+        setSize({
+          width: newLayers[0].image.width,
+          height: newLayers[0].image.height,
+          ratio: newLayers[0].image.ratio,
+        });
+      }
       setLayers(layers.concat(newLayers));
       setSelectedLayer(newLayers[newLayers.length - 1]);
     },
-    [layers, setLayers, setSelectedLayer]
+    [layers, setSize, setLayers, setSelectedLayer]
   );
-
-  React.useEffect(() => {
-    if (layers.length > 0 && size.width + size.height === 0) {
-      setSize({
-        width: layers[0].image.width,
-        height: layers[0].image.height,
-        ratio: layers[0].image.ratio,
-      });
-      setSelectedLayer(layers[0]);
-    }
-  }, [layers, size, setSize, setSelectedLayer]);
 
   return (
     <CanvasWrapper
