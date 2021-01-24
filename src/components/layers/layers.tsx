@@ -21,8 +21,7 @@ export default function Layers() {
   );
 
   const toggleVisibility = React.useCallback((layer) => {
-    return (event: React.MouseEvent) => {
-      event.stopPropagation();
+    return () => {
       emitter.emit("layer.visibility", layer);
     };
   }, []);
